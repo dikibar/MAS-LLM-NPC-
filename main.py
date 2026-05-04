@@ -10,8 +10,50 @@ if src_path not in sys.path:
 
 from orchestration.coordinator import orchestrator
 from schema.models import SimulationRequest
+from vr_tools.unity_api import unity_client
 
 app = Flask(__name__)
+
+
+@app.route('/user/status', methods=['GET'])
+def get_user_status():
+    return jsonify(unity_client.get("user/status")), 200
+
+
+@app.route('/world/cultural_sites', methods=['GET'])
+def get_cultural_sites():
+    return jsonify(unity_client.get("world/cultural_sites")), 200
+
+
+@app.route('/world/cultural_sites', methods=['PUT'])
+def update_cultural_sites():
+    body = request.get_json(force=True, silent=True)
+    if body is None:
+        return jsonify({
+            "status": "error",
+            "message": "Request body must be valid JSON with Content-Type: application/json"
+        }), 400
+
+    sites = body.get("sites")
+    if not isinstance(sites, list):
+        return jsonify({
+            "status": "error",
+            "message": "Payload must contain a 'sites' array"
+        }), 422
+
+    for index, site in enumerate(sites):
+        if not isinstance(site, dict):
+            return jsonify({
+                "status": "error",
+                "message": f"Item at sites[{index}] must be an object"
+            }), 422
+
+    updated = unity_client.update_cultural_sites({"sites": sites})
+    return jsonify({
+        "status": "success",
+        "message": "Cultural sites updated successfully",
+        "data": updated
+    }), 200
 
 
 @app.route('/run-simulation', methods=['POST'])
@@ -24,8 +66,8 @@ def trigger_simulation():
         "playerPosition": "12.0, 0.0, 35.0",
         "culturalObject": [
             {
-                "name": "Sacred Altar of Prambanan",
-                "coordinate": "18.5, 0.0, 30.0",
+                "name": "Kujang",
+                "coordinate": "6.211527, -1.27006, 7.544006",
                 "isObjectVisited": false
             },
             ...

@@ -8,10 +8,10 @@ Layer   : Child Node (Publisher)
 Five-module mapping
 -------------------
 Profile         : Specialist in objective environmental awareness, scene-state
-                  tracking, and cultural site recommendation by proximity/visit status.
+                  tracking, and cultural site recommendation by position/visit status.
 Perception      : Consumes raw VR sensor data via three tool calls:
                     • tool_get_environment_data  — scene + event deltas
-                    • tool_get_user_status       — player proximity & action state
+                    • tool_get_user_status       — player position
                     • tool_get_cultural_sites    — full site registry with visited flags
 Self-Action     : (a) Distils raw signals into a structured JSON state summary.
                   (b) Selects 2–3 nearby UNVISITED sites as ranked recommendations.
@@ -49,8 +49,8 @@ def tool_get_environment_data() -> dict:
 @tool
 def tool_get_user_status() -> dict:
     """
-    Fetches the player's current proximity, gaze target, and interaction state.
-    Call this to understand what the user is currently doing or looking at.
+    Fetches the player's current position in world space.
+    Call this to compare the player location against cultural site coordinates.
     """
     return get_user_status()
 
@@ -59,7 +59,7 @@ def tool_get_user_status() -> dict:
 def tool_get_cultural_sites() -> dict:
     """
     Fetches the full registry of cultural sites in the current scene.
-    Each entry includes: site ID, display name, distance from player (metres),
+    Each entry includes: site ID, display name, cultural_position,
     and whether the player has already visited it.
     Use this to select 2–3 closest UNVISITED sites as recommendations.
     """
@@ -81,7 +81,7 @@ You have NO knowledge of cultural lore, narrative descriptions, or dialogue.
 
 TOOLS (call in this order every cycle):
   1. tool_get_environment_data  — scene + event deltas
-  2. tool_get_user_status       — player proximity & current action
+  2. tool_get_user_status       — player position
   3. tool_get_cultural_sites    — site registry with visited flags
 
   {
@@ -107,7 +107,8 @@ TOOLS (call in this order every cycle):
 PROCEDURE (ReAct Paradigm):
   Thought 1 — Call tools 1 and 2. Identify SCENE, EVENTS[], USER_ACTION.
   Thought 2 — Call tool 3. Filter to visited=false only.
-               Sort by distance_m ascending.
+               Treat cultural_position as a world-space coordinate string formatted as "x, y, z".
+               Compare each site position against the player's position and rank by nearest first.
                Select the 2 or 3 closest as RECOMMENDATIONS (rank 1 = primary).
   Action    — Output ONLY a single valid JSON object (no markdown, no extra text).
 
@@ -118,9 +119,9 @@ OUTPUT FORMAT — strict JSON, no code fences, no trailing text:
   "events": ["<event1>", "<event2>"],
   "user_action": "<what the user is doing>",
   "recommendations": [
-    {"rank": 1, "id": "<site_id>", "name": "<display_name>", "distance_m": <float>},
-    {"rank": 2, "id": "<site_id>", "name": "<display_name>", "distance_m": <float>},
-    {"rank": 3, "id": "<site_id>", "name": "<display_name>", "distance_m": <float>}
+    {"rank": 1, "id": "<site_id>", "name": "<display_name>", "cultural_position": "<x, y, z>"},
+    {"rank": 2, "id": "<site_id>", "name": "<display_name>", "cultural_position": "<x, y, z>"},
+    {"rank": 3, "id": "<site_id>", "name": "<display_name>", "cultural_position": "<x, y, z>"}
   ],
   "nav_target": "<rank-1 site_id>"
 }
@@ -132,11 +133,11 @@ EXAMPLE (valid output — copy this structure exactly):
   "events": ["Main_Gate:OPEN", "Spotlight_Altar:ON"],
   "user_action": "Examining_Artifact_ID_7",
   "recommendations": [
-    {"rank": 1, "id": "Cultural_Site_Altar", "name": "Sacred Altar of Prambanan", "distance_m": 18.5},
-    {"rank": 2, "id": "Cultural_Site_Library", "name": "Ancient Manuscript Library", "distance_m": 34.0},
-    {"rank": 3, "id": "Cultural_Site_Pavilion", "name": "Royal Ceremonial Pavilion", "distance_m": 52.0}
+    {"rank": 1, "id": "Kujang", "name": "Kujang", "cultural_position": "6.211527, -1.27006, 7.544006"},
+    {"rank": 2, "id": "Angklung", "name": "Angklung", "cultural_position": "14.62413, 1.37554, 18.67057"},
+    {"rank": 3, "id": "Surabi", "name": "Surabi", "cultural_position": "-1.34956, 1.52654, 23.7432"}
   ],
-  "nav_target": "Cultural_Site_Altar"
+  "nav_target": "Kujang"
 }
 
 CONSTRAINTS:

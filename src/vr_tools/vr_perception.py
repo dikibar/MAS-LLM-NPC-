@@ -12,8 +12,8 @@ def get_environment_data() -> dict:
 
 def get_user_status() -> dict:
     """
-    Perception Module: Fetches the current player proximity and action state.
-    Returns the player's position, what they are looking at, and interaction intent.
+    Perception Module: Fetches the player's current position only.
+    Returns the player position in world-space coordinates.
     """
     return unity_client.get("user/status")
 
@@ -21,7 +21,7 @@ def get_user_status() -> dict:
 def get_cultural_sites() -> dict:
     """
     Perception Module: Fetches the full registry of cultural sites in the current scene.
-    Returns each site's ID, name, distance from the player, and whether it has been visited.
+    Returns each site's ID, name, world-space cultural_position, and whether it has been visited.
     The Context Agent uses this to recommend 2-3 nearby unvisited destinations.
     """
     return unity_client.get("world/cultural_sites")

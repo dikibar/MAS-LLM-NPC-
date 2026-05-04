@@ -1,0 +1,28 @@
+{
+  "sites": [
+    {
+      "id": "Surabi",
+      "name": "Surabi",
+      "cultural_position": "-1.34956, 1.52654, 23.7432",
+      "visited": false
+    },
+    {
+      "id": "Angklung",
+      "name": "Angklung",
+      "cultural_position": "14.62413, 1.37554, 18.67057",
+      "visited": false
+    },
+    {
+      "id": "Kujang",
+      "name": "Kujang",
+      "cultural_position": "6.211527, -1.27006, 7.544006",
+      "visited": false
+    },
+    {
+      "id": "Julang_Ngapak",
+      "name": "Julang Ngapak",
+      "cultural_position": "13.71265, 1.291507, 17.19991",
+      "visited": true
+    }
+  ]
+}

@@ -16,22 +16,20 @@ MOCK_CONTEXT_RESPONSE = json.dumps({
     "events": ["Main_Gate:OPEN", "Spotlight_Altar:ON"],
     "user_action": "Examining_Artifact_ID_7",
     "recommendations": [
-        {"rank": 1, "id": "Cultural_Site_Altar",    "name": "Sacred Altar of Prambanan",   "distance_m": 18.5},
-        {"rank": 2, "id": "Cultural_Site_Library",  "name": "Ancient Manuscript Library",  "distance_m": 34.0},
-        {"rank": 3, "id": "Cultural_Site_Pavilion", "name": "Royal Ceremonial Pavilion",   "distance_m": 52.0},
+        {"rank": 1, "id": "Kujang", "name": "Kujang", "cultural_position": "6.211527, -1.27006, 7.544006"},
+        {"rank": 2, "id": "Angklung", "name": "Angklung", "cultural_position": "14.62413, 1.37554, 18.67057"},
+        {"rank": 3, "id": "Surabi", "name": "Surabi", "cultural_position": "-1.34956, 1.52654, 23.7432"}
     ],
-    "nav_target": "Cultural_Site_Altar",
+    "nav_target": "Kujang",
 })
 
 MOCK_DIALOGUE_RESPONSE = json.dumps({
     "spoken_output": (
         "Ah, wonderful curiosity! Now that you've examined the artifact, "
-        "let me guide you to the Sacred Altar of Prambanan — it is just "
-        "ahead and holds the very ceremony this piece belongs to. "
-        "If you prefer, the Ancient Manuscript Library or the Royal "
-        "Ceremonial Pavilion also await your discovery."
+        "let me guide you to Kujang, where the next part of this cultural journey awaits. "
+        "If you would like to explore further afterward, Angklung and Surabi are also nearby stops worth visiting."
     ),
-    "subtitle_output": "Follow me to the Sacred Altar — your next discovery awaits!",
+    "subtitle_output": "Follow me to Kujang for our next discovery.",
 })
 
 

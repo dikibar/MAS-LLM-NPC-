@@ -76,9 +76,9 @@ INPUT (Context Agent JSON from Message Pool):
   "events": [...],
   "user_action": "...",
   "recommendations": [
-    {{"rank": 1, "id": "...", "name": "...", "distance_m": ...}},
-    {{"rank": 2, "id": "...", "name": "...", "distance_m": ...}},
-    {{"rank": 3, "id": "...", "name": "...", "distance_m": ...}}
+    {{"rank": 1, "id": "...", "name": "...", "cultural_position": "x, y, z"}},
+    {{"rank": 2, "id": "...", "name": "...", "cultural_position": "x, y, z"}},
+    {{"rank": 3, "id": "...", "name": "...", "cultural_position": "x, y, z"}}
   ],
   "nav_target": "..."
 }}
@@ -88,10 +88,9 @@ PROCEDURE:
   Step 2 — Synthesise NPC utterance:
     • Rank-1 site → describe as "where we are heading" (NPC already walking via NavMesh).
     • Rank-2 and rank-3 → offer as alternatives the player may also explore.
-    • Translate distance_m into natural language:
-        < 25m  → "just ahead" / "nearby"
-        25–50m → "a short walk away"
-        > 50m  → "further down the hall" / "deeper in the wing"
+    • cultural_position is a coordinate string, not a distance number.
+      Use the recommendation rank and scene context to say things like
+      "just ahead", "nearby", or "further along" without exposing coordinates.
     • DO NOT expose raw IDs, distance numbers, or system tokens (nav_target, rank, etc.).
     • Weave cultural lore naturally — do not fabricate facts.
   Step 3 — Call tool_show_subtitle with subtitle_output text.
@@ -105,8 +104,8 @@ OUTPUT FORMAT — strict JSON, no code fences, no trailing text:
 
 EXAMPLE (valid output — copy this structure exactly):
 {{
-  "spoken_output": "Ah, wonderful curiosity! Now that you've examined the artifact, let me guide you to the Sacred Altar of Prambanan — it is just ahead and holds the very ceremony this piece belongs to. If you prefer, the Ancient Manuscript Library or the Royal Ceremonial Pavilion also await your discovery.",
-  "subtitle_output": "Follow me to the Sacred Altar — your next discovery awaits!"
+  "spoken_output": "Ah, wonderful curiosity. Let me guide you to Kujang for the next part of our cultural journey. If you would like to explore further afterward, Angklung and Surabi are also nearby points of interest.",
+  "subtitle_output": "Follow me to Kujang for our next discovery."
 }}
 
 EDGE CASE — ALL_VISITED:

@@ -2,6 +2,8 @@ import logging
 from typing import Any, Dict
 import json
 
+from core.config import settings
+
 
 class UnityAPIClient:
     """
@@ -12,6 +14,17 @@ class UnityAPIClient:
     def __init__(self, base_url: str = "http://localhost:8080"):
         self.base_url = base_url
         self.logger = logging.getLogger("UnityAPIClient")
+        self.cultural_sites_path = settings.BASE_DIR / "data" / "cultural_sites.json"
+
+    def _load_cultural_sites(self) -> Dict[str, Any]:
+        with self.cultural_sites_path.open("r", encoding="utf-8") as file:
+            return json.load(file)
+
+    def update_cultural_sites(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        with self.cultural_sites_path.open("w", encoding="utf-8") as file:
+            json.dump(payload, file, indent=2)
+            file.write("\n")
+        return payload
 
     def get(self, endpoint: str) -> Dict[str, Any]:
         """Simulates a GET request to Unity."""
@@ -27,41 +40,11 @@ class UnityAPIClient:
 
         elif endpoint == "user/status":
             return {
-                "proximity": "Near exhibit panel",
-                "looking_at": "Artifact_ID_7",
-                "is_interacting": False,
+                "player_position": "12.0, 0.0, 35.0",
             }
 
         elif endpoint == "world/cultural_sites":
-            # Full site registry with distance (metres) and visit status
-            return {
-                "sites": [
-                    {
-                        "id": "Cultural_Site_Altar",
-                        "name": "Sacred Altar of Prambanan",
-                        "distance_m": 18.5,
-                        "visited": False,
-                    },
-                    {
-                        "id": "Cultural_Site_Library",
-                        "name": "Ancient Manuscript Library",
-                        "distance_m": 34.0,
-                        "visited": False,
-                    },
-                    {
-                        "id": "Cultural_Site_Pavilion",
-                        "name": "Royal Ceremonial Pavilion",
-                        "distance_m": 52.0,
-                        "visited": False,
-                    },
-                    {
-                        "id": "Cultural_Site_Fountain",
-                        "name": "Heritage Fountain Court",
-                        "distance_m": 61.0,
-                        "visited": True,   # already visited — should be filtered out
-                    },
-                ]
-            }
+            return self._load_cultural_sites()
 
         return {}
 

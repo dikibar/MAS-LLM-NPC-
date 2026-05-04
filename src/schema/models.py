@@ -47,7 +47,7 @@ class SiteRecommendation(BaseModel):
     rank: int                   # 1 = primary (NavMesh target), 2, 3 = alternatives
     id: str                     # Unity GameObject ID  e.g. "Cultural_Site_Altar"
     name: str                   # Human-readable display name
-    distance_m: float           # Distance from player in metres
+    cultural_position: str      # World-space coordinate string e.g. "14.62413, 1.37554, 18.67057"
 
 
 class ContextOutput(BaseModel):
