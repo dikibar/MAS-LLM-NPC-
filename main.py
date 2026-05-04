@@ -63,15 +63,7 @@ def trigger_simulation():
 
     Request body (JSON):
     {
-        "playerPosition": "12.0, 0.0, 35.0",
-        "culturalObject": [
-            {
-                "name": "Kujang",
-                "coordinate": "6.211527, -1.27006, 7.544006",
-                "isObjectVisited": false
-            },
-            ...
-        ]
+        "playerPosition": "12.0, 0.0, 35.0"
     }
     """
     try:

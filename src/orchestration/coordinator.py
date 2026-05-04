@@ -8,7 +8,7 @@ from schema.models import (
     SimulationRequest,
 )
 from agents import get_context_agent, get_dialogue_agent
-from vr_tools import set_nav_target
+from vr_tools import get_cultural_sites, set_nav_target
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -84,13 +84,15 @@ class HierarchicalOrchestrator:
     2-Agent Parallel Workflow:
 
     Tick Cycle:
-      1. Receive SimulationRequest (playerPosition + culturalObject[]) from API.
-      2. Context Agent — analyses incoming data, ranks unvisited sites,
+      1. Receive SimulationRequest (playerPosition) from API.
+      2. Backend reads cultural site data from the JSON-backed API.
+      3. Context Agent — analyses incoming data, ranks unvisited sites,
                          outputs ContextOutput JSON → Message Pool.
-      3. Fan-out in parallel from ContextOutput:
+      4. Fan-out in parallel from ContextOutput:
            A. Unity NavMesh receives NAV_TARGET (NPC begins moving).
            B. Dialogue Agent reads ContextOutput JSON → produces DialogueOutput JSON.
-      4. Dialogue Agent sends subtitle to Unity HUD via tool_show_subtitle.
+      5. Dialogue Agent sends subtitle to Unity HUD via tool_show_subtitle and
+         returns a short recommendation description plus 2–3 button options for Unity UI.
     """
 
     def __init__(self):
@@ -135,14 +137,8 @@ class HierarchicalOrchestrator:
         # ------------------------------------------------------------------
         # Build perception input from the incoming API request body
         # ------------------------------------------------------------------
-        cultural_sites_str = json.dumps([
-            {
-                "name": obj.name,
-                "coordinate": obj.coordinate,
-                "isObjectVisited": obj.isObjectVisited,
-            }
-            for obj in sim_request.culturalObject
-        ], indent=2)
+        cultural_sites = get_cultural_sites()
+        cultural_sites_str = json.dumps(cultural_sites, indent=2)
 
         perception_input = (
             f"PLAYER_POSITION: {sim_request.playerPosition}\n"
@@ -182,6 +178,8 @@ class HierarchicalOrchestrator:
         print(f"NAV_ACK   : {nav_ack}")
         print(f"NPC SAYS  : {dialogue_output.spoken_output}")
         print(f"SUBTITLE  : {dialogue_output.subtitle_output}")
+        print(f"UI TEXT   : {dialogue_output.recommendation_dialogue}")
+        print(f"UI OPTIONS: {dialogue_output.recommendation_options}")
         print("-" * 54)
 
         return {

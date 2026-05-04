@@ -15,17 +15,9 @@ class AgentRole(str, Enum):
 # ---------------------------------------------------------------------------
 # API Request body models (POST /run-simulation)
 # ---------------------------------------------------------------------------
-class CulturalObjectRequest(BaseModel):
-    """One cultural site/object sent from Unity in the request body."""
-    name: str                # Display name of the cultural object/site
-    coordinate: str          # World-space coordinate string e.g. "18.5, 0.0, 30.0"
-    isObjectVisited: bool    # True if the player has already visited this object
-
-
 class SimulationRequest(BaseModel):
     """Request body for POST /run-simulation."""
-    playerPosition: str                          # Player world-space position e.g. "12.0, 0.0, 35.0"
-    culturalObject: List[CulturalObjectRequest]  # List of nearby cultural objects
+    playerPosition: str  # Player world-space position e.g. "12.0, 0.0, 35.0"
 
 
 # ---------------------------------------------------------------------------
@@ -70,11 +62,15 @@ class ContextOutput(BaseModel):
 class DialogueOutput(BaseModel):
     """
     Validated JSON output from the Dialogue Agent.
-    spoken_output  → sent to TTS / avatar lip-sync
-    subtitle_output → sent to Unity HUD via show_subtitle tool
+    spoken_output     → sent to TTS / avatar lip-sync
+    subtitle_output   → sent to Unity HUD via show_subtitle tool
+    recommendation_dialogue → short descriptive recommendation for the UI
+    recommendation_options  → 2-3 cultural-object buttons for player selection
     """
-    spoken_output: str    # 2–4 sentences, in-character NPC speech
-    subtitle_output: str  # ≤ 15 words, condensed for HUD display
+    spoken_output: str              # 2–4 sentences, in-character NPC speech
+    subtitle_output: str            # ≤ 15 words, condensed for HUD display
+    recommendation_dialogue: str    # Short UI-ready recommendation summary
+    recommendation_options: List[str]  # 2-3 selectable cultural object names
 
 
 # ---------------------------------------------------------------------------
