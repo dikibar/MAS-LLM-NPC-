@@ -15,23 +15,22 @@ Perception      : Consumes raw VR sensor data via three tool calls:
                     • tool_get_cultural_sites    — full site registry with visited flags
 Self-Action     : (a) Distils raw signals into a structured JSON state summary.
                   (b) Selects 2–3 nearby UNVISITED sites as ranked recommendations.
-                  (c) Calls tool_set_nav_target with the rank-1 (closest) site ID.
 Mutual Interaction: Publisher — writes a ContextOutput JSON to the Message Pool
-                  for the Dialogue Agent to consume.
+                  for downstream parallel consumers (Dialogue Agent + NavMesh dispatcher).
 Evolution       : State Accuracy Reflection — audits summaries for missed events
                   or incorrect recommendations.
 
 ReAct paradigm
 --------------
   Thought   → analyse env delta + rank unvisited nearby sites
-  Action    → produce JSON output + call set_nav_target
-  Observation → confirm NavMesh acknowledged; await next tick
+  Action    → produce JSON output for downstream parallel execution
+  Observation → await next tick
 """
 
 from strands import Agent, tool
 from strands.models.openai import OpenAIModel
 from core.config import settings
-from vr_tools import get_environment_data, get_user_status, get_cultural_sites, set_nav_target
+from vr_tools import get_environment_data, get_user_status, get_cultural_sites
 
 
 # ---------------------------------------------------------------------------
@@ -67,25 +66,13 @@ def tool_get_cultural_sites() -> dict:
     return get_cultural_sites()
 
 
-@tool
-def tool_set_nav_target(target_id: str) -> bool:
-    """
-    Sends the chosen primary destination to Unity's NavMesh.
-    The NPC will begin pathfinding autonomously to this site.
-
-    Args:
-        target_id: The Unity GameObject ID of the rank-1 destination site.
-    """
-    return set_nav_target(target_id)
-
-
 # ---------------------------------------------------------------------------
 # System prompt
 # ---------------------------------------------------------------------------
 CONTEXT_AGENT_SYSTEM_PROMPT = """
 Role: Context Agent — Environmental State Engine & Cultural Recommender
-Objective: Distil raw VR world data into a structured JSON summary and signal
-           the primary destination to Unity NavMesh.
+Objective: Distil raw VR world data into a structured JSON summary that can be
+           consumed in parallel by downstream systems.
 
 PROFILE:
 You are a specialist in environmental awareness and spatial cultural-site
@@ -96,7 +83,6 @@ TOOLS (call in this order every cycle):
   1. tool_get_environment_data  — scene + event deltas
   2. tool_get_user_status       — player proximity & current action
   3. tool_get_cultural_sites    — site registry with visited flags
-  4. tool_set_nav_target        — send primary site ID to Unity NavMesh
 
   {
    "event": "",
@@ -123,8 +109,7 @@ PROCEDURE (ReAct Paradigm):
   Thought 2 — Call tool 3. Filter to visited=false only.
                Sort by distance_m ascending.
                Select the 2 or 3 closest as RECOMMENDATIONS (rank 1 = primary).
-  Action 1  — Call tool_set_nav_target with the rank-1 site's ID.
-  Action 2  — Output ONLY a single valid JSON object (no markdown, no extra text).
+  Action    — Output ONLY a single valid JSON object (no markdown, no extra text).
 
 OUTPUT FORMAT — strict JSON, no code fences, no trailing text:
 {
@@ -175,7 +160,7 @@ context_model = OpenAIModel(
     },
     model_id=settings.OPENROUTER_MODEL,
     params={
-        "max_tokens": 200,
+        "max_tokens": 800,
         "temperature": 0.7,
     },
 )
@@ -187,7 +172,6 @@ context_agent = Agent(
         tool_get_environment_data,
         tool_get_user_status,
         tool_get_cultural_sites,
-        tool_set_nav_target,
     ],
 )
 

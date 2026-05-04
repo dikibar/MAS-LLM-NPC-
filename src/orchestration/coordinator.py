@@ -1,13 +1,14 @@
 import json
 import logging
 import concurrent.futures
+from core.config import settings
 from schema.models import (
     MessagePoolState, AgentMessage,
     ContextOutput, DialogueOutput,
     SimulationRequest,
 )
 from agents import get_context_agent, get_dialogue_agent
-from vr_tools import show_subtitle
+from vr_tools import set_nav_target
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -80,16 +81,16 @@ def _parse_dialogue(raw: str) -> DialogueOutput:
 # ---------------------------------------------------------------------------
 class HierarchicalOrchestrator:
     """
-    2-Agent Parallel Architecture:
+    2-Agent Parallel Workflow:
 
     Tick Cycle:
       1. Receive SimulationRequest (playerPosition + culturalObject[]) from API.
       2. Context Agent — analyses incoming data, ranks unvisited sites,
                          outputs ContextOutput JSON → Message Pool.
-      3. Parallel:
+      3. Fan-out in parallel from ContextOutput:
            A. Unity NavMesh receives NAV_TARGET (NPC begins moving).
            B. Dialogue Agent reads ContextOutput JSON → produces DialogueOutput JSON.
-      4. show_subtitle sends subtitle to Unity HUD.
+      4. Dialogue Agent sends subtitle to Unity HUD via tool_show_subtitle.
     """
 
     def __init__(self):
@@ -97,19 +98,38 @@ class HierarchicalOrchestrator:
         self.context_agent = get_context_agent()
         self.dialogue_agent = get_dialogue_agent()
 
-        # Inject MockModel for local simulation (replace with real model keys when ready)
-        from core.mock_model import MockModel
-        self.context_agent.model = MockModel("mock-context")
-        self.dialogue_agent.model = MockModel("mock-dialogue")
+        use_mock = settings.USE_MOCK_MODEL or not settings.has_openrouter_credentials
+        if use_mock:
+            from core.mock_model import MockModel
+
+            self.context_agent.model = MockModel("mock-context")
+            self.dialogue_agent.model = MockModel("mock-dialogue")
+
+            if settings.USE_MOCK_MODEL:
+                logging.getLogger("Coordinator").info("Using MockModel because USE_MOCK_MODEL=true.")
+            else:
+                logging.getLogger("Coordinator").warning(
+                    "OPENROUTER_API_KEY is missing or still set to the placeholder value; falling back to MockModel."
+                )
+        else:
+            logging.getLogger("Coordinator").info(
+                "Using OpenRouter model '%s' via %s.",
+                settings.OPENROUTER_MODEL,
+                settings.OPENROUTER_BASE_URL,
+            )
 
     def _run_dialogue_agent(self, context_json: str) -> DialogueOutput:
         print("[Dialogue Agent] Synthesising NPC speech in parallel...")
         raw = str(self.dialogue_agent(context_json)).strip()
         return _parse_dialogue(raw)
 
+    def _dispatch_nav_target(self, nav_target: str) -> bool:
+        print(f"[NavMesh] Dispatching target '{nav_target}' in parallel...")
+        return set_nav_target(nav_target)
+
     def run_cycle(self, sim_request: SimulationRequest) -> dict:
         print("\n" + "=" * 54)
-        print("  NEW VR TICK — 2-AGENT PARALLEL ARCHITECTURE")
+        print("  NEW VR TICK — PARALLEL WORKFLOW ORCHESTRATION")
         print("=" * 54)
 
         # ------------------------------------------------------------------
@@ -141,33 +161,32 @@ class HierarchicalOrchestrator:
         print(context_output.model_dump_json(indent=2))
 
         # ------------------------------------------------------------------
-        # Phase 2: Parallel Handover
-        # Unity NavMesh moves the NPC; Dialogue Agent synthesises speech.
+        # Phase 2: Parallel fan-out from ContextOutput
+        # NavMesh moves the NPC while Dialogue Agent synthesises speech.
         # ------------------------------------------------------------------
-        print("\n[Phase 2] Parallel: NavMesh moving NPC + Dialogue Agent synthesising...")
+        print("\n[Phase 2] Parallel fan-out: NavMesh moving NPC + Dialogue Agent synthesising...")
         context_json = self.pool.get_context_json_for_dialogue()
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
-            future = executor.submit(self._run_dialogue_agent, context_json)
-            dialogue_output = future.result()
+        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+            nav_future = executor.submit(self._dispatch_nav_target, context_output.nav_target)
+            dialogue_future = executor.submit(self._run_dialogue_agent, context_json)
+            nav_ack = nav_future.result()
+            dialogue_output = dialogue_future.result()
 
         self.pool.publish_dialogue(dialogue_output)
-
-        # ------------------------------------------------------------------
-        # Phase 3: Output to Unity HUD
-        # ------------------------------------------------------------------
-        show_subtitle(dialogue_output.subtitle_output)
 
         print("\n[Dialogue Output — Validated JSON]")
         print(dialogue_output.model_dump_json(indent=2))
 
         print("\n" + "-" * 54)
+        print(f"NAV_ACK   : {nav_ack}")
         print(f"NPC SAYS  : {dialogue_output.spoken_output}")
         print(f"SUBTITLE  : {dialogue_output.subtitle_output}")
         print("-" * 54)
 
         return {
             "context": context_output.model_dump(),
+            "navmesh_ack": nav_ack,
             "dialogue": dialogue_output.model_dump(),
         }
 

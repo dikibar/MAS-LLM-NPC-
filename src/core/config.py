@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from typing import Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -19,6 +18,7 @@ class Settings(BaseSettings):
     OPENROUTER_API_KEY: Optional[str] = None
     OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
     OPENROUTER_MODEL: str = "openai/gpt-4.1"
+    USE_MOCK_MODEL: bool = True
     
     # Paths
     BASE_DIR: Path = Path(__file__).resolve().parent.parent.parent
@@ -29,6 +29,11 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore"
     )
+
+    @property
+    def has_openrouter_credentials(self) -> bool:
+        api_key = (self.OPENROUTER_API_KEY or "").strip()
+        return bool(api_key) and api_key != "your_openrouter_api_key_here"
 
 # Global settings instance
 settings = Settings()
