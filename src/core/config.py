@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     # LLM Settings (Placeholders for credentials)
     OPENAI_API_KEY: Optional[str] = None
     ANTHROPIC_API_KEY: Optional[str] = None
+    OPENROUTER_API_KEY: Optional[str] = None
+    OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
+    OPENROUTER_MODEL: str = "openai/gpt-4.1"
     
     # Paths
     BASE_DIR: Path = Path(__file__).resolve().parent.parent.parent

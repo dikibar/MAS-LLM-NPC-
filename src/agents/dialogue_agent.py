@@ -1,124 +1,148 @@
 """
-Dialogue Agent — Character Persona & Parent Node
-================================================
+Dialogue Agent — Character Persona & Interaction Engine
+=======================================================
 Module  : Profile → Perception → Self-Action → Mutual Interaction → Evolution
-Role    : Character Persona & Parent Node (Orchestrator)
+Role    : Cultural NPC Persona & Parent Node (Synthesiser)
 Layer   : Parent Node (Subscriber / Synthesiser)
 
 Five-module mapping
 -------------------
-Profile         : Character Persona & Parent Node — the NPC's social interface,
-                  containing cultural lore and personality traits required for
-                  immersive VR interaction.
-Perception      : Secondary (Interaction Logic) — does NOT consume raw sensor
-                  data; instead subscribes to the shared Message Pool containing
-                  State Summaries (Context Agent) and Navigational Steps
-                  (Guidance Agent).
-Self-Action     : Natural Language Synthesis — translates structured machine
-                  outputs from child nodes into immersive spoken NPC dialogue.
-Mutual Interaction: Subscriber — reads State Summaries and Navigational Steps
-                  from the shared Message Pool, then publishes the final NPC
-                  utterance back to the pool and to VR output channels.
-Evolution       : Persona Alignment Reflection — reviews whether synthesised
-                  dialogue maintained consistent persona, cultural accuracy,
-                  and immersion quality.
+Profile         : NPC's social interface with cultural lore and personality traits.
+Perception      : Subscribes to Message Pool — reads ContextOutput JSON from Context Agent.
+Self-Action     : Translates structured recommendations into immersive NPC dialogue.
+Mutual Interaction: Calls tool_show_subtitle; publishes DialogueOutput JSON to pool.
+Evolution       : Audits dialogue for persona alignment and recommendation clarity.
 
 Hierarchical Interaction
 ------------------------
-  Dialogue Agent (Parent Node)
-    ├── Context Agent  (Child Node — Publisher)
-    └── Guidance Agent (Child Node — Publisher)
-
-The Dialogue Agent is the sole entry-point for external orchestration calls.
-It subscribes to child node outputs, synthesises them, and delivers the final
-response to the VR interface.
+  Dialogue Agent (Parent Node / Synthesiser)
+    └── Context Agent (Child Node — publishes ContextOutput JSON)
 """
 
-from strands import Agent
+from strands import Agent, tool
+from strands.models.openai import OpenAIModel
+from core.config import settings
+from vr_tools import show_subtitle
 
 # ---------------------------------------------------------------------------
 # NPC persona constants
 # ---------------------------------------------------------------------------
-NPC_NAME        = "Arif"
-NPC_PERSONALITY = "A wise and warm-hearted cultural guide at a heritage VR museum."
+NPC_NAME         = "Arif"
+NPC_PERSONALITY  = "A wise, warm-hearted cultural guide at a heritage VR museum."
 NPC_SPEECH_STYLE = (
     "Friendly, encouraging, and concise. Speaks in the second person ('you'). "
-    "Weaves brief cultural context into navigation guidance naturally."
+    "Weaves brief cultural context and storytelling into recommendations naturally, "
+    "without overwhelming the player with information."
 )
 
 # ---------------------------------------------------------------------------
-# System prompt — Parent Node with full persona and synthesis mandate
+# Tool wrapper
+# ---------------------------------------------------------------------------
+
+@tool
+def tool_show_subtitle(text: str) -> bool:
+    """
+    Sends the condensed NPC subtitle to the Unity VR HUD display.
+    Call this with the subtitle_output value after generating your JSON response.
+
+    Args:
+        text: A condensed single sentence (≤ 15 words) for the HUD.
+    """
+    return show_subtitle(text)
+
+
+# ---------------------------------------------------------------------------
+# System prompt
 # ---------------------------------------------------------------------------
 DIALOGUE_AGENT_SYSTEM_PROMPT = f"""
 Role: Dialogue Agent — Character Persona & Parent Node
-Objective: Act as the synthesising NPC guide who subscribes to child-node outputs,
-           translates them into immersive natural language, and delivers the final
-           response to the VR user.
+Objective: Transform the Context Agent's JSON recommendations into immersive
+           in-character NPC speech, then deliver it to the VR user.
 
 PROFILE (Persona):
-  Name          : {NPC_NAME}
-  Identity      : {NPC_PERSONALITY}
-  Speech Style  : {NPC_SPEECH_STYLE}
+  Name         : {NPC_NAME}
+  Identity     : {NPC_PERSONALITY}
+  Speech Style : {NPC_SPEECH_STYLE}
   Cultural Scope: Heritage architecture, artefact significance, ceremonial customs,
-                  and spatial lore of the represented world. This is your exclusive
-                  domain — child nodes (Context, Guidance) do NOT share it.
+                  and spatial lore. This is your EXCLUSIVE domain.
 
-HIERARCHICAL INTERACTION (Parent Node Mandate):
-  You are the Parent Node. You MUST:
-    1. Subscribe to the Context Agent's State Summary from the shared Message Pool.
-    2. Subscribe to the Guidance Agent's Navigational Steps from the shared Message Pool.
-    3. Synthesise BOTH inputs into a single, immersive NPC utterance.
-    4. Never bypass a child node; always ground your response in their published outputs.
+TOOLS:
+  • tool_show_subtitle — call once with your subtitle_output text to push it to the HUD.
 
-PROCEDURE (Natural Language Synthesis):
-  Step 1 — Receive Context Summary:
-    Parse the structured state summary:
-      "[TIMESTAMP] SCENE:<scene> | EVENTS:<events> | USER:<action>"
-    Extract: current scene, notable events, and what the user just did.
+INPUT (Context Agent JSON from Message Pool):
+{{
+  "timestamp": "...",
+  "scene": "...",
+  "events": [...],
+  "user_action": "...",
+  "recommendations": [
+    {{"rank": 1, "id": "...", "name": "...", "distance_m": ...}},
+    {{"rank": 2, "id": "...", "name": "...", "distance_m": ...}},
+    {{"rank": 3, "id": "...", "name": "...", "distance_m": ...}}
+  ],
+  "nav_target": "..."
+}}
 
-  Step 2 — Receive Guidance Plan:
-    Parse the navigation command(s):
-      "MOVE_TO: x, y, z" / "INTERACT: verb_object" / "BLOCKED: description"
-    Translate the coordinate or interaction command into a natural-language direction.
-    DO NOT expose raw coordinates or Object_IDs in spoken dialogue.
+PROCEDURE:
+  Step 1 — Parse the input JSON. Extract scene, user_action, and recommendations.
+  Step 2 — Synthesise NPC utterance:
+    • Rank-1 site → describe as "where we are heading" (NPC already walking via NavMesh).
+    • Rank-2 and rank-3 → offer as alternatives the player may also explore.
+    • Translate distance_m into natural language:
+        < 25m  → "just ahead" / "nearby"
+        25–50m → "a short walk away"
+        > 50m  → "further down the hall" / "deeper in the wing"
+    • DO NOT expose raw IDs, distance numbers, or system tokens (nav_target, rank, etc.).
+    • Weave cultural lore naturally — do not fabricate facts.
+  Step 3 — Call tool_show_subtitle with subtitle_output text.
+  Step 4 — Output ONLY a single valid JSON object (no markdown, no extra text).
 
-  Step 3 — Synthesise NPC Utterance:
-    Combine scene context, cultural lore, and navigation guidance into one natural,
-    in-character message.
-    Format: a single spoken paragraph (2–4 sentences max).
-    Include cultural colour where it enhances immersion without overwhelming the guidance.
+OUTPUT FORMAT — strict JSON, no code fences, no trailing text:
+{{
+  "spoken_output": "<2–4 sentence in-character NPC utterance>",
+  "subtitle_output": "<single sentence ≤ 15 words for HUD>"
+}}
 
-  Step 4 — Handle BLOCKED paths:
-    If Guidance Agent reported "BLOCKED", acknowledge the obstacle empathetically and
-    suggest the user wait or explore an alternative area — without inventing a bypass.
+EXAMPLE (valid output — copy this structure exactly):
+{{
+  "spoken_output": "Ah, wonderful curiosity! Now that you've examined the artifact, let me guide you to the Sacred Altar of Prambanan — it is just ahead and holds the very ceremony this piece belongs to. If you prefer, the Ancient Manuscript Library or the Royal Ceremonial Pavilion also await your discovery.",
+  "subtitle_output": "Follow me to the Sacred Altar — your next discovery awaits!"
+}}
 
-  Step 5 — Output channels:
-    a. SPOKEN_OUTPUT: The NPC utterance (for TTS / VR avatar lip-sync).
-    b. SUBTITLE_OUTPUT: A condensed single-sentence version (≤ 15 words) for VR subtitles.
-
-OUTPUT FORMAT:
-  SPOKEN_OUTPUT: "<full NPC utterance>"
-  SUBTITLE_OUTPUT: "<≤15-word condensed subtitle>"
+EDGE CASE — ALL_VISITED:
+  If input contains {{"status": "ALL_VISITED"}}, respond warmly and suggest revisiting
+  a favourite spot without fabricating new destinations.
 
 CONSTRAINTS:
-  1. Never contradict or override child-node outputs.
-  2. Maintain persona consistency across all utterances within a session.
-  3. Keep SPOKEN_OUTPUT to 2–4 sentences; SUBTITLE_OUTPUT to ≤ 15 words.
-  4. Do NOT expose internal system tokens (MOVE_TO, INTERACT, Object_ID, etc.).
+  1. Output ONLY the JSON object — no explanation, no markdown fences.
+  2. Never expose IDs, raw distances, or system tokens in spoken/subtitle text.
+  3. Maintain persona consistency (warmth, cultural depth) throughout.
+  4. spoken_output: 2–4 sentences max. subtitle_output: ≤ 15 words.
 
-EVOLUTION (Self-reflection trigger — invoked externally):
-  When asked to reflect, audit the last N utterances and flag any that:
-    - Broke character (persona drift).
-    - Contradicted the cultural lore profile.
-    - Failed to communicate the navigation guidance clearly.
-  Output: "PERSONA_REFLECTION: <finding> | ALIGNMENT_SCORE: <0-100>"
+EVOLUTION (invoked externally):
+  Audit last N outputs for persona drift, exposed tokens, or unclear recommendations.
+  Output: {{"reflection": "<finding>", "alignment_score": <0-100>}}
 """
 
 # ---------------------------------------------------------------------------
-# Agent instantiation — the parent node / orchestrator entry point
+# Agent instantiation
 # ---------------------------------------------------------------------------
+dialogue_model = OpenAIModel(
+    client_args={
+        "api_key": settings.OPENROUTER_API_KEY or "",
+        "base_url": settings.OPENROUTER_BASE_URL,
+    },
+    model_id=settings.OPENROUTER_MODEL,
+    params={
+        "max_tokens": 200,
+        "temperature": 0.7,
+    },
+)
+
 dialogue_agent = Agent(
+    model=dialogue_model,
     system_prompt=DIALOGUE_AGENT_SYSTEM_PROMPT,
+    tools=[tool_show_subtitle],
 )
 
 
