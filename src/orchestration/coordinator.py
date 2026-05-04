@@ -5,6 +5,7 @@ from core.config import settings
 from schema.models import (
     MessagePoolState, AgentMessage,
     ContextOutput, DialogueOutput,
+    RecommendationSelectionResponse,
     SimulationRequest,
 )
 from agents import get_context_agent, get_dialogue_agent
@@ -128,6 +129,41 @@ class HierarchicalOrchestrator:
     def _dispatch_nav_target(self, nav_target: str) -> bool:
         print(f"[NavMesh] Dispatching target '{nav_target}' in parallel...")
         return set_nav_target(nav_target)
+
+    def handle_recommendation_selection(self, selected_option: str) -> RecommendationSelectionResponse:
+        latest_context = self.pool.state.latest_context
+
+        if latest_context is None:
+            raise ValueError("Belum ada hasil simulasi. Jalankan /run-simulation terlebih dahulu.")
+
+        selected_site = next(
+            (site for site in latest_context.recommendations if site.name == selected_option),
+            None,
+        )
+        if selected_site is None:
+            raise ValueError("Opsi yang dipilih tidak ada dalam rekomendasi aktif.")
+
+        from vr_tools.unity_api import unity_client
+
+        updated_sites = unity_client.mark_site_visited(selected_site.name)
+        if updated_sites is None:
+            raise ValueError("Objek budaya yang dipilih tidak ditemukan pada data cultural sites.")
+
+        nav_ack = self._dispatch_nav_target(selected_site.id)
+        spoken_output = (
+            f"Baik, saya akan memandu Anda menuju {selected_site.name}. "
+            f"Objek budaya ini telah Anda pilih sebagai tujuan berikutnya, "
+            f"dan saya akan menemani navigasinya sampai kita tiba."
+        )
+        subtitle_output = f"Mari menuju {selected_site.name}."
+
+        return RecommendationSelectionResponse(
+            selected_option=selected_site.name,
+            selected_site_id=selected_site.id,
+            navmesh_ack=nav_ack,
+            spoken_output=spoken_output,
+            subtitle_output=subtitle_output,
+        )
 
     def run_cycle(self, sim_request: SimulationRequest) -> dict:
         print("\n" + "=" * 54)

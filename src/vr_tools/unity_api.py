@@ -26,6 +26,21 @@ class UnityAPIClient:
             file.write("\n")
         return payload
 
+    def mark_site_visited(self, site_name: str) -> Dict[str, Any] | None:
+        payload = self._load_cultural_sites()
+        updated = False
+
+        for site in payload.get("sites", []):
+            if site.get("name") == site_name or site.get("id") == site_name:
+                site["visited"] = True
+                updated = True
+                break
+
+        if not updated:
+            return None
+
+        return self.update_cultural_sites(payload)
+
     def get(self, endpoint: str) -> Dict[str, Any]:
         """Simulates a GET request to Unity."""
         self.logger.info(f"GET {self.base_url}/{endpoint}")

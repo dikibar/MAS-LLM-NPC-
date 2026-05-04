@@ -9,7 +9,7 @@ if src_path not in sys.path:
     sys.path.append(src_path)
 
 from orchestration.coordinator import orchestrator
-from schema.models import SimulationRequest
+from schema.models import RecommendationSelectionRequest, SimulationRequest
 from vr_tools.unity_api import unity_client
 
 app = Flask(__name__)
@@ -92,6 +92,53 @@ def trigger_simulation():
             "message": "Invalid request body",
             "details": e.errors()
         }), 422
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
+
+
+@app.route('/recommendation/select', methods=['POST'])
+def select_recommendation():
+    """
+    POST /recommendation/select
+
+    Request body (JSON):
+    {
+        "selectedOption": "Kujang"
+    }
+    """
+    try:
+        body = request.get_json(force=True, silent=True)
+        if body is None:
+            return jsonify({
+                "status": "error",
+                "message": "Request body must be valid JSON with Content-Type: application/json"
+            }), 400
+
+        selection_request = RecommendationSelectionRequest.model_validate(body)
+        result = orchestrator.handle_recommendation_selection(selection_request.selectedOption)
+
+        return jsonify({
+            "status": "success",
+            "message": "Recommendation option selected successfully",
+            "data": result.model_dump(),
+        }), 200
+
+    except ValidationError as e:
+        return jsonify({
+            "status": "error",
+            "message": "Invalid request body",
+            "details": e.errors()
+        }), 422
+
+    except ValueError as e:
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 400
 
     except Exception as e:
         return jsonify({

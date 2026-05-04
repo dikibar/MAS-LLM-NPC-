@@ -20,6 +20,11 @@ class SimulationRequest(BaseModel):
     playerPosition: str  # Player world-space position e.g. "12.0, 0.0, 35.0"
 
 
+class RecommendationSelectionRequest(BaseModel):
+    """Request body for selecting one recommendation option."""
+    selectedOption: str  # Selected cultural object name from recommendation_options
+
+
 # ---------------------------------------------------------------------------
 # Message Pool internals
 # ---------------------------------------------------------------------------
@@ -71,6 +76,15 @@ class DialogueOutput(BaseModel):
     subtitle_output: str            # ≤ 15 words, condensed for HUD display
     recommendation_dialogue: str    # Short UI-ready recommendation summary
     recommendation_options: List[str]  # 2-3 selectable cultural object names
+
+
+class RecommendationSelectionResponse(BaseModel):
+    """Response after the player selects a recommendation option."""
+    selected_option: str
+    selected_site_id: str
+    navmesh_ack: bool
+    spoken_output: str
+    subtitle_output: str
 
 
 # ---------------------------------------------------------------------------
