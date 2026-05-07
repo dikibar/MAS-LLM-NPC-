@@ -25,16 +25,15 @@ MOCK_CONTEXT_RESPONSE = json.dumps({
 
 MOCK_DIALOGUE_RESPONSE = json.dumps({
     "spoken_output": (
-        "Anda sudah sampai pada tahapan yang menarik. "
-        "Mari saya antarkan ke Kujang sebagai tujuan berikutnya. "
-        "Jika Anda ingin menjelajah lebih jauh, Angklung dan Surabi juga bisa Anda pilih di sekitar area ini."
+        "Saya sudah menyiapkan beberapa rekomendasi objek budaya di sekitar Anda. "
+        "Silakan pilih tujuan yang paling ingin Anda kunjungi, dan saya akan membantu memandu perjalanannya."
     ),
-    "subtitle_output": "Mari menuju Kujang sebagai tujuan berikutnya.",
+    "subtitle_output": "Silakan pilih tujuan budaya berikutnya.",
     "recommendation_dialogue": (
         "Di sekitar posisi Anda ada beberapa objek budaya menarik. "
         "Pilih salah satu, dan saya akan memandu navigasinya."
     ),
-    "recommendation_options": ["Kujang", "Angklung", "Surabi"],
+    "recommendation_options": ["Opsi 1", "Opsi 2", "Opsi 3"],
 })
 
 

@@ -6,7 +6,7 @@ from pydantic import ValidationError
 # Add src to python path
 src_path = str(Path(__file__).parent / "src")
 if src_path not in sys.path:
-    sys.path.append(src_path)
+    sys.path.insert(0, src_path)
 
 from orchestration.coordinator import orchestrator
 from schema.models import RecommendationSelectionRequest, SimulationRequest
@@ -83,7 +83,7 @@ def trigger_simulation():
         return jsonify({
             "status": "success",
             "message": "Simulation executed successfully",
-            "data": result
+            "data": result.model_dump()
         }), 200
 
     except ValidationError as e:
@@ -107,6 +107,7 @@ def select_recommendation():
 
     Request body (JSON):
     {
+        "simulationId": "9f8fbd41-8d03-4ed4-bf78-7f20c2c6ddc2",
         "selectedOption": "Kujang"
     }
     """
@@ -119,7 +120,10 @@ def select_recommendation():
             }), 400
 
         selection_request = RecommendationSelectionRequest.model_validate(body)
-        result = orchestrator.handle_recommendation_selection(selection_request.selectedOption)
+        result = orchestrator.handle_recommendation_selection(
+            selection_request.simulationId,
+            selection_request.selectedOption,
+        )
 
         return jsonify({
             "status": "success",

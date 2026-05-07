@@ -3,6 +3,7 @@ from typing import Any, Dict
 import json
 
 from core.config import settings
+from schema.models import CulturalSitesPayload
 
 
 class UnityAPIClient:
@@ -18,13 +19,15 @@ class UnityAPIClient:
 
     def _load_cultural_sites(self) -> Dict[str, Any]:
         with self.cultural_sites_path.open("r", encoding="utf-8") as file:
-            return json.load(file)
+            payload = json.load(file)
+        return CulturalSitesPayload.model_validate(payload).model_dump()
 
     def update_cultural_sites(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        validated_payload = CulturalSitesPayload.model_validate(payload)
         with self.cultural_sites_path.open("w", encoding="utf-8") as file:
-            json.dump(payload, file, indent=2)
+            json.dump(validated_payload.model_dump(), file, indent=2)
             file.write("\n")
-        return payload
+        return validated_payload.model_dump()
 
     def mark_site_visited(self, site_name: str) -> Dict[str, Any] | None:
         payload = self._load_cultural_sites()

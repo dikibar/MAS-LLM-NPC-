@@ -1,0 +1,532 @@
+{
+  "info": {
+    "_postman_id": "d6a1392e-3265-4c52-b84d-c07346437fa1",
+    "name": "Multi Agent",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "39864124",
+    "description": "Dokumentasi request dan response untuk backend Multi Agent VR simulation."
+  },
+  "item": [
+    {
+      "name": "GET User Status",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8080/user/status",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8080",
+          "path": [
+            "user",
+            "status"
+          ]
+        },
+        "description": "Mengambil posisi pemain saat ini."
+      },
+      "response": [
+        {
+          "name": "GET User Status - 200 OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8080/user/status",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8080",
+              "path": [
+                "user",
+                "status"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"player_position\": \"12.0, 0.0, 35.0\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "GET Cultural Sites",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8080/world/cultural_sites",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8080",
+          "path": [
+            "world",
+            "cultural_sites"
+          ]
+        },
+        "description": "Mengambil seluruh data objek budaya dari registry JSON backend."
+      },
+      "response": [
+        {
+          "name": "GET Cultural Sites - 200 OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8080/world/cultural_sites",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8080",
+              "path": [
+                "world",
+                "cultural_sites"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"sites\": [\n    {\n      \"id\": \"Surabi\",\n      \"name\": \"Surabi\",\n      \"cultural_position\": \"-1.34956, 1.52654, 23.7432\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Angklung\",\n      \"name\": \"Angklung\",\n      \"cultural_position\": \"14.62413, 1.37554, 18.67057\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Kujang\",\n      \"name\": \"Kujang\",\n      \"cultural_position\": \"6.211527, -1.27006, 7.544006\",\n      \"visited\": true\n    },\n    {\n      \"id\": \"Julang_Ngapak\",\n      \"name\": \"Julang Ngapak\",\n      \"cultural_position\": \"13.71265, 1.291507, 17.19991\",\n      \"visited\": true\n    }\n  ]\n}"
+        }
+      ]
+    },
+    {
+      "name": "PUT Cultural Sites",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sites\": [\n    {\n      \"id\": \"Surabi\",\n      \"name\": \"Surabi\",\n      \"cultural_position\": \"-1.34956, 1.52654, 23.7432\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Angklung\",\n      \"name\": \"Angklung\",\n      \"cultural_position\": \"14.62413, 1.37554, 18.67057\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Kujang\",\n      \"name\": \"Kujang\",\n      \"cultural_position\": \"6.211527, -1.27006, 7.544006\",\n      \"visited\": true\n    },\n    {\n      \"id\": \"Julang_Ngapak\",\n      \"name\": \"Julang Ngapak\",\n      \"cultural_position\": \"13.71265, 1.291507, 17.19991\",\n      \"visited\": true\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8080/world/cultural_sites",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8080",
+          "path": [
+            "world",
+            "cultural_sites"
+          ]
+        },
+        "description": "Memperbarui seluruh registry objek budaya di backend."
+      },
+      "response": [
+        {
+          "name": "PUT Cultural Sites - 200 OK",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sites\": [\n    {\n      \"id\": \"Surabi\",\n      \"name\": \"Surabi\",\n      \"cultural_position\": \"-1.34956, 1.52654, 23.7432\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Angklung\",\n      \"name\": \"Angklung\",\n      \"cultural_position\": \"14.62413, 1.37554, 18.67057\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Kujang\",\n      \"name\": \"Kujang\",\n      \"cultural_position\": \"6.211527, -1.27006, 7.544006\",\n      \"visited\": true\n    },\n    {\n      \"id\": \"Julang_Ngapak\",\n      \"name\": \"Julang Ngapak\",\n      \"cultural_position\": \"13.71265, 1.291507, 17.19991\",\n      \"visited\": true\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8080/world/cultural_sites",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8080",
+              "path": [
+                "world",
+                "cultural_sites"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"status\": \"success\",\n  \"message\": \"Cultural sites updated successfully\",\n  \"data\": {\n    \"sites\": [\n      {\n        \"id\": \"Surabi\",\n        \"name\": \"Surabi\",\n        \"cultural_position\": \"-1.34956, 1.52654, 23.7432\",\n        \"visited\": false\n      },\n      {\n        \"id\": \"Angklung\",\n        \"name\": \"Angklung\",\n        \"cultural_position\": \"14.62413, 1.37554, 18.67057\",\n        \"visited\": false\n      },\n      {\n        \"id\": \"Kujang\",\n        \"name\": \"Kujang\",\n        \"cultural_position\": \"6.211527, -1.27006, 7.544006\",\n        \"visited\": true\n      },\n      {\n        \"id\": \"Julang_Ngapak\",\n        \"name\": \"Julang Ngapak\",\n        \"cultural_position\": \"13.71265, 1.291507, 17.19991\",\n        \"visited\": true\n      }\n    ]\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "POST Run Simulation",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"playerPosition\": \"12.0, 0.0, 35.0\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8080/run-simulation",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8080",
+          "path": [
+            "run-simulation"
+          ]
+        },
+        "description": "Menjalankan satu siklus simulasi. Backend memvalidasi playerPosition, mengambil persepsi sistem, menghitung rekomendasi terdekat secara deterministik, lalu menjalankan Context Agent dan Dialogue Agent. Response mengembalikan simulation_id untuk request lanjutan."
+      },
+      "response": [
+        {
+          "name": "POST Run Simulation - 200 OK",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"playerPosition\": \"12.0, 0.0, 35.0\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8080/run-simulation",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8080",
+              "path": [
+                "run-simulation"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"status\": \"success\",\n  \"message\": \"Simulation executed successfully\",\n  \"data\": {\n    \"simulation_id\": \"9f8fbd41-8d03-4ed4-bf78-7f20c2c6ddc2\",\n    \"context\": {\n      \"timestamp\": \"12:30:00\",\n      \"scene\": \"Heritage_Museum_Wing_A\",\n      \"events\": [\n        \"Main_Gate:OPEN\",\n        \"Spotlight_Altar:ON\"\n      ],\n      \"user_action\": \"Examining_Artifact_ID_7\",\n      \"recommendations\": [\n        {\n          \"rank\": 1,\n          \"id\": \"Angklung\",\n          \"name\": \"Angklung\",\n          \"cultural_position\": \"14.62413, 1.37554, 18.67057\"\n        },\n        {\n          \"rank\": 2,\n          \"id\": \"Surabi\",\n          \"name\": \"Surabi\",\n          \"cultural_position\": \"-1.34956, 1.52654, 23.7432\"\n        }\n      ],\n      \"nav_target\": \"Angklung\"\n    },\n    \"navmesh_ack\": true,\n    \"dialogue\": {\n      \"spoken_output\": \"Saya sudah menyiapkan beberapa rekomendasi objek budaya di sekitar Anda. Silakan pilih tujuan yang paling ingin Anda kunjungi, dan saya akan membantu memandu perjalanannya.\",\n      \"subtitle_output\": \"Silakan pilih tujuan budaya berikutnya.\",\n      \"recommendation_dialogue\": \"Di sekitar posisi Anda ada beberapa objek budaya menarik. Pilih salah satu, dan saya akan memandu navigasinya.\",\n      \"recommendation_options\": [\n        \"Angklung\",\n        \"Surabi\"\n      ]\n    }\n  }\n}"
+        },
+        {
+          "name": "POST Run Simulation - 422 Invalid playerPosition",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"playerPosition\": \"12.0, 0.0\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8080/run-simulation",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8080",
+              "path": [
+                "run-simulation"
+              ]
+            }
+          },
+          "status": "Unprocessable Entity",
+          "code": 422,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"status\": \"error\",\n  \"message\": \"Invalid request body\",\n  \"details\": [\n    {\n      \"type\": \"value_error\",\n      \"loc\": [\n        \"playerPosition\"\n      ],\n      \"msg\": \"Value error, playerPosition must use the format 'x, y, z'.\",\n      \"input\": \"12.0, 0.0\",\n      \"ctx\": {\n        \"error\": \"playerPosition must use the format 'x, y, z'.\"\n      }\n    }\n  ]\n}"
+        }
+      ]
+    },
+    {
+      "name": "POST Recommendation Select",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"simulationId\": \"9f8fbd41-8d03-4ed4-bf78-7f20c2c6ddc2\",\n  \"selectedOption\": \"Angklung\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8080/recommendation/select",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8080",
+          "path": [
+            "recommendation",
+            "select"
+          ]
+        },
+        "description": "Memilih salah satu recommendation option aktif dari hasil /run-simulation. Request wajib membawa simulationId dari response /run-simulation. Opsi yang dipilih akan ditandai visited=true."
+      },
+      "response": [
+        {
+          "name": "POST Recommendation Select - 200 OK",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"simulationId\": \"9f8fbd41-8d03-4ed4-bf78-7f20c2c6ddc2\",\n  \"selectedOption\": \"Angklung\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8080/recommendation/select",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8080",
+              "path": [
+                "recommendation",
+                "select"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"status\": \"success\",\n  \"message\": \"Recommendation option selected successfully\",\n  \"data\": {\n    \"selected_option\": \"Angklung\",\n    \"selected_site_id\": \"Angklung\",\n    \"navmesh_ack\": true,\n    \"spoken_output\": \"Baik, saya akan memandu Anda menuju Angklung. Objek budaya ini telah Anda pilih sebagai tujuan berikutnya, dan saya akan menemani navigasinya sampai kita tiba.\",\n    \"subtitle_output\": \"Mari menuju Angklung.\"\n  }\n}"
+        },
+        {
+          "name": "POST Recommendation Select - 400 Bad Request",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"simulationId\": \"9f8fbd41-8d03-4ed4-bf78-7f20c2c6ddc2\",\n  \"selectedOption\": \"Kujang\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8080/recommendation/select",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8080",
+              "path": [
+                "recommendation",
+                "select"
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"status\": \"error\",\n  \"message\": \"Opsi yang dipilih tidak ada dalam rekomendasi aktif.\"\n}"
+        },
+        {
+          "name": "POST Recommendation Select - 400 Invalid simulationId",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"simulationId\": \"invalid-session-id\",\n  \"selectedOption\": \"Angklung\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8080/recommendation/select",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8080",
+              "path": [
+                "recommendation",
+                "select"
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"status\": \"error\",\n  \"message\": \"simulationId tidak ditemukan. Jalankan /run-simulation terlebih dahulu.\"\n}"
+        }
+      ]
+    }
+  ]
+}

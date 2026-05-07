@@ -10,13 +10,13 @@
       "id": "Angklung",
       "name": "Angklung",
       "cultural_position": "14.62413, 1.37554, 18.67057",
-      "visited": false
+      "visited": true
     },
     {
       "id": "Kujang",
       "name": "Kujang",
       "cultural_position": "6.211527, -1.27006, 7.544006",
-      "visited": false
+      "visited": true
     },
     {
       "id": "Julang_Ngapak",
