@@ -73,6 +73,8 @@ def run_context():
 
     Request body (JSON, preferred canonical shape):
     {
+        "timestamp": "2026-05-01T12:30:00Z",
+        "scene": "Heritage_Museum_Wing_A",
         "playerPosition": "12.0, 0.0, 35.0",
         "culturalSites": [
             {
@@ -88,6 +90,9 @@ def run_context():
     - culturalObject / culturalObjects / cultural_sites
     - coordinate -> cultural_position
     - isObjectVisited -> visited
+
+    Unity adalah source of truth untuk timestamp, scene, playerPosition,
+    dan status visited pada tiap request live.
     """
     try:
         body, error_response, status_code = _parse_json_body()
@@ -168,6 +173,7 @@ def trigger_simulation():
 
     Endpoint kompatibilitas yang masih menjalankan context + dialogue sekaligus.
     Untuk integrasi baru, gunakan /context/run lalu /dialogue/run secara terpisah.
+    Request body mengikuti kontrak /context/run yang sama, termasuk timestamp dan scene.
     """
     try:
         body, error_response, status_code = _parse_json_body()

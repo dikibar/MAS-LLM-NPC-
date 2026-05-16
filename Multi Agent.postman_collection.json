@@ -101,7 +101,7 @@
         "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"playerPosition\": \"8.0, 2.0, 10.0\",\n  \"culturalSites\": [\n    {\n      \"id\": \"Julang Ngapak\",\n      \"name\": \"Julang Ngapak\",\n      \"cultural_position\": \"7.21, 2, 8.7\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Kujang\",\n      \"name\": \"Kujang\",\n      \"cultural_position\": \"8.99, 3, 13.65\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Surabi\",\n      \"name\": \"Surabi\",\n      \"cultural_position\": \"5.448, 3, 16.256\",\n      \"visited\": false\n    }\n  ]\n}",
+          "raw": "{\n  \"timestamp\": \"2026-05-01T12:30:00Z\",\n  \"scene\": \"Heritage_Museum_Wing_A\",\n  \"playerPosition\": \"8.0, 2.0, 10.0\",\n  \"culturalSites\": [\n    {\n      \"id\": \"Julang Ngapak\",\n      \"name\": \"Julang Ngapak\",\n      \"cultural_position\": \"7.21, 2, 8.7\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Kujang\",\n      \"name\": \"Kujang\",\n      \"cultural_position\": \"8.99, 3, 13.65\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Surabi\",\n      \"name\": \"Surabi\",\n      \"cultural_position\": \"5.448, 3, 16.256\",\n      \"visited\": false\n    }\n  ]\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -115,7 +115,7 @@
           "port": "8080",
           "path": ["context", "run"]
         },
-        "description": "Flow utama tahap 1. Unity mengirim playerPosition dan daftar culturalSites live. Response mengembalikan simulation_id, context, dan navmesh_ack."
+        "description": "Flow utama tahap 1. Unity mengirim timestamp, scene, playerPosition, dan daftar culturalSites live. Response mengembalikan simulation_id, context, dan navmesh_ack."
       },
       "response": [
         {
@@ -233,7 +233,7 @@
         "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"playerPosition\": \"8.0, 2.0, 10.0\",\n  \"culturalSites\": [\n    {\n      \"id\": \"Julang Ngapak\",\n      \"name\": \"Julang Ngapak\",\n      \"cultural_position\": \"7.21, 2, 8.7\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Kujang\",\n      \"name\": \"Kujang\",\n      \"cultural_position\": \"8.99, 3, 13.65\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Surabi\",\n      \"name\": \"Surabi\",\n      \"cultural_position\": \"5.448, 3, 16.256\",\n      \"visited\": false\n    }\n  ]\n}",
+          "raw": "{\n  \"timestamp\": \"2026-05-01T12:30:00Z\",\n  \"scene\": \"Heritage_Museum_Wing_A\",\n  \"playerPosition\": \"8.0, 2.0, 10.0\",\n  \"culturalSites\": [\n    {\n      \"id\": \"Julang Ngapak\",\n      \"name\": \"Julang Ngapak\",\n      \"cultural_position\": \"7.21, 2, 8.7\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Kujang\",\n      \"name\": \"Kujang\",\n      \"cultural_position\": \"8.99, 3, 13.65\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Surabi\",\n      \"name\": \"Surabi\",\n      \"cultural_position\": \"5.448, 3, 16.256\",\n      \"visited\": false\n    }\n  ]\n}",
           "options": {
             "raw": {
               "language": "json"

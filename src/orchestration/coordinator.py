@@ -19,7 +19,7 @@ from schema.models import (
     UserStatusSnapshot,
 )
 from agents import get_context_agent, get_dialogue_agent, set_context_runtime_snapshot
-from vr_tools import get_environment_data, set_nav_target, show_subtitle
+from vr_tools import set_nav_target, show_subtitle
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -222,7 +222,7 @@ class HierarchicalOrchestrator:
     2-Agent Parallel Workflow:
 
     Tick Cycle:
-      1. Receive SimulationRequest (playerPosition + culturalSites) from API.
+      1. Receive SimulationRequest (timestamp + scene + playerPosition + culturalSites) from API.
       2. Backend reads live cultural site data from the simulation request body.
       3. Context Agent — analyses incoming data, ranks unvisited sites,
                          outputs ContextOutput JSON → Message Pool.
@@ -280,7 +280,18 @@ class HierarchicalOrchestrator:
         self,
         sim_request: SimulationRequest,
     ) -> tuple[EnvironmentSnapshot, CulturalSitesPayload, list[SiteRecommendation], dict]:
-        environment_snapshot = EnvironmentSnapshot.model_validate(get_environment_data())
+        player_x, player_y, player_z = _parse_vector3(sim_request.playerPosition)
+        environment_snapshot = EnvironmentSnapshot.model_validate(
+            {
+                "timestamp": sim_request.timestamp,
+                "scene": sim_request.scene,
+                "user_position": {
+                    "x": player_x,
+                    "y": player_y,
+                    "z": player_z,
+                },
+            }
+        )
         user_status_snapshot = UserStatusSnapshot.model_validate(
             {"player_position": sim_request.playerPosition}
         )

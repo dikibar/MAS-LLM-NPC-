@@ -17,6 +17,8 @@ class AgentRole(str, Enum):
 # ---------------------------------------------------------------------------
 class SimulationRequest(BaseModel):
     """Request body for POST /run-simulation."""
+    timestamp: str
+    scene: str
     playerPosition: str  # Player world-space position e.g. "12.0, 0.0, 35.0"
     culturalSites: List["CulturalSite"]
 
@@ -58,6 +60,14 @@ class SimulationRequest(BaseModel):
             return data
 
         return data
+
+    @field_validator("timestamp", "scene")
+    @classmethod
+    def validate_required_text(cls, value: str) -> str:
+        cleaned = value.strip()
+        if not cleaned:
+            raise ValueError("Field must not be empty.")
+        return cleaned
 
     @field_validator("playerPosition")
     @classmethod
@@ -162,7 +172,7 @@ class SiteRecommendation(BaseModel):
 
 
 class EnvironmentSnapshot(BaseModel):
-    """Structured environment state returned by the Unity environment endpoint."""
+    """Structured environment state sent directly by Unity in the live request payload."""
     timestamp: str
     scene: str
     user_position: Dict[str, float]
