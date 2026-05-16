@@ -19,7 +19,7 @@ from schema.models import (
     UserStatusSnapshot,
 )
 from agents import get_context_agent, get_dialogue_agent, set_context_runtime_snapshot
-from vr_tools import get_environment_data, set_nav_target
+from vr_tools import get_environment_data, set_nav_target, show_subtitle
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -157,7 +157,18 @@ def _build_context_output(
 
 
 def _build_dialogue_output(recommendations: list[SiteRecommendation]) -> DialogueOutput:
-    primary_name = recommendations[0].name if recommendations else "tujuan berikutnya"
+    if not recommendations:
+        return DialogueOutput(
+            spoken_output=(
+                "Saat ini belum ada tujuan budaya baru yang perlu dipilih. "
+                "Anda bisa menikmati area di sekitar Anda terlebih dahulu, lalu lanjut saat siap."
+            ),
+            subtitle_output="Belum ada tujuan baru saat ini.",
+            recommendation_dialogue="Saat ini belum ada rekomendasi baru di sekitar Anda.",
+            recommendation_options=[],
+        )
+
+    primary_name = recommendations[0].name
     fallback_options = [site.name for site in recommendations[:3]]
     alternative_names = fallback_options[1:]
 
@@ -165,7 +176,8 @@ def _build_dialogue_output(recommendations: list[SiteRecommendation]) -> Dialogu
         alternatives_text = ", ".join(alternative_names)
         spoken_output = (
             f"Saya sudah menyiapkan beberapa rekomendasi objek budaya di sekitar Anda. "
-            f"Mari kita mulai dari {primary_name}, lalu Anda juga bisa memilih {alternatives_text} setelahnya."
+            f"Mari kita mulai dari {primary_name} sebagai tujuan utama, "
+            f"dan Anda juga bisa memilih {alternatives_text} setelahnya."
         )
     else:
         spoken_output = (
@@ -179,6 +191,24 @@ def _build_dialogue_output(recommendations: list[SiteRecommendation]) -> Dialogu
         recommendation_dialogue=(
             "Di sekitar posisi Anda ada beberapa objek budaya menarik. "
             "Pilih salah satu, dan saya akan memandu navigasinya."
+        ),
+        recommendation_options=fallback_options,
+    )
+
+
+def _build_selection_dialogue_output(
+    selected_site: SiteRecommendation,
+    recommendations: list[SiteRecommendation],
+) -> DialogueOutput:
+    fallback_options = [site.name for site in recommendations[:3]]
+    return DialogueOutput(
+        spoken_output=(
+            f"Baik, saya akan memandu Anda menuju {selected_site.name}. "
+            f"Objek budaya ini menjadi tujuan berikutnya, dan saya akan menemani perjalanan Anda sampai tiba."
+        ),
+        subtitle_output=f"Mari menuju {selected_site.name}.",
+        recommendation_dialogue=(
+            "Pilihan Anda sudah saya catat. Saya akan memandu perjalanan ke tujuan berikutnya."
         ),
         recommendation_options=fallback_options,
     )
@@ -239,6 +269,12 @@ class HierarchicalOrchestrator:
             return False
         print(f"[NavMesh] Dispatching target '{nav_target}' in parallel...")
         return set_nav_target(nav_target)
+
+    def _dispatch_subtitle(self, subtitle_text: str) -> bool:
+        if not subtitle_text:
+            return False
+        print(f"[HUD] Displaying subtitle '{subtitle_text}'...")
+        return bool(show_subtitle(subtitle_text))
 
     def _build_runtime_context(
         self,
@@ -357,6 +393,7 @@ class HierarchicalOrchestrator:
                 "recommendation_options": [site.name for site in session.context.recommendations],
             }
         )
+        self._dispatch_subtitle(dialogue_output.subtitle_output)
         self.pool.publish_dialogue(dialogue_output)
         self.pool.save_session(
             SimulationSessionState(
@@ -407,15 +444,40 @@ class HierarchicalOrchestrator:
                 "nav_target": selected_site.id,
             }
         )
-        updated_dialogue = session.dialogue
 
         nav_ack = self._dispatch_nav_target(selected_site.id)
-        spoken_output = (
-            f"Baik, saya akan memandu Anda menuju {selected_site.name}. "
-            f"Objek budaya ini telah Anda pilih sebagai tujuan berikutnya, "
-            f"dan saya akan menemani navigasinya sampai kita tiba."
+        selection_payload = json.dumps(
+            {
+                "mode": "selection_confirmation",
+                "selected_option": selected_site.name,
+                "selected_site_id": selected_site.id,
+                "context": updated_context.model_dump(),
+            },
+            ensure_ascii=False,
         )
-        subtitle_output = f"Mari menuju {selected_site.name}."
+        try:
+            selection_dialogue = self._run_dialogue_agent(selection_payload)
+            if selected_site.name.lower() not in selection_dialogue.spoken_output.lower():
+                raise ValueError("Selection dialogue did not mention the selected site.")
+        except Exception:
+            logging.getLogger("Coordinator").warning(
+                "Dialogue Agent selection fallback activated for simulation_id=%s",
+                simulation_id,
+            )
+            selection_dialogue = _build_selection_dialogue_output(
+                selected_site,
+                session.context.recommendations,
+            )
+
+        updated_dialogue = selection_dialogue.model_copy(
+            update={
+                "recommendation_options": [site.name for site in session.context.recommendations],
+            }
+        )
+        spoken_output = updated_dialogue.spoken_output
+        subtitle_output = updated_dialogue.subtitle_output
+        self._dispatch_subtitle(subtitle_output)
+        self.pool.publish_dialogue(updated_dialogue)
 
         self.pool.save_session(
             SimulationSessionState(

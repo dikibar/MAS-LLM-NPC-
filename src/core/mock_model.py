@@ -36,6 +36,53 @@ MOCK_DIALOGUE_RESPONSE = json.dumps({
 })
 
 
+def _extract_text_payload(messages: Any) -> str:
+    if isinstance(messages, str):
+        return messages
+    if isinstance(messages, list):
+        parts: list[str] = []
+        for message in messages:
+            if isinstance(message, dict):
+                content = message.get("content")
+                if isinstance(content, str):
+                    parts.append(content)
+                elif isinstance(content, list):
+                    for item in content:
+                        if isinstance(item, dict):
+                            text_value = item.get("text")
+                            if text_value is not None:
+                                parts.append(str(text_value))
+        return "\n".join(parts)
+    if isinstance(messages, dict):
+        return _extract_text_payload([messages])
+    return str(messages)
+
+
+def _build_selection_dialogue_response(payload_text: str) -> str | None:
+    try:
+        parsed = json.loads(payload_text)
+    except Exception:
+        return None
+
+    if not isinstance(parsed, dict) or parsed.get("mode") != "selection_confirmation":
+        return None
+
+    selected_option = str(parsed.get("selected_option", "")).strip() or "tujuan berikutnya"
+    context = parsed.get("context", {})
+    recommendations = context.get("recommendations", []) if isinstance(context, dict) else []
+    options = [item.get("name", "") for item in recommendations if isinstance(item, dict)][:3]
+
+    return json.dumps({
+        "spoken_output": (
+            f"Baik, saya akan memandu Anda menuju {selected_option}. "
+            f"Objek budaya ini menjadi tujuan berikutnya, dan saya akan menemani perjalanan Anda sampai tiba."
+        ),
+        "subtitle_output": f"Mari menuju {selected_option}.",
+        "recommendation_dialogue": "Pilihan Anda sudah saya catat. Saya akan memandu perjalanan ke tujuan berikutnya.",
+        "recommendation_options": options,
+    }, ensure_ascii=False)
+
+
 class MockModel(Model):
     """
     Mock model provider for local testing without real LLM API calls.
@@ -70,10 +117,12 @@ class MockModel(Model):
     ) -> AsyncIterable[StreamEvent]:
         """Yields Strands StreamEvent sequence with a valid JSON response body."""
 
+        payload_text = _extract_text_payload(messages)
+
         if "context" in self.model_id:
             response_text = MOCK_CONTEXT_RESPONSE
         elif "dialogue" in self.model_id:
-            response_text = MOCK_DIALOGUE_RESPONSE
+            response_text = _build_selection_dialogue_response(payload_text) or MOCK_DIALOGUE_RESPONSE
         else:
             response_text = json.dumps({"status": "mock_response"})
 
