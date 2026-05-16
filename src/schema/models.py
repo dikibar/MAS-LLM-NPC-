@@ -88,6 +88,19 @@ class RecommendationSelectionRequest(BaseModel):
         return cleaned
 
 
+class DialogueCycleRequest(BaseModel):
+    """Request body for running the Dialogue Agent from a saved simulation session."""
+    simulationId: str
+
+    @field_validator("simulationId")
+    @classmethod
+    def validate_required_text(cls, value: str) -> str:
+        cleaned = value.strip()
+        if not cleaned:
+            raise ValueError("Field must not be empty.")
+        return cleaned
+
+
 # ---------------------------------------------------------------------------
 # Cultural site data models
 # ---------------------------------------------------------------------------
@@ -221,13 +234,26 @@ class SimulationCycleResponse(BaseModel):
     dialogue: DialogueOutput
 
 
+class ContextCycleResponse(BaseModel):
+    """Structured result returned after the Context Agent finishes."""
+    simulation_id: str
+    context: ContextOutput
+    navmesh_ack: bool
+
+
+class DialogueCycleResponse(BaseModel):
+    """Structured result returned after the Dialogue Agent finishes."""
+    simulation_id: str
+    dialogue: DialogueOutput
+
+
 class SimulationSessionState(BaseModel):
     """Per-simulation in-memory state used for validating follow-up actions."""
     simulation_id: str
     player_position: str
     cultural_sites: CulturalSitesPayload
     context: ContextOutput
-    dialogue: DialogueOutput
+    dialogue: Optional[DialogueOutput] = None
 
 
 # ---------------------------------------------------------------------------

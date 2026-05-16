@@ -9,7 +9,7 @@ if src_path not in sys.path:
     sys.path.insert(0, src_path)
 
 from orchestration.coordinator import orchestrator
-from schema.models import RecommendationSelectionRequest, SimulationRequest
+from schema.models import DialogueCycleRequest, RecommendationSelectionRequest, SimulationRequest
 from vr_tools.unity_api import unity_client
 
 app = Flask(__name__)
@@ -56,10 +56,20 @@ def update_cultural_sites():
     }), 200
 
 
-@app.route('/run-simulation', methods=['POST'])
-def trigger_simulation():
+def _parse_json_body():
+    body = request.get_json(force=True, silent=True)
+    if body is None:
+        return None, jsonify({
+            "status": "error",
+            "message": "Request body must be valid JSON with Content-Type: application/json"
+        }), 400
+    return body, None, None
+
+
+@app.route('/context/run', methods=['POST'])
+def run_context():
     """
-    POST /run-simulation
+    POST /context/run
 
     Request body (JSON, preferred canonical shape):
     {
@@ -80,17 +90,91 @@ def trigger_simulation():
     - isObjectVisited -> visited
     """
     try:
-        # Parse and validate request body
-        body = request.get_json(force=True, silent=True)
-        if body is None:
-            return jsonify({
-                "status": "error",
-                "message": "Request body must be valid JSON with Content-Type: application/json"
-            }), 400
+        body, error_response, status_code = _parse_json_body()
+        if error_response is not None:
+            return error_response, status_code
 
         sim_request = SimulationRequest.model_validate(body)
+        result = orchestrator.run_context_cycle(sim_request)
 
-        # Run the multi-agent cycle with the incoming data
+        return jsonify({
+            "status": "success",
+            "message": "Context agent executed successfully",
+            "data": result.model_dump()
+        }), 200
+
+    except ValidationError as e:
+        return jsonify({
+            "status": "error",
+            "message": "Invalid request body",
+            "details": e.errors()
+        }), 422
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
+
+
+@app.route('/dialogue/run', methods=['POST'])
+def run_dialogue():
+    """
+    POST /dialogue/run
+
+    Request body (JSON):
+    {
+        "simulationId": "9f8fbd41-8d03-4ed4-bf78-7f20c2c6ddc2"
+    }
+    """
+    try:
+        body, error_response, status_code = _parse_json_body()
+        if error_response is not None:
+            return error_response, status_code
+
+        dialogue_request = DialogueCycleRequest.model_validate(body)
+        result = orchestrator.run_dialogue_cycle(dialogue_request.simulationId)
+
+        return jsonify({
+            "status": "success",
+            "message": "Dialogue agent executed successfully",
+            "data": result.model_dump()
+        }), 200
+
+    except ValidationError as e:
+        return jsonify({
+            "status": "error",
+            "message": "Invalid request body",
+            "details": e.errors()
+        }), 422
+
+    except ValueError as e:
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 400
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
+
+
+@app.route('/run-simulation', methods=['POST'])
+def trigger_simulation():
+    """
+    POST /run-simulation
+
+    Endpoint kompatibilitas yang masih menjalankan context + dialogue sekaligus.
+    Untuk integrasi baru, gunakan /context/run lalu /dialogue/run secara terpisah.
+    """
+    try:
+        body, error_response, status_code = _parse_json_body()
+        if error_response is not None:
+            return error_response, status_code
+
+        sim_request = SimulationRequest.model_validate(body)
         result = orchestrator.run_cycle(sim_request)
 
         return jsonify({
@@ -125,12 +209,9 @@ def select_recommendation():
     }
     """
     try:
-        body = request.get_json(force=True, silent=True)
-        if body is None:
-            return jsonify({
-                "status": "error",
-                "message": "Request body must be valid JSON with Content-Type: application/json"
-            }), 400
+        body, error_response, status_code = _parse_json_body()
+        if error_response is not None:
+            return error_response, status_code
 
         selection_request = RecommendationSelectionRequest.model_validate(body)
         result = orchestrator.handle_recommendation_selection(

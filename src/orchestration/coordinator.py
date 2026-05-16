@@ -1,12 +1,13 @@
 import json
 import logging
-import concurrent.futures
 import math
 import uuid
 from core.config import settings
 from schema.models import (
+    ContextCycleResponse,
     ContextAgentInput,
     CulturalSitesPayload,
+    DialogueCycleResponse,
     EnvironmentSnapshot,
     MessagePoolState, AgentMessage,
     ContextOutput, DialogueOutput,
@@ -212,6 +213,138 @@ class HierarchicalOrchestrator:
         print(f"[NavMesh] Dispatching target '{nav_target}' in parallel...")
         return set_nav_target(nav_target)
 
+    def _build_runtime_context(
+        self,
+        sim_request: SimulationRequest,
+    ) -> tuple[EnvironmentSnapshot, CulturalSitesPayload, list[SiteRecommendation], str]:
+        environment_snapshot = EnvironmentSnapshot.model_validate(get_environment_data())
+        user_status_snapshot = UserStatusSnapshot.model_validate(
+            {"player_position": sim_request.playerPosition}
+        )
+        cultural_sites_payload = CulturalSitesPayload(sites=sim_request.culturalSites)
+        ranked_recommendations = _rank_unvisited_sites(sim_request.playerPosition, cultural_sites_payload)
+        context_agent_input = ContextAgentInput(
+            player_position=sim_request.playerPosition,
+            environment=environment_snapshot,
+            user_status=user_status_snapshot,
+            cultural_sites=cultural_sites_payload,
+            precomputed_recommendations=ranked_recommendations,
+        )
+        return (
+            environment_snapshot,
+            cultural_sites_payload,
+            ranked_recommendations,
+            context_agent_input.model_dump_json(indent=2),
+        )
+
+    def _run_context_agent(
+        self,
+        perception_input: str,
+        environment_snapshot: EnvironmentSnapshot,
+        ranked_recommendations: list[SiteRecommendation],
+    ) -> ContextOutput:
+        print("\n[Phase 1] Context Agent — perceiving world & selecting sites...")
+        context_raw = str(self.context_agent(perception_input)).strip()
+        try:
+            context_output = _parse_context(context_raw)
+            return context_output.model_copy(
+                update={
+                    "timestamp": environment_snapshot.timestamp,
+                    "scene": environment_snapshot.scene,
+                    "events": environment_snapshot.events,
+                    "recommendations": ranked_recommendations,
+                    "nav_target": ranked_recommendations[0].id if ranked_recommendations else "",
+                }
+            )
+        except Exception:
+            return _build_context_output(
+                context_raw,
+                environment_snapshot,
+                ranked_recommendations,
+            )
+
+    def run_context_cycle(self, sim_request: SimulationRequest) -> ContextCycleResponse:
+        print("\n" + "=" * 54)
+        print("  NEW VR TICK — CONTEXT WORKFLOW")
+        print("=" * 54)
+
+        environment_snapshot, cultural_sites_payload, ranked_recommendations, perception_input = (
+            self._build_runtime_context(sim_request)
+        )
+        context_output = self._run_context_agent(
+            perception_input,
+            environment_snapshot,
+            ranked_recommendations,
+        )
+        self.pool.publish_context(context_output)
+
+        print("\n[Context Output — Validated JSON]")
+        print(context_output.model_dump_json(indent=2))
+
+        nav_ack = self._dispatch_nav_target(context_output.nav_target)
+        simulation_id = str(uuid.uuid4())
+        self.pool.save_session(
+            SimulationSessionState(
+                simulation_id=simulation_id,
+                player_position=sim_request.playerPosition,
+                cultural_sites=cultural_sites_payload,
+                context=context_output,
+            )
+        )
+
+        print("\n" + "-" * 54)
+        print(f"NAV_ACK   : {nav_ack}")
+        print(f"NAV_TARGET: {context_output.nav_target}")
+        print("-" * 54)
+
+        return ContextCycleResponse(
+            simulation_id=simulation_id,
+            context=context_output,
+            navmesh_ack=nav_ack,
+        )
+
+    def run_dialogue_cycle(self, simulation_id: str) -> DialogueCycleResponse:
+        session = self.pool.get_session(simulation_id)
+        if session is None:
+            raise ValueError("simulationId tidak ditemukan. Jalankan /context/run terlebih dahulu.")
+
+        print("\n" + "=" * 54)
+        print("  DIALOGUE WORKFLOW")
+        print("=" * 54)
+
+        context_json = session.context.model_dump_json(indent=2)
+        dialogue_output = self._run_dialogue_agent(context_json)
+        dialogue_output = dialogue_output.model_copy(
+            update={
+                "recommendation_options": [site.name for site in session.context.recommendations],
+            }
+        )
+        self.pool.publish_dialogue(dialogue_output)
+        self.pool.save_session(
+            SimulationSessionState(
+                simulation_id=session.simulation_id,
+                player_position=session.player_position,
+                cultural_sites=session.cultural_sites,
+                context=session.context,
+                dialogue=dialogue_output,
+            )
+        )
+
+        print("\n[Dialogue Output — Validated JSON]")
+        print(dialogue_output.model_dump_json(indent=2))
+
+        print("\n" + "-" * 54)
+        print(f"NPC SAYS  : {dialogue_output.spoken_output}")
+        print(f"SUBTITLE  : {dialogue_output.subtitle_output}")
+        print(f"UI TEXT   : {dialogue_output.recommendation_dialogue}")
+        print(f"UI OPTIONS: {dialogue_output.recommendation_options}")
+        print("-" * 54)
+
+        return DialogueCycleResponse(
+            simulation_id=simulation_id,
+            dialogue=dialogue_output,
+        )
+
     def handle_recommendation_selection(
         self,
         simulation_id: str,
@@ -255,7 +388,7 @@ class HierarchicalOrchestrator:
             update={
                 "recommendation_options": [site.name for site in reranked_recommendations],
             }
-        )
+        ) if session.dialogue else None
 
         nav_ack = self._dispatch_nav_target(selected_site.id)
         spoken_output = (
@@ -284,102 +417,13 @@ class HierarchicalOrchestrator:
         )
 
     def run_cycle(self, sim_request: SimulationRequest) -> SimulationCycleResponse:
-        print("\n" + "=" * 54)
-        print("  NEW VR TICK — PARALLEL WORKFLOW ORCHESTRATION")
-        print("=" * 54)
-
-        # ------------------------------------------------------------------
-        # Build perception input from the incoming API request body
-        # ------------------------------------------------------------------
-        environment_snapshot = EnvironmentSnapshot.model_validate(get_environment_data())
-        user_status_snapshot = UserStatusSnapshot.model_validate(
-            {"player_position": sim_request.playerPosition}
-        )
-        cultural_sites_payload = CulturalSitesPayload(sites=sim_request.culturalSites)
-        ranked_recommendations = _rank_unvisited_sites(sim_request.playerPosition, cultural_sites_payload)
-        context_agent_input = ContextAgentInput(
-            player_position=sim_request.playerPosition,
-            environment=environment_snapshot,
-            user_status=user_status_snapshot,
-            cultural_sites=cultural_sites_payload,
-            precomputed_recommendations=ranked_recommendations,
-        )
-        perception_input = context_agent_input.model_dump_json(indent=2)
-
-        # ------------------------------------------------------------------
-        # Phase 1: Context Agent
-        # ------------------------------------------------------------------
-        print("\n[Phase 1] Context Agent — perceiving world & selecting sites...")
-        context_raw = str(self.context_agent(perception_input)).strip()
-        try:
-            context_output = _parse_context(context_raw)
-            context_output = context_output.model_copy(
-                update={
-                    "timestamp": environment_snapshot.timestamp,
-                    "scene": environment_snapshot.scene,
-                    "events": environment_snapshot.events,
-                    "recommendations": ranked_recommendations,
-                    "nav_target": ranked_recommendations[0].id if ranked_recommendations else "",
-                }
-            )
-        except Exception:
-            context_output = _build_context_output(
-                context_raw,
-                environment_snapshot,
-                ranked_recommendations,
-            )
-        self.pool.publish_context(context_output)
-
-        print("\n[Context Output — Validated JSON]")
-        print(context_output.model_dump_json(indent=2))
-
-        # ------------------------------------------------------------------
-        # Phase 2: Parallel fan-out from ContextOutput
-        # NavMesh moves the NPC while Dialogue Agent synthesises speech.
-        # ------------------------------------------------------------------
-        print("\n[Phase 2] Parallel fan-out: NavMesh moving NPC + Dialogue Agent synthesising...")
-        context_json = self.pool.get_context_json_for_dialogue()
-
-        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-            nav_future = executor.submit(self._dispatch_nav_target, context_output.nav_target)
-            dialogue_future = executor.submit(self._run_dialogue_agent, context_json)
-            nav_ack = nav_future.result()
-            dialogue_output = dialogue_future.result()
-
-        dialogue_output = dialogue_output.model_copy(
-            update={
-                "recommendation_options": [site.name for site in context_output.recommendations],
-            }
-        )
-
-        self.pool.publish_dialogue(dialogue_output)
-        simulation_id = str(uuid.uuid4())
-        self.pool.save_session(
-            SimulationSessionState(
-                simulation_id=simulation_id,
-                player_position=sim_request.playerPosition,
-                cultural_sites=cultural_sites_payload,
-                context=context_output,
-                dialogue=dialogue_output,
-            )
-        )
-
-        print("\n[Dialogue Output — Validated JSON]")
-        print(dialogue_output.model_dump_json(indent=2))
-
-        print("\n" + "-" * 54)
-        print(f"NAV_ACK   : {nav_ack}")
-        print(f"NPC SAYS  : {dialogue_output.spoken_output}")
-        print(f"SUBTITLE  : {dialogue_output.subtitle_output}")
-        print(f"UI TEXT   : {dialogue_output.recommendation_dialogue}")
-        print(f"UI OPTIONS: {dialogue_output.recommendation_options}")
-        print("-" * 54)
-
+        context_result = self.run_context_cycle(sim_request)
+        dialogue_result = self.run_dialogue_cycle(context_result.simulation_id)
         return SimulationCycleResponse(
-            simulation_id=simulation_id,
-            context=context_output,
-            navmesh_ack=nav_ack,
-            dialogue=dialogue_output,
+            simulation_id=context_result.simulation_id,
+            context=context_result.context,
+            navmesh_ack=context_result.navmesh_ack,
+            dialogue=dialogue_result.dialogue,
         )
 
 
