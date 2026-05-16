@@ -140,7 +140,7 @@
         "header": [{"key": "Content-Type", "value": "application/json"}],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"playerPosition\": \"10, 0, 10\",\n  \"culturalSites\": [\n    {\n      \"id\": \"Candi_Uji_1\",\n      \"name\": \"Candi Uji 1\",\n      \"cultural_position\": \"11, 0, 10\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Patung_Uji_2\",\n      \"name\": \"Patung Uji 2\",\n      \"cultural_position\": \"30, 0, 10\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Galeri_Uji_3\",\n      \"name\": \"Galeri Uji 3\",\n      \"cultural_position\": \"50, 0, 10\",\n      \"visited\": false\n    }\n  ]\n}",
+          "raw": "{\n  \"playerPosition\": \"8.0, 2.0, 10.0\",\n  \"culturalSites\": [\n    {\n      \"id\": \"Julang Ngapak\",\n      \"name\": \"Julang Ngapak\",\n      \"cultural_position\": \"7.21, 2, 8.7\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Kujang\",\n      \"name\": \"Kujang\",\n      \"cultural_position\": \"8.99, 3, 13.65\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Surabi\",\n      \"name\": \"Surabi\",\n      \"cultural_position\": \"5.448, 3, 16.256\",\n      \"visited\": false\n    }\n  ]\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -164,7 +164,7 @@
             "header": [{"key": "Content-Type", "value": "application/json"}],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"playerPosition\": \"10, 0, 10\",\n  \"culturalSites\": [\n    {\n      \"id\": \"Candi_Uji_1\",\n      \"name\": \"Candi Uji 1\",\n      \"cultural_position\": \"11, 0, 10\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Patung_Uji_2\",\n      \"name\": \"Patung Uji 2\",\n      \"cultural_position\": \"30, 0, 10\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Galeri_Uji_3\",\n      \"name\": \"Galeri Uji 3\",\n      \"cultural_position\": \"50, 0, 10\",\n      \"visited\": false\n    }\n  ]\n}",
+              "raw": "{\n  \"playerPosition\": \"8.0, 2.0, 10.0\",\n  \"culturalSites\": [\n    {\n      \"id\": \"Julang Ngapak\",\n      \"name\": \"Julang Ngapak\",\n      \"cultural_position\": \"7.21, 2, 8.7\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Kujang\",\n      \"name\": \"Kujang\",\n      \"cultural_position\": \"8.99, 3, 13.65\",\n      \"visited\": false\n    },\n    {\n      \"id\": \"Surabi\",\n      \"name\": \"Surabi\",\n      \"cultural_position\": \"5.448, 3, 16.256\",\n      \"visited\": false\n    }\n  ]\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -184,7 +184,7 @@
           "_postman_previewlanguage": "json",
           "header": [{"key": "Content-Type", "value": "application/json"}],
           "cookie": [],
-          "body": "{\n  \"status\": \"success\",\n  \"message\": \"Context agent executed successfully\",\n  \"data\": {\n    \"simulation_id\": \"e62b5ad1-a6d4-4f3d-8251-dfaa577530da\",\n    \"context\": {\n      \"timestamp\": \"2026-05-01T12:30:00Z\",\n      \"scene\": \"Heritage_Museum_Wing_A\",\n      \"events\": [\n        \"Main_Gate:OPEN\",\n        \"Chandelier:ON\",\n        \"Spotlight_Altar:ON\"\n      ],\n      \"user_action\": \"Examining_Artifact_ID_7\",\n      \"recommendations\": [\n        {\n          \"rank\": 1,\n          \"id\": \"Candi_Uji_1\",\n          \"name\": \"Candi Uji 1\",\n          \"cultural_position\": \"11, 0, 10\"\n        },\n        {\n          \"rank\": 2,\n          \"id\": \"Patung_Uji_2\",\n          \"name\": \"Patung Uji 2\",\n          \"cultural_position\": \"30, 0, 10\"\n        },\n        {\n          \"rank\": 3,\n          \"id\": \"Galeri_Uji_3\",\n          \"name\": \"Galeri Uji 3\",\n          \"cultural_position\": \"50, 0, 10\"\n        }\n      ],\n      \"nav_target\": \"Candi_Uji_1\"\n    },\n    \"navmesh_ack\": true\n  }\n}"
+          "body": "{\n  \"status\": \"success\",\n  \"message\": \"Context agent executed successfully\",\n  \"data\": {\n    \"simulation_id\": \"41ca34e4-0a1d-4a73-8a97-2e0fd4ff1e7e\",\n    \"context\": {\n      \"timestamp\": \"2026-05-01T12:30:00Z\",\n      \"scene\": \"Heritage_Museum_Wing_A\",\n      \"events\": [\n        \"Main_Gate:OPEN\",\n        \"Chandelier:ON\",\n        \"Spotlight_Altar:ON\"\n      ],\n      \"user_action\": \"Navigating_Floor_Area\",\n      \"recommendations\": [\n        {\n          \"rank\": 1,\n          \"id\": \"Julang Ngapak\",\n          \"name\": \"Julang Ngapak\",\n          \"cultural_position\": \"7.21, 2, 8.7\"\n        },\n        {\n          \"rank\": 2,\n          \"id\": \"Kujang\",\n          \"name\": \"Kujang\",\n          \"cultural_position\": \"8.99, 3, 13.65\"\n        },\n        {\n          \"rank\": 3,\n          \"id\": \"Surabi\",\n          \"name\": \"Surabi\",\n          \"cultural_position\": \"5.448, 3, 16.256\"\n        }\n      ],\n      \"nav_target\": \"Julang Ngapak\"\n    },\n    \"navmesh_ack\": true\n  }\n}"
         }
       ]
     },
@@ -195,7 +195,7 @@
         "header": [{"key": "Content-Type", "value": "application/json"}],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"simulationId\": \"e62b5ad1-a6d4-4f3d-8251-dfaa577530da\"\n}",
+          "raw": "{\n  \"simulationId\": \"41ca34e4-0a1d-4a73-8a97-2e0fd4ff1e7e\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -219,7 +219,7 @@
             "header": [{"key": "Content-Type", "value": "application/json"}],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"simulationId\": \"e62b5ad1-a6d4-4f3d-8251-dfaa577530da\"\n}",
+              "raw": "{\n  \"simulationId\": \"41ca34e4-0a1d-4a73-8a97-2e0fd4ff1e7e\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -239,7 +239,7 @@
           "_postman_previewlanguage": "json",
           "header": [{"key": "Content-Type", "value": "application/json"}],
           "cookie": [],
-          "body": "{\n  \"status\": \"success\",\n  \"message\": \"Dialogue agent executed successfully\",\n  \"data\": {\n    \"simulation_id\": \"e62b5ad1-a6d4-4f3d-8251-dfaa577530da\",\n    \"dialogue\": {\n      \"spoken_output\": \"Di sekitar Anda ada beberapa objek budaya menarik untuk dijelajahi. Pilih tujuan yang paling ingin Anda kunjungi, dan saya akan membantu memandu perjalanan Anda.\",\n      \"subtitle_output\": \"Silakan pilih tujuan budaya berikutnya.\",\n      \"recommendation_dialogue\": \"Di sekitar posisi Anda ada beberapa objek budaya menarik. Pilih salah satu, dan saya akan memandu navigasinya.\",\n      \"recommendation_options\": [\n        \"Candi Uji 1\",\n        \"Patung Uji 2\",\n        \"Galeri Uji 3\"\n      ]\n    }\n  }\n}"
+          "body": "{\n  \"status\": \"success\",\n  \"message\": \"Dialogue agent executed successfully\",\n  \"data\": {\n    \"simulation_id\": \"41ca34e4-0a1d-4a73-8a97-2e0fd4ff1e7e\",\n    \"dialogue\": {\n      \"spoken_output\": \"Mari kita menuju Julang Ngapak di depan Anda. Rumah adat ini dikenal dengan atapnya yang melebar seperti burung, khas budaya Sunda. Jika Anda tertarik, Kujang dan Surabi juga dapat Anda kunjungi di sekitar sini.\",\n      \"subtitle_output\": \"Mari kita menuju Julang Ngapak di depan Anda.\",\n      \"recommendation_dialogue\": \"Di sekitar Anda ada beberapa objek budaya menarik yang bisa dipilih.\",\n      \"recommendation_options\": [\n        \"Julang Ngapak\",\n        \"Kujang\",\n        \"Surabi\"\n      ]\n    }\n  }\n}"
         },
         {
           "name": "POST Dialogue Run - 400 Invalid simulationId",
@@ -334,7 +334,7 @@
         "header": [{"key": "Content-Type", "value": "application/json"}],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"simulationId\": \"e62b5ad1-a6d4-4f3d-8251-dfaa577530da\",\n  \"selectedOption\": \"Candi Uji 1\"\n}",
+          "raw": "{\n  \"simulationId\": \"41ca34e4-0a1d-4a73-8a97-2e0fd4ff1e7e\",\n  \"selectedOption\": \"Julang Ngapak\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -358,7 +358,7 @@
             "header": [{"key": "Content-Type", "value": "application/json"}],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"simulationId\": \"e62b5ad1-a6d4-4f3d-8251-dfaa577530da\",\n  \"selectedOption\": \"Candi Uji 1\"\n}",
+              "raw": "{\n  \"simulationId\": \"41ca34e4-0a1d-4a73-8a97-2e0fd4ff1e7e\",\n  \"selectedOption\": \"Julang Ngapak\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -378,7 +378,7 @@
           "_postman_previewlanguage": "json",
           "header": [{"key": "Content-Type", "value": "application/json"}],
           "cookie": [],
-          "body": "{\n  \"status\": \"success\",\n  \"message\": \"Recommendation option selected successfully\",\n  \"data\": {\n    \"selected_option\": \"Candi Uji 1\",\n    \"selected_site_id\": \"Candi_Uji_1\",\n    \"navmesh_ack\": true,\n    \"spoken_output\": \"Baik, saya akan memandu Anda menuju Candi Uji 1. Objek budaya ini telah Anda pilih sebagai tujuan berikutnya, dan saya akan menemani navigasinya sampai kita tiba.\",\n    \"subtitle_output\": \"Mari menuju Candi Uji 1.\"\n  }\n}"
+          "body": "{\n  \"status\": \"success\",\n  \"message\": \"Recommendation option selected successfully\",\n  \"data\": {\n    \"selected_option\": \"Julang Ngapak\",\n    \"selected_site_id\": \"Julang Ngapak\",\n    \"navmesh_ack\": true,\n    \"spoken_output\": \"Baik, saya akan memandu Anda menuju Julang Ngapak. Objek budaya ini telah Anda pilih sebagai tujuan berikutnya, dan saya akan menemani navigasinya sampai kita tiba.\",\n    \"subtitle_output\": \"Mari menuju Julang Ngapak.\"\n  }\n}"
         }
       ]
     }
