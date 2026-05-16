@@ -1,6 +1,6 @@
 from enum import Enum
 from typing import List, Optional, Any, Dict
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 from datetime import datetime
 
 
@@ -18,6 +18,46 @@ class AgentRole(str, Enum):
 class SimulationRequest(BaseModel):
     """Request body for POST /run-simulation."""
     playerPosition: str  # Player world-space position e.g. "12.0, 0.0, 35.0"
+    culturalSites: List["CulturalSite"]
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_cultural_sites_input(cls, data: Any) -> Any:
+        if not isinstance(data, dict):
+            return data
+
+        if "culturalSites" in data and isinstance(data["culturalSites"], list):
+            return data
+
+        if "cultural_sites" in data and isinstance(data["cultural_sites"], list):
+            data["culturalSites"] = data["cultural_sites"]
+            return data
+
+        if "culturalObject" in data and isinstance(data["culturalObject"], list):
+            data["culturalSites"] = [
+                {
+                    "id": item.get("id") or item.get("name", ""),
+                    "name": item.get("name", ""),
+                    "cultural_position": item.get("cultural_position") or item.get("coordinate", ""),
+                    "visited": item.get("visited", item.get("isObjectVisited", False)),
+                }
+                for item in data["culturalObject"]
+            ]
+            return data
+
+        if "culturalObjects" in data and isinstance(data["culturalObjects"], list):
+            data["culturalSites"] = [
+                {
+                    "id": item.get("id") or item.get("name", ""),
+                    "name": item.get("name", ""),
+                    "cultural_position": item.get("cultural_position") or item.get("coordinate", ""),
+                    "visited": item.get("visited", item.get("isObjectVisited", False)),
+                }
+                for item in data["culturalObjects"]
+            ]
+            return data
+
+        return data
 
     @field_validator("playerPosition")
     @classmethod
@@ -184,6 +224,8 @@ class SimulationCycleResponse(BaseModel):
 class SimulationSessionState(BaseModel):
     """Per-simulation in-memory state used for validating follow-up actions."""
     simulation_id: str
+    player_position: str
+    cultural_sites: CulturalSitesPayload
     context: ContextOutput
     dialogue: DialogueOutput
 

@@ -61,10 +61,23 @@ def trigger_simulation():
     """
     POST /run-simulation
 
-    Request body (JSON):
+    Request body (JSON, preferred canonical shape):
     {
-        "playerPosition": "12.0, 0.0, 35.0"
+        "playerPosition": "12.0, 0.0, 35.0",
+        "culturalSites": [
+            {
+                "id": "Surabi",
+                "name": "Surabi",
+                "cultural_position": "-1.34956, 1.52654, 23.7432",
+                "visited": false
+            }
+        ]
     }
+
+    Compatibility aliases accepted:
+    - culturalObject / culturalObjects / cultural_sites
+    - coordinate -> cultural_position
+    - isObjectVisited -> visited
     """
     try:
         # Parse and validate request body

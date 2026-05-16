@@ -1,3 +1,4 @@
+import json
 import logging
 import concurrent.futures
 import math
@@ -17,7 +18,7 @@ from schema.models import (
     UserStatusSnapshot,
 )
 from agents import get_context_agent, get_dialogue_agent
-from vr_tools import get_cultural_sites, get_environment_data, set_nav_target
+from vr_tools import get_environment_data, set_nav_target
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -93,6 +94,10 @@ def _parse_dialogue(raw: str) -> DialogueOutput:
         raise
 
 
+def _clean_json_text(raw: str) -> str:
+    return raw.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
+
+
 def _parse_vector3(position: str) -> tuple[float, float, float]:
     parts = [part.strip() for part in position.split(",")]
     if len(parts) != 3:
@@ -124,6 +129,33 @@ def _rank_unvisited_sites(player_position: str, payload: CulturalSitesPayload) -
     ]
 
 
+def _build_context_output(
+    raw: str,
+    environment_snapshot: EnvironmentSnapshot,
+    ranked_recommendations: list[SiteRecommendation],
+) -> ContextOutput:
+    cleaned = _clean_json_text(raw)
+
+    try:
+        parsed = json.loads(cleaned)
+    except json.JSONDecodeError:
+        parsed = {}
+
+    if isinstance(parsed, dict) and parsed.get("status") in {"NO_DELTA", "ALL_VISITED"}:
+        user_action = parsed["status"]
+    else:
+        user_action = parsed.get("user_action", "Menunggu interaksi pemain") if isinstance(parsed, dict) else "Menunggu interaksi pemain"
+
+    return ContextOutput(
+        timestamp=environment_snapshot.timestamp,
+        scene=environment_snapshot.scene,
+        events=environment_snapshot.events,
+        user_action=user_action,
+        recommendations=ranked_recommendations,
+        nav_target=ranked_recommendations[0].id if ranked_recommendations else "",
+    )
+
+
 # ---------------------------------------------------------------------------
 # Hierarchical Orchestrator
 # ---------------------------------------------------------------------------
@@ -132,8 +164,8 @@ class HierarchicalOrchestrator:
     2-Agent Parallel Workflow:
 
     Tick Cycle:
-      1. Receive SimulationRequest (playerPosition) from API.
-      2. Backend reads cultural site data from the JSON-backed API.
+      1. Receive SimulationRequest (playerPosition + culturalSites) from API.
+      2. Backend reads live cultural site data from the simulation request body.
       3. Context Agent — analyses incoming data, ranks unvisited sites,
                          outputs ContextOutput JSON → Message Pool.
       4. Fan-out in parallel from ContextOutput:
@@ -199,11 +231,31 @@ class HierarchicalOrchestrator:
         if selected_site is None:
             raise ValueError("Opsi yang dipilih tidak ada dalam rekomendasi aktif.")
 
-        from vr_tools.unity_api import unity_client
+        selected_site_updated = False
+        for site in session.cultural_sites.sites:
+            if site.id == selected_site.id or site.name == selected_site.name:
+                site.visited = True
+                selected_site_updated = True
+                break
 
-        updated_sites = unity_client.mark_site_visited(selected_site.name)
-        if updated_sites is None:
+        if not selected_site_updated:
             raise ValueError("Objek budaya yang dipilih tidak ditemukan pada data cultural sites.")
+
+        reranked_recommendations = _rank_unvisited_sites(
+            session.player_position,
+            session.cultural_sites,
+        )
+        updated_context = session.context.model_copy(
+            update={
+                "recommendations": reranked_recommendations,
+                "nav_target": reranked_recommendations[0].id if reranked_recommendations else "",
+            }
+        )
+        updated_dialogue = session.dialogue.model_copy(
+            update={
+                "recommendation_options": [site.name for site in reranked_recommendations],
+            }
+        )
 
         nav_ack = self._dispatch_nav_target(selected_site.id)
         spoken_output = (
@@ -212,6 +264,16 @@ class HierarchicalOrchestrator:
             f"dan saya akan menemani navigasinya sampai kita tiba."
         )
         subtitle_output = f"Mari menuju {selected_site.name}."
+
+        self.pool.save_session(
+            SimulationSessionState(
+                simulation_id=session.simulation_id,
+                player_position=session.player_position,
+                cultural_sites=session.cultural_sites,
+                context=updated_context,
+                dialogue=updated_dialogue,
+            )
+        )
 
         return RecommendationSelectionResponse(
             selected_option=selected_site.name,
@@ -233,7 +295,7 @@ class HierarchicalOrchestrator:
         user_status_snapshot = UserStatusSnapshot.model_validate(
             {"player_position": sim_request.playerPosition}
         )
-        cultural_sites_payload = CulturalSitesPayload.model_validate(get_cultural_sites())
+        cultural_sites_payload = CulturalSitesPayload(sites=sim_request.culturalSites)
         ranked_recommendations = _rank_unvisited_sites(sim_request.playerPosition, cultural_sites_payload)
         context_agent_input = ContextAgentInput(
             player_position=sim_request.playerPosition,
@@ -249,13 +311,23 @@ class HierarchicalOrchestrator:
         # ------------------------------------------------------------------
         print("\n[Phase 1] Context Agent — perceiving world & selecting sites...")
         context_raw = str(self.context_agent(perception_input)).strip()
-        context_output = _parse_context(context_raw)
-        context_output = context_output.model_copy(
-            update={
-                "recommendations": ranked_recommendations,
-                "nav_target": ranked_recommendations[0].id if ranked_recommendations else "",
-            }
-        )
+        try:
+            context_output = _parse_context(context_raw)
+            context_output = context_output.model_copy(
+                update={
+                    "timestamp": environment_snapshot.timestamp,
+                    "scene": environment_snapshot.scene,
+                    "events": environment_snapshot.events,
+                    "recommendations": ranked_recommendations,
+                    "nav_target": ranked_recommendations[0].id if ranked_recommendations else "",
+                }
+            )
+        except Exception:
+            context_output = _build_context_output(
+                context_raw,
+                environment_snapshot,
+                ranked_recommendations,
+            )
         self.pool.publish_context(context_output)
 
         print("\n[Context Output — Validated JSON]")
@@ -285,6 +357,8 @@ class HierarchicalOrchestrator:
         self.pool.save_session(
             SimulationSessionState(
                 simulation_id=simulation_id,
+                player_position=sim_request.playerPosition,
+                cultural_sites=cultural_sites_payload,
                 context=context_output,
                 dialogue=dialogue_output,
             )

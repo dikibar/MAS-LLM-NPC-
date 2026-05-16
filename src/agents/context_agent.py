@@ -22,9 +22,9 @@ Evolution       : State Accuracy Reflection — audits summaries for missed even
 
 ReAct paradigm
 --------------
-  Thought   → analyse env delta + rank unvisited nearby sites
-  Action    → produce JSON output for downstream parallel execution
-  Observation → await next tick
+  Reasoning → inspect runtime perception, visited flags, and backend-ranked recommendations
+  Action    → produce one complete JSON context object for downstream execution
+  Observation → downstream systems use the JSON for NavMesh and Dialogue Agent
 """
 
 from strands import Agent, tool
@@ -113,11 +113,13 @@ You will receive a structured JSON object from the runtime with this shape:
 }
 
 PROCEDURE (ReAct Paradigm):
-  Thought 1 — Read the runtime JSON input and identify scene, events, and player state.
-  Thought 2 — Read precomputed_recommendations from the runtime input.
-               This ordering is authoritative and already ranked by the backend.
-               Do not invent or reshuffle recommendation order.
-  Action    — Output ONLY a single valid JSON object (no markdown, no extra text).
+  Reasoning 1 — Observe the runtime JSON input. Identify environment.scene,
+                environment.timestamp, environment.events, and user_status.player_position.
+  Reasoning 2 — Inspect cultural_sites.sites and visited flags only as supporting context.
+  Reasoning 3 — Use precomputed_recommendations as the authoritative recommendation list.
+                The backend already ranked these dynamically from the current player position.
+                Do not invent, remove, or reshuffle recommendation order.
+  Action      — Output ONLY one complete valid JSON object in the schema below.
 
 OUTPUT FORMAT — strict JSON, no code fences, no trailing text:
 {
@@ -150,8 +152,9 @@ EXAMPLE (valid output — copy this structure exactly):
 CONSTRAINTS:
   1. Output ONLY the JSON object — no explanation, no markdown fences.
   2. Only include sites where visited = false.
-  3. If all nearby sites are visited output: {"status": "ALL_VISITED", "recommendations": [], "nav_target": null}
-  4. If no delta since last tick output: {"status": "NO_DELTA"}
+  3. Always output the full schema with timestamp, scene, events, user_action, recommendations, and nav_target.
+  4. If all sites are visited, output the full schema with recommendations: [] and nav_target: "".
+  5. Do not output status-only objects such as {"status": "NO_DELTA"} for /run-simulation.
 
 EVOLUTION (invoked externally):
   Audit last N outputs for: missed events, visited sites in recommendations,
