@@ -124,7 +124,7 @@ def run_dialogue():
 
     Request body (JSON):
     {
-        "simulationId": "9f8fbd41-8d03-4ed4-bf78-7f20c2c6ddc2"
+        "simulationId": "41ca34e4-0a1d-4a73-8a97-2e0fd4ff1e7e"
     }
     """
     try:
@@ -204,9 +204,14 @@ def select_recommendation():
 
     Request body (JSON):
     {
-        "simulationId": "9f8fbd41-8d03-4ed4-bf78-7f20c2c6ddc2",
-        "selectedOption": "Kujang"
+        "simulationId": "41ca34e4-0a1d-4a73-8a97-2e0fd4ff1e7e",
+        "selectedOption": "Julang Ngapak"
     }
+
+    selectedOption harus sama persis dengan salah satu nilai pada
+    dialogue.recommendation_options dari flow aktif.
+    Backend tidak mengubah field visited. Unity tetap menjadi source of truth
+    dan harus mengirim status visited terbaru pada request /context/run berikutnya.
     """
     try:
         body, error_response, status_code = _parse_json_body()

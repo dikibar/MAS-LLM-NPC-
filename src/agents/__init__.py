@@ -10,7 +10,7 @@ Hierarchy:
 The Guidance Agent has been retired in favour of Unity NavMesh pathfinding.
 """
 
-from .context_agent  import context_agent,  get_context_agent
+from .context_agent  import context_agent,  get_context_agent, set_context_runtime_snapshot
 from .dialogue_agent import dialogue_agent, get_dialogue_agent
 
 __all__ = [
@@ -20,4 +20,5 @@ __all__ = [
     # Factory accessors
     "get_context_agent",
     "get_dialogue_agent",
+    "set_context_runtime_snapshot",
 ]

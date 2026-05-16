@@ -18,7 +18,7 @@ from schema.models import (
     SimulationSessionState,
     UserStatusSnapshot,
 )
-from agents import get_context_agent, get_dialogue_agent
+from agents import get_context_agent, get_dialogue_agent, set_context_runtime_snapshot
 from vr_tools import get_environment_data, set_nav_target
 
 # ---------------------------------------------------------------------------
@@ -157,6 +157,34 @@ def _build_context_output(
     )
 
 
+def _build_dialogue_output(recommendations: list[SiteRecommendation]) -> DialogueOutput:
+    primary_name = recommendations[0].name if recommendations else "tujuan berikutnya"
+    fallback_options = [site.name for site in recommendations[:3]]
+    alternative_names = fallback_options[1:]
+
+    if alternative_names:
+        alternatives_text = ", ".join(alternative_names)
+        spoken_output = (
+            f"Saya sudah menyiapkan beberapa rekomendasi objek budaya di sekitar Anda. "
+            f"Mari kita mulai dari {primary_name}, lalu Anda juga bisa memilih {alternatives_text} setelahnya."
+        )
+    else:
+        spoken_output = (
+            f"Saya sudah menyiapkan tujuan budaya berikutnya untuk Anda. "
+            f"Mari kita mulai dari {primary_name}."
+        )
+
+    return DialogueOutput(
+        spoken_output=spoken_output,
+        subtitle_output=f"Mari menuju {primary_name}.",
+        recommendation_dialogue=(
+            "Di sekitar posisi Anda ada beberapa objek budaya menarik. "
+            "Pilih salah satu, dan saya akan memandu navigasinya."
+        ),
+        recommendation_options=fallback_options,
+    )
+
+
 # ---------------------------------------------------------------------------
 # Hierarchical Orchestrator
 # ---------------------------------------------------------------------------
@@ -216,7 +244,7 @@ class HierarchicalOrchestrator:
     def _build_runtime_context(
         self,
         sim_request: SimulationRequest,
-    ) -> tuple[EnvironmentSnapshot, CulturalSitesPayload, list[SiteRecommendation], str]:
+    ) -> tuple[EnvironmentSnapshot, CulturalSitesPayload, list[SiteRecommendation], dict]:
         environment_snapshot = EnvironmentSnapshot.model_validate(get_environment_data())
         user_status_snapshot = UserStatusSnapshot.model_validate(
             {"player_position": sim_request.playerPosition}
@@ -234,17 +262,22 @@ class HierarchicalOrchestrator:
             environment_snapshot,
             cultural_sites_payload,
             ranked_recommendations,
-            context_agent_input.model_dump_json(indent=2),
+            context_agent_input.model_dump(),
         )
 
     def _run_context_agent(
         self,
-        perception_input: str,
+        runtime_snapshot: dict,
         environment_snapshot: EnvironmentSnapshot,
         ranked_recommendations: list[SiteRecommendation],
     ) -> ContextOutput:
         print("\n[Phase 1] Context Agent — perceiving world & selecting sites...")
-        context_raw = str(self.context_agent(perception_input)).strip()
+        set_context_runtime_snapshot(runtime_snapshot)
+        context_instruction = (
+            "Gunakan bounded runtime tools untuk membaca snapshot request aktif, "
+            "lalu hasilkan satu objek JSON ContextOutput yang lengkap."
+        )
+        context_raw = str(self.context_agent(context_instruction)).strip()
         try:
             context_output = _parse_context(context_raw)
             return context_output.model_copy(
@@ -268,11 +301,11 @@ class HierarchicalOrchestrator:
         print("  NEW VR TICK — CONTEXT WORKFLOW")
         print("=" * 54)
 
-        environment_snapshot, cultural_sites_payload, ranked_recommendations, perception_input = (
+        environment_snapshot, cultural_sites_payload, ranked_recommendations, runtime_snapshot = (
             self._build_runtime_context(sim_request)
         )
         context_output = self._run_context_agent(
-            perception_input,
+            runtime_snapshot,
             environment_snapshot,
             ranked_recommendations,
         )
@@ -313,7 +346,14 @@ class HierarchicalOrchestrator:
         print("=" * 54)
 
         context_json = session.context.model_dump_json(indent=2)
-        dialogue_output = self._run_dialogue_agent(context_json)
+        try:
+            dialogue_output = self._run_dialogue_agent(context_json)
+        except Exception:
+            logging.getLogger("Coordinator").warning(
+                "Dialogue Agent fallback activated for simulation_id=%s",
+                simulation_id,
+            )
+            dialogue_output = _build_dialogue_output(session.context.recommendations)
         dialogue_output = dialogue_output.model_copy(
             update={
                 "recommendation_options": [site.name for site in session.context.recommendations],
@@ -353,7 +393,7 @@ class HierarchicalOrchestrator:
         session = self.pool.get_session(simulation_id)
 
         if session is None:
-            raise ValueError("simulationId tidak ditemukan. Jalankan /run-simulation terlebih dahulu.")
+            raise ValueError("simulationId tidak ditemukan. Jalankan /context/run terlebih dahulu.")
 
         latest_context = session.context
 
@@ -364,31 +404,12 @@ class HierarchicalOrchestrator:
         if selected_site is None:
             raise ValueError("Opsi yang dipilih tidak ada dalam rekomendasi aktif.")
 
-        selected_site_updated = False
-        for site in session.cultural_sites.sites:
-            if site.id == selected_site.id or site.name == selected_site.name:
-                site.visited = True
-                selected_site_updated = True
-                break
-
-        if not selected_site_updated:
-            raise ValueError("Objek budaya yang dipilih tidak ditemukan pada data cultural sites.")
-
-        reranked_recommendations = _rank_unvisited_sites(
-            session.player_position,
-            session.cultural_sites,
-        )
         updated_context = session.context.model_copy(
             update={
-                "recommendations": reranked_recommendations,
-                "nav_target": reranked_recommendations[0].id if reranked_recommendations else "",
+                "nav_target": selected_site.id,
             }
         )
-        updated_dialogue = session.dialogue.model_copy(
-            update={
-                "recommendation_options": [site.name for site in reranked_recommendations],
-            }
-        ) if session.dialogue else None
+        updated_dialogue = session.dialogue
 
         nav_ack = self._dispatch_nav_target(selected_site.id)
         spoken_output = (
