@@ -207,12 +207,12 @@ class DialogueOutput(BaseModel):
     spoken_output     → sent to TTS / avatar lip-sync
     subtitle_output   → sent to Unity HUD via show_subtitle tool
     recommendation_dialogue → short descriptive recommendation for the UI
-    recommendation_options  → 2-3 cultural-object buttons for player selection
+    recommendation_options  → 0-3 cultural-object buttons for player selection
     """
     spoken_output: str              # 2–4 sentences, in-character NPC speech
     subtitle_output: str            # ≤ 15 words, condensed for HUD display
     recommendation_dialogue: str    # Short UI-ready recommendation summary
-    recommendation_options: List[str]  # 2-3 selectable cultural object names
+    recommendation_options: List[str]  # 0-3 selectable cultural object names
 
 
 class RecommendationSelectionResponse(BaseModel):
