@@ -165,7 +165,6 @@ class EnvironmentSnapshot(BaseModel):
     """Structured environment state returned by the Unity environment endpoint."""
     timestamp: str
     scene: str
-    events: List[str]
     user_position: Dict[str, float]
 
 
@@ -194,7 +193,6 @@ class ContextOutput(BaseModel):
     """
     timestamp: str
     scene: str
-    events: List[str]
     user_action: str
     recommendations: List[SiteRecommendation]  # ordered by rank ascending
     nav_target: str                            # ID of rank-1 site

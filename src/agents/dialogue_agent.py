@@ -72,7 +72,6 @@ INPUT (Context Agent JSON from Message Pool):
 {{
   "timestamp": "...",
   "scene": "...",
-  "events": [...],
   "user_action": "...",
   "recommendations": [
     {{"rank": 1, "id": "...", "name": "...", "cultural_position": "x, y, z"}},

@@ -13,7 +13,6 @@ T = TypeVar("T", bound=BaseModel)
 MOCK_CONTEXT_RESPONSE = json.dumps({
     "timestamp": "12:30:00",
     "scene": "Heritage_Museum_Wing_A",
-    "events": ["Main_Gate:OPEN", "Spotlight_Altar:ON"],
     "user_action": "Examining_Artifact_ID_7",
     "recommendations": [
         {"rank": 1, "id": "Kujang", "name": "Kujang", "cultural_position": "6.211527, -1.27006, 7.544006"},

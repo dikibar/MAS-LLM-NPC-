@@ -115,7 +115,6 @@ OUTPUT FORMAT — strict JSON, no code fences, no trailing text:
 {
   "timestamp": "<HH:MM:SS>",
   "scene": "<scene_name>",
-  "events": ["<event1>", "<event2>"],
   "user_action": "<what the user is doing>",
   "recommendations": [
     {"rank": 1, "id": "<site_id>", "name": "<display_name>", "cultural_position": "<x, y, z>"},
@@ -129,7 +128,6 @@ EXAMPLE (valid output — copy this structure exactly):
 {
   "timestamp": "12:30:00",
   "scene": "Heritage_Museum_Wing_A",
-  "events": ["Main_Gate:OPEN", "Spotlight_Altar:ON"],
   "user_action": "Examining_Artifact_ID_7",
   "recommendations": [
     {"rank": 1, "id": "Kujang", "name": "Kujang", "cultural_position": "6.211527, -1.27006, 7.544006"},
@@ -144,7 +142,7 @@ CONSTRAINTS:
   2. Use only the bounded runtime tools and the runtime instruction.
      Never reference hidden state and never assume data outside the snapshot.
   3. Only include sites where visited = false.
-  4. Always output the full schema with timestamp, scene, events, user_action,
+  4. Always output the full schema with timestamp, scene, user_action,
      recommendations, and nav_target.
   5. If all sites are visited, output the full schema with recommendations: [] and nav_target: "".
   6. Do not output status-only objects such as {"status": "NO_DELTA"}.
@@ -152,8 +150,9 @@ CONSTRAINTS:
   8. nav_target must equal the id of the rank-1 recommendation, or "" if no recommendation exists.
 
 EVOLUTION (invoked externally):
-  Audit last N outputs for: missed events, visited sites in recommendations,
-  wrong nav_target. Output: {"reflection": "<finding>", "accuracy_score": <0-100>}
+  Audit last N outputs for: visited sites in recommendations,
+  wrong nav_target, or weak user_action inference.
+  Output: {"reflection": "<finding>", "accuracy_score": <0-100>}
 """
 
 # ---------------------------------------------------------------------------

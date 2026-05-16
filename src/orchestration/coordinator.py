@@ -150,7 +150,6 @@ def _build_context_output(
     return ContextOutput(
         timestamp=environment_snapshot.timestamp,
         scene=environment_snapshot.scene,
-        events=environment_snapshot.events,
         user_action=user_action,
         recommendations=ranked_recommendations,
         nav_target=ranked_recommendations[0].id if ranked_recommendations else "",
@@ -284,7 +283,6 @@ class HierarchicalOrchestrator:
                 update={
                     "timestamp": environment_snapshot.timestamp,
                     "scene": environment_snapshot.scene,
-                    "events": environment_snapshot.events,
                     "recommendations": ranked_recommendations,
                     "nav_target": ranked_recommendations[0].id if ranked_recommendations else "",
                 }
