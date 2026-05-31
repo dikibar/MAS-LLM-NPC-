@@ -58,7 +58,7 @@ class UnityAPIClient:
 
         elif endpoint == "user/status":
             return {
-                "player_position": "12.0, 0.0, 35.0",
+                "player_position": "13.67265, 1.291507, 17.12134",
             }
 
         elif endpoint == "world/cultural_sites":

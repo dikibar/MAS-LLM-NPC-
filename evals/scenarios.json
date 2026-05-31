@@ -1,0 +1,185 @@
+[
+  {
+    "id": "three_unvisited_nearest_order",
+    "description": "Normal case: three unvisited sites should be ranked by Euclidean distance from playerPosition.",
+    "request": {
+      "timestamp": "2026-05-01T12:30:00Z",
+      "scene": "Heritage_Museum_Wing_A",
+      "playerPosition": "8.0, 2.0, 10.0",
+      "culturalSites": [
+        {
+          "id": "Julang Ngapak",
+          "name": "Julang Ngapak",
+          "cultural_position": "7.21, 2, 8.7",
+          "visited": false
+        },
+        {
+          "id": "Kujang",
+          "name": "Kujang",
+          "cultural_position": "8.99, 3, 13.65",
+          "visited": false
+        },
+        {
+          "id": "Surabi",
+          "name": "Surabi",
+          "cultural_position": "5.448, 3, 16.256",
+          "visited": false
+        }
+      ]
+    },
+    "selectedOption": "Kujang"
+  },
+  {
+    "id": "visited_site_filtered_out",
+    "description": "Visited sites must not appear in context recommendations even when they are closest.",
+    "request": {
+      "timestamp": "2026-05-01T12:32:00Z",
+      "scene": "Heritage_Museum_Wing_A",
+      "playerPosition": "8.0, 2.0, 10.0",
+      "culturalSites": [
+        {
+          "id": "Visited_Close_Object",
+          "name": "Visited Close Object",
+          "cultural_position": "8.1, 2, 10.1",
+          "visited": true
+        },
+        {
+          "id": "Kujang",
+          "name": "Kujang",
+          "cultural_position": "8.99, 3, 13.65",
+          "visited": false
+        },
+        {
+          "id": "Surabi",
+          "name": "Surabi",
+          "cultural_position": "5.448, 3, 16.256",
+          "visited": false
+        }
+      ]
+    },
+    "selectedOption": "Surabi"
+  },
+  {
+    "id": "single_remaining_site",
+    "description": "Only one unvisited site should produce one recommendation and one UI option.",
+    "request": {
+      "timestamp": "2026-05-01T12:35:00Z",
+      "scene": "Heritage_Museum_Wing_B",
+      "playerPosition": "0, 0, 0",
+      "culturalSites": [
+        {
+          "id": "Angklung",
+          "name": "Angklung",
+          "cultural_position": "2, 0, 0",
+          "visited": false
+        },
+        {
+          "id": "Surabi",
+          "name": "Surabi",
+          "cultural_position": "1, 0, 0",
+          "visited": true
+        }
+      ]
+    },
+    "selectedOption": "Angklung"
+  },
+  {
+    "id": "all_sites_visited",
+    "description": "All visited sites should produce no recommendations, empty nav_target, and empty UI options.",
+    "request": {
+      "timestamp": "2026-05-01T12:40:00Z",
+      "scene": "Heritage_Museum_Wing_C",
+      "playerPosition": "0, 0, 0",
+      "culturalSites": [
+        {
+          "id": "Kujang",
+          "name": "Kujang",
+          "cultural_position": "1, 0, 0",
+          "visited": true
+        },
+        {
+          "id": "Surabi",
+          "name": "Surabi",
+          "cultural_position": "2, 0, 0",
+          "visited": true
+        }
+      ]
+    }
+  },
+  {
+    "id": "tie_distance_uses_name_sort",
+    "description": "When distances are tied, current backend logic sorts by lowercase site name.",
+    "request": {
+      "timestamp": "2026-05-01T12:45:00Z",
+      "scene": "Heritage_Museum_Wing_D",
+      "playerPosition": "0, 0, 0",
+      "culturalSites": [
+        {
+          "id": "Zeta",
+          "name": "Zeta",
+          "cultural_position": "1, 0, 0",
+          "visited": false
+        },
+        {
+          "id": "Alpha",
+          "name": "Alpha",
+          "cultural_position": "-1, 0, 0",
+          "visited": false
+        },
+        {
+          "id": "Beta",
+          "name": "Beta",
+          "cultural_position": "0, 0, 2",
+          "visited": false
+        }
+      ]
+    },
+    "selectedOption": "Zeta"
+  },
+  {
+    "id": "compatibility_alias_cultural_objects",
+    "description": "Compatibility payload using culturalObject/coordinate/isObjectVisited should normalize into canonical culturalSites.",
+    "request": {
+      "timestamp": "2026-05-01T12:50:00Z",
+      "scene": "Heritage_Museum_Wing_E",
+      "playerPosition": "10, 0, 10",
+      "culturalObject": [
+        {
+          "name": "Wayang",
+          "coordinate": "11, 0, 10",
+          "isObjectVisited": false
+        },
+        {
+          "name": "Batik",
+          "coordinate": "14, 0, 10",
+          "isObjectVisited": false
+        },
+        {
+          "name": "Visited Mask",
+          "coordinate": "10.5, 0, 10",
+          "isObjectVisited": true
+        }
+      ]
+    },
+    "selectedOption": "Batik"
+  },
+  {
+    "id": "invalid_selected_option",
+    "description": "Invalid recommendation selection should be rejected by the orchestrator.",
+    "request": {
+      "timestamp": "2026-05-01T12:55:00Z",
+      "scene": "Heritage_Museum_Wing_F",
+      "playerPosition": "0, 0, 0",
+      "culturalSites": [
+        {
+          "id": "Kujang",
+          "name": "Kujang",
+          "cultural_position": "1, 0, 0",
+          "visited": false
+        }
+      ]
+    },
+    "selectedOption": "Not In Recommendations",
+    "expectSelectionError": true
+  }
+]
