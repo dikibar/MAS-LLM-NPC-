@@ -1,0 +1,3125 @@
+{
+  "summary": {
+    "total_scenarios": 25,
+    "passed": 14,
+    "overall_pass_rate": 0.56,
+    "check_pass_rate": 1.0,
+    "judge_summary": {
+      "user_action_quality": {
+        "mean": 3,
+        "std": 2.8284,
+        "n": 2,
+        "pass_rate": 0.5
+      },
+      "recommendation_reason_quality": {
+        "mean": 2.3333,
+        "std": 1.1547,
+        "n": 3,
+        "pass_rate": 0.0
+      },
+      "faithfulness": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 11,
+        "pass_rate": 1.0
+      },
+      "context_relevance": {
+        "mean": 4.2,
+        "std": 1.0954,
+        "n": 5,
+        "pass_rate": 0.6
+      },
+      "situation_type_consistency": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 1,
+        "pass_rate": 1.0
+      },
+      "dialogue_intent_consistency": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 1,
+        "pass_rate": 1.0
+      },
+      "technical_leak_safety": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 1,
+        "pass_rate": 1.0
+      },
+      "persona_alignment": {
+        "mean": 3.2,
+        "std": 1.1353,
+        "n": 10,
+        "pass_rate": 0.3
+      },
+      "navigation_clarity": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 4,
+        "pass_rate": 1.0
+      },
+      "language_quality": {
+        "mean": 4,
+        "std": 0.0,
+        "n": 2,
+        "pass_rate": 1.0
+      },
+      "subtitle_quality": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 1,
+        "pass_rate": 1.0
+      },
+      "ui_usefulness": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 2,
+        "pass_rate": 1.0
+      },
+      "tool_call_validity": {
+        "mean": 1,
+        "std": 0.0,
+        "n": 1,
+        "pass_rate": 0.0
+      },
+      "reasoning_quality": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 1,
+        "pass_rate": 1.0
+      },
+      "consistency": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 5,
+        "pass_rate": 1.0
+      }
+    },
+    "ir_summary": {
+      "precision_at_3": 1.0,
+      "recall_at_3": 0.9729,
+      "mrr": 0.9583,
+      "ndcg_at_3": 0.9167
+    },
+    "faithfulness_avg": 1.0,
+    "timestamp": "2026-06-01T15:38:37.335166",
+    "judge_model": "openai/gpt-4.1",
+    "judge_temperature": 0,
+    "cohen_kappa_note": "Use exported per-dimension scores for human/judge agreement analysis.",
+    "cohen_kappa_function_available": true,
+    "reliability": {
+      "pass_k_score": 1.0,
+      "k": 5,
+      "judge_stats": {
+        "persona_alignment": {
+          "mean": 3.2,
+          "std": 1.0954,
+          "min": 2,
+          "max": 5,
+          "scores": [
+            2,
+            3,
+            3,
+            3,
+            5
+          ]
+        },
+        "consistency": {
+          "mean": 5,
+          "std": 0.0,
+          "min": 5,
+          "max": 5,
+          "scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "faithfulness": {
+          "mean": 5,
+          "std": 0.0,
+          "min": 5,
+          "max": 5,
+          "scores": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        }
+      },
+      "field_variance": {
+        "user_action": 1,
+        "recommendation_reason": 1,
+        "spoken_output": 5
+      }
+    },
+    "ablation": {
+      "delta": {
+        "context_relevance": 2,
+        "faithfulness": 0,
+        "navigation_clarity": 0,
+        "persona_alignment": -1
+      },
+      "hypothesis_confirmed": false
+    }
+  },
+  "scenario_results": [
+    {
+      "scenario_id": "sc01_three_unvisited_nearest_order",
+      "layer": "structural",
+      "focus": [
+        "context_agent",
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:30:29.279195",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T12:30:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "7.21, 2, 8.7"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 3,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini masih ada beberapa objek budaya menarik yang bisa Anda kunjungi. Saya sarankan kita mulai dari Julang Ngapak sebagai tujuan utama. Jika ingin melihat yang lain, Kujang dan Surabi juga bisa menjadi pilihan.",
+        "subtitle_output": "Mari kita jelajahi Julang Ngapak.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya yang bisa dipilih. Silakan tentukan, saya siap memandu.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 5
+    },
+    {
+      "scenario_id": "sc02_visited_site_filtered_out",
+      "layer": "structural",
+      "focus": [
+        "context_agent",
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:30:43.740015",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T13:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain sedang berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 2 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Wayang diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Batik.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Wayang",
+            "name": "Wayang",
+            "cultural_position": "5.0, 1.0, 10.0"
+          },
+          {
+            "rank": 2,
+            "id": "Batik",
+            "name": "Batik",
+            "cultural_position": "20.0, 1.0, 25.0"
+          }
+        ],
+        "nav_target": "Wayang"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di sini masih ada beberapa tujuan budaya yang bisa Anda kunjungi. Saya merekomendasikan Wayang sebagai tujuan utama kita. Jika Anda ingin, Batik juga dapat dipilih sebagai alternatif.",
+        "subtitle_output": "Mari kita menuju Wayang terlebih dahulu.",
+        "recommendation_dialogue": "Ada dua tujuan budaya yang bisa dipilih. Silakan tentukan pilihan Anda.",
+        "recommendation_options": [
+          "Wayang",
+          "Batik"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc03_single_remaining_site",
+      "layer": "structural",
+      "focus": [
+        "context_agent",
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:30:54.534179",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 0.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T14:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan satu tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan satu objek budaya belum dikunjungi yang siap diarahkan, yaitu Surabi.",
+        "situation_type": "single_recommendation",
+        "recommendation_reason": "Surabi diprioritaskan sebagai satu-satunya tujuan yang belum dikunjungi.",
+        "dialogue_intent": "guide_to_single_primary",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          }
+        ],
+        "nav_target": "Surabi"
+      },
+      "dialogue_output": {
+        "spoken_output": "Saat ini hanya ada satu tujuan budaya yang bisa kita kunjungi, yaitu Surabi. Mari saya pandu Anda ke sana. Setelah itu, Anda bebas melanjutkan eksplorasi di area ini.",
+        "subtitle_output": "Mari kita menuju Surabi.",
+        "recommendation_dialogue": "Satu tujuan budaya belum dikunjungi tersedia untuk dipilih.",
+        "recommendation_options": [
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc04_all_sites_visited",
+      "layer": "structural",
+      "focus": [
+        "context_agent",
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:31:03.803266",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 0.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T15:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain telah mengunjungi semua tujuan budaya yang tersedia di area ini.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A, tetapi semua objek budaya pada snapshot saat ini sudah dikunjungi atau tidak ada kandidat baru.",
+        "situation_type": "all_sites_visited",
+        "recommendation_reason": "Semua tujuan budaya sudah dikunjungi sehingga tidak ada rekomendasi baru.",
+        "dialogue_intent": "no_new_destination",
+        "recommendations": [],
+        "nav_target": ""
+      },
+      "dialogue_output": {
+        "spoken_output": "Semua tujuan budaya di area ini sudah Anda kunjungi. Silakan nikmati suasana sekitar, atau lanjutkan eksplorasi jika Anda ingin. Jika ada objek baru, saya akan memberi tahu Anda.",
+        "subtitle_output": "Belum ada tujuan baru saat ini.",
+        "recommendation_dialogue": "Semua tujuan sudah dikunjungi atau belum ada kandidat baru.",
+        "recommendation_options": []
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc05_tie_distance_uses_name_sort",
+      "layer": "structural",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-01T15:31:12.269087",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain baru memasuki area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Alpha diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Beta, Zeta.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Alpha",
+            "name": "Alpha",
+            "cultural_position": "4.0, 0.0, 3.0"
+          },
+          {
+            "rank": 2,
+            "id": "Beta",
+            "name": "Beta",
+            "cultural_position": "0.0, 0.0, 5.0"
+          },
+          {
+            "rank": 3,
+            "id": "Zeta",
+            "name": "Zeta",
+            "cultural_position": "3.0, 0.0, 4.0"
+          }
+        ],
+        "nav_target": "Alpha"
+      },
+      "dialogue_output": {
+        "spoken_output": "Selamat datang di area ini! Ada beberapa objek budaya menarik yang bisa Anda kunjungi. Saya sarankan kita mulai dari Alpha sebagai tujuan utama. Jika ingin alternatif, Beta dan Zeta juga bisa menjadi pilihan Anda.",
+        "subtitle_output": "Mari kita mulai dari Alpha.",
+        "recommendation_dialogue": "Terdapat tiga tujuan budaya yang dapat dipilih. Silakan tentukan, saya siap memandu.",
+        "recommendation_options": [
+          "Alpha",
+          "Beta",
+          "Zeta"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 5
+    },
+    {
+      "scenario_id": "sc06_compatibility_alias_cultural_objects",
+      "layer": "structural",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-01T15:31:30.674141",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan dua tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 2 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "7.21, 2, 8.7"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini tersedia dua objek budaya yang bisa Anda kunjungi. Saya sarankan untuk memulai dari Julang Ngapak. Jika ingin melihat alternatif lain, Kujang juga bisa Anda pilih.",
+        "subtitle_output": "Mari menuju Julang Ngapak lebih dulu.",
+        "recommendation_dialogue": "Ada dua tujuan budaya yang bisa dipilih. Silakan tentukan pilihan Anda.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Kujang"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc07_invalid_selected_option",
+      "layer": "structural",
+      "focus": [
+        "orchestrator"
+      ],
+      "timestamp": "2026-06-01T15:31:46.593500",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan dua tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 2 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "7.21, 2, 8.7"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Masih ada dua tujuan budaya yang bisa Anda kunjungi di sini. Saya sarankan kita mulai dari Julang Ngapak sebagai tujuan utama. Jika ingin alternatif, Kujang juga siap dieksplorasi.",
+        "subtitle_output": "Mari menuju Julang Ngapak lebih dulu.",
+        "recommendation_dialogue": "Dua tujuan budaya tersedia. Silakan pilih yang ingin Anda kunjungi.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Kujang"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc08_user_action_first_entry",
+      "layer": "llm_interpretive",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-01T15:31:58.162671",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.75,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": false,
+        "mentioned_valid_sites": [
+          "Julang Ngapak",
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "llm_judge_scores": {
+        "user_action_quality": {
+          "score": 5,
+          "reasoning": "User_action mendeskripsikan kondisi pemain yang baru masuk ke area dengan beberapa tujuan budaya yang belum dikunjungi, sesuai dengan kriteria yang meminta deskripsi kondisi player yang baru masuk, bukan string generik. Bukti spesifik: 'Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.' Ini adalah deskripsi yang relevan dan informatif mengenai status pemain saat memasuki area baru.",
+          "dimension": "user_action_quality"
+        },
+        "recommendation_reason_quality": {
+          "score": 3,
+          "reasoning": "Alasan rekomendasi dalam context output menyebutkan Julang Ngapak sebagai kandidat teratas yang belum dikunjungi, namun tidak memberikan alasan logis mengapa Julang Ngapak diprioritaskan selain statusnya sebagai 'kandidat teratas'. Tidak ada penjelasan nilai budaya, keunikan, atau relevansi lain yang mendukung prioritas tersebut. Kriteria meminta alasan logis, sehingga penjelasan ini kurang memadai.",
+          "dimension": "recommendation_reason_quality"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T09:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "7.21, 2, 8.7"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 3,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Ada tiga tujuan budaya yang bisa Anda kunjungi di area ini. Saya sarankan kita mulai dari Julang Ngapak sebagai tujuan utama. Jika Anda ingin mencoba yang lain, Kujang dan Surabi juga tersedia sebagai pilihan.",
+        "subtitle_output": "Mari kita menuju Julang Ngapak.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya yang dapat dipilih. Silakan pilih yang menarik bagi Anda.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": false,
+      "subtitle_word_count": 5
+    },
+    {
+      "scenario_id": "sc09_user_action_mid_exploration",
+      "layer": "llm_interpretive",
+      "focus": [
+        "context_agent",
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:32:15.269112",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": false,
+        "mentioned_valid_sites": [
+          "Surabi",
+          "Angklung",
+          "Wayang"
+        ]
+      },
+      "llm_judge_scores": {
+        "user_action_quality": {
+          "score": 1,
+          "reasoning": "Deskripsi user_action hanya menyatakan bahwa pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi, tanpa mendeskripsikan aktivitas eksplorasi spesifik yang dilakukan oleh pemain. Ini adalah string generik dan tidak memenuhi kriteria eksplorasi aktif atau tindakan spesifik pemain.",
+          "dimension": "user_action_quality"
+        },
+        "recommendation_reason_quality": {
+          "score": 1,
+          "reasoning": "recommendation_reason dalam context menyebut Angklung sebagai prioritas utama, bukan Surabi. Tidak ada alasan logis yang diberikan untuk memprioritaskan Surabi, sehingga kriteria tidak terpenuhi.",
+          "dimension": "recommendation_reason_quality"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Semua nama site yang disebut dalam recommendation_reason ('Angklung', 'Surabi', 'Wayang') juga muncul di bagian recommendations pada context. Tidak ada nama site yang tidak ada di input. Dialogue output juga konsisten dengan context. Tidak ditemukan hallusinasi.",
+          "dimension": "faithfulness"
+        },
+        "context_relevance": {
+          "score": 5,
+          "reasoning": "Spoken_output secara jelas menyebutkan tiga tujuan budaya yang tersedia dan memprioritaskan Angklung sebagai tujuan utama, sesuai dengan context yang menyatakan Angklung sebagai kandidat teratas dan menyediakan alternatif Surabi dan Wayang. Rekomendasi yang diberikan sangat relevan dengan situasi dan mendukung intent 'guide_to_primary_with_alternatives'.",
+          "dimension": "context_relevance"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T10:30:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Angklung diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Surabi, Wayang.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 2,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          },
+          {
+            "rank": 3,
+            "id": "Wayang",
+            "name": "Wayang",
+            "cultural_position": "20.0, 1.0, 25.0"
+          }
+        ],
+        "nav_target": "Angklung"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, Anda bisa memilih dari tiga tujuan budaya. Saya sarankan kita mulai dari Angklung sebagai tujuan utama. Jika Anda ingin melihat yang lain, Surabi dan Wayang juga tersedia sebagai alternatif.",
+        "subtitle_output": "Mari kita menuju Angklung.",
+        "recommendation_dialogue": "Tiga tujuan budaya dapat dipilih. Tentukan pilihan Anda, saya siap memandu.",
+        "recommendation_options": [
+          "Angklung",
+          "Surabi",
+          "Wayang"
+        ]
+      },
+      "errors": [],
+      "passed": false,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc10_situation_type_two_remaining",
+      "layer": "llm_interpretive",
+      "focus": [
+        "context_agent",
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:32:37.494863",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {
+        "situation_type_consistency": {
+          "score": 5,
+          "reasoning": "situation_type pada context output sudah benar yaitu 'multiple_recommendations', sesuai dengan kondisi ada dua tujuan budaya yang belum dikunjungi. Ini memenuhi kriteria evaluasi secara tepat.",
+          "dimension": "situation_type_consistency"
+        },
+        "dialogue_intent_consistency": {
+          "score": 5,
+          "reasoning": "Dialogue output secara eksplisit merekomendasikan Kujang sebagai tujuan utama dan juga menyebutkan Surabi sebagai alternatif, sesuai dengan intent 'guide_to_primary_with_alternatives'. Pilihan alternatif juga disediakan dalam recommendation_options. Ini konsisten dengan intent yang diharapkan.",
+          "dimension": "dialogue_intent_consistency"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T11:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan dua tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 2 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Kujang diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Surabi.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 2,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          }
+        ],
+        "nav_target": "Kujang"
+      },
+      "dialogue_output": {
+        "spoken_output": "Ada dua tujuan budaya yang bisa Anda pilih untuk dikunjungi. Saya merekomendasikan Kujang sebagai tujuan utama kita. Namun, Surabi juga tersedia jika Anda ingin melihat alternatif lain.",
+        "subtitle_output": "Mari kita menuju Kujang.",
+        "recommendation_dialogue": "Dua tujuan budaya tersedia. Silakan pilih sesuai minat Anda.",
+        "recommendation_options": [
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc11_recommendation_reason_faithfulness",
+      "layer": "llm_faithfulness",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-01T15:33:11.718324",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.6,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Julang Ngapak",
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "llm_judge_scores": {
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Semua nama yang disebut dalam recommendation_reason ('Julang Ngapak', 'Kujang', 'Surabi') sesuai dengan daftar site yang ada pada recommendations. Tidak ada nama yang dihallusinasikan atau tidak relevan.",
+          "dimension": "faithfulness"
+        },
+        "recommendation_reason_quality": {
+          "score": 3,
+          "reasoning": "Alasan rekomendasi dalam context output menyebut Julang Ngapak sebagai prioritas karena menjadi kandidat teratas yang belum dikunjungi, namun dalam dialogue output alasan logis tersebut tidak dijelaskan kepada pengguna. Dialogue hanya menyarankan Julang Ngapak sebagai tujuan utama tanpa memberikan alasan mengapa diprioritaskan. Oleh karena itu, alasan logis tidak tersampaikan secara eksplisit kepada pengguna.",
+          "dimension": "recommendation_reason_quality"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "7.21, 2, 8.7"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 3,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di sini tersedia tiga tujuan budaya yang belum dikunjungi. Saya sarankan kita mulai dari Julang Ngapak sebagai tujuan utama. Jika Anda ingin melihat opsi lain, Kujang dan Surabi juga dapat dipilih.",
+        "subtitle_output": "Mari menuju Julang Ngapak terlebih dahulu.",
+        "recommendation_dialogue": "Tiga tujuan budaya tersedia. Silakan pilih, saya siap memandu Anda.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": false,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc12_technical_leak_prevention",
+      "layer": "llm_safety",
+      "focus": [
+        "context_agent",
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:33:25.551886",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {
+        "technical_leak_safety": {
+          "score": 5,
+          "reasoning": "Baik spoken_output maupun subtitle_output tidak mengandung koordinat numerik, nama tool backend, atau token teknis. Semua informasi yang diberikan bersih dari kebocoran teknis.",
+          "dimension": "technical_leak_safety"
+        },
+        "persona_alignment": {
+          "score": 3,
+          "reasoning": "Dialog yang diberikan cukup informatif dan jelas, namun tidak sepenuhnya memenuhi kriteria persona alignment sebagai pemandu budaya hangat. Bahasa yang digunakan cenderung netral dan kurang menunjukkan kehangatan atau kepribadian khas seorang pemandu budaya bernama Arif. Tidak ada sapaan personal, ungkapan antusiasme, atau sentuhan ramah yang biasanya menjadi ciri pemandu budaya yang hangat. Contoh: 'Saya sarankan kita mulai dari...' dan 'Silakan tentukan pilihan Anda.' terdengar formal dan kurang personal. Oleh karena itu, skor yang sesuai adalah 3.",
+          "dimension": "persona_alignment"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "7.21413, 1.37554, 8.67057"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99234, 3.12345, 13.65789"
+          },
+          {
+            "rank": 3,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.44812, 2.99999, 16.25634"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Ada tiga tujuan budaya yang bisa Anda kunjungi di sini. Saya sarankan kita mulai dari Julang Ngapak sebagai tujuan utama. Jika Anda ingin mencoba yang lain, Kujang dan Surabi juga tersedia sebagai pilihan.",
+        "subtitle_output": "Mari menuju Julang Ngapak terlebih dahulu.",
+        "recommendation_dialogue": "Tiga tujuan budaya dapat dipilih. Silakan tentukan pilihan Anda.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": false,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc13_dialogue_faithfulness_to_context",
+      "layer": "llm_faithfulness",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:33:46.620074",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Spoken_output secara eksplisit menyebut Kujang sebagai tujuan utama ('Saya sarankan kita mulai dari Kujang sebagai tujuan utama'), sesuai dengan kriteria yang diminta. Penyebutan ini jelas dan tidak ambigu.",
+          "dimension": "faithfulness"
+        },
+        "context_relevance": {
+          "score": 5,
+          "reasoning": "spoken_output secara jelas menyebutkan tiga tujuan budaya yang tersedia dan memprioritaskan Kujang sebagai tujuan utama, sesuai dengan rekomendasi dalam context_output. Alternatif Surabi dan Wayang Golek juga disebutkan, sehingga spoken_output sangat relevan dengan rekomendasi yang diberikan.",
+          "dimension": "context_relevance"
+        },
+        "navigation_clarity": {
+          "score": 5,
+          "reasoning": "NPC secara eksplisit merekomendasikan Kujang sebagai tujuan utama dan mengajak pemain untuk menuju ke sana ('Mari kita menuju Kujang sekarang'). Pilihan alternatif juga disebutkan dengan jelas. Arahan utama dan opsi lain disampaikan secara terstruktur, sehingga pemain tahu ke mana harus pergi dan apa saja pilihannya.",
+          "dimension": "navigation_clarity"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T13:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Kujang diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Surabi, Wayang Golek.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 2,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          },
+          {
+            "rank": 3,
+            "id": "Wayang Golek",
+            "name": "Wayang Golek",
+            "cultural_position": "20.0, 1.0, 20.0"
+          }
+        ],
+        "nav_target": "Kujang"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di sini ada tiga tujuan budaya yang bisa Anda pilih. Saya sarankan kita mulai dari Kujang sebagai tujuan utama. Selain itu, Surabi dan Wayang Golek juga tersedia jika Anda ingin menjelajah lebih jauh.",
+        "subtitle_output": "Mari kita menuju Kujang sekarang.",
+        "recommendation_dialogue": "Tiga tujuan budaya dapat dipilih. Pilih sesuai keinginan Anda.",
+        "recommendation_options": [
+          "Kujang",
+          "Surabi",
+          "Wayang Golek"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 5
+    },
+    {
+      "scenario_id": "sc14_persona_warmth_consistency",
+      "layer": "llm_persona",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:34:09.601505",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {
+        "persona_alignment": {
+          "score": 2,
+          "reasoning": "Dialog yang diberikan terdengar informatif namun kurang menunjukkan kehangatan, keramahan, atau antusiasme khas seorang pemandu budaya. Kalimat seperti 'Saya sarankan kita mulai dari Julang Ngapak sebagai tujuan utama' dan 'Tiga tujuan budaya tersedia. Silakan pilih yang ingin Anda kunjungi.' bersifat netral dan cenderung seperti sistem navigasi, bukan pemandu yang hangat dan antusias. Tidak ada sapaan, ekspresi kegembiraan, atau ajakan personal yang ramah.",
+          "dimension": "persona_alignment"
+        },
+        "language_quality": {
+          "score": 4,
+          "reasoning": "Bahasa yang digunakan dalam spoken_output dan recommendation_dialogue cukup natural, tidak terlalu formal maupun kasual. Frasa seperti 'Saya sarankan kita mulai dari...' dan 'jika Anda ingin menjelajah lebih lanjut' terdengar ramah dan komunikatif. Subtitle_output juga ringkas dan sesuai konteks. Tidak ada kalimat yang kaku atau terlalu baku, serta tidak menggunakan bahasa gaul. Secara keseluruhan, bahasa memenuhi kriteria dengan baik.",
+          "dimension": "language_quality"
+        },
+        "navigation_clarity": {
+          "score": 5,
+          "reasoning": "Dialog memberikan informasi jelas tentang tiga tujuan budaya yang tersedia dan secara eksplisit merekomendasikan Julang Ngapak sebagai tujuan utama, disertai alasan prioritas. Pemain juga diberi opsi alternatif (Kujang dan Surabi) dan diarahkan secara eksplisit ke tujuan utama melalui subtitle. Semua informasi yang dibutuhkan pemain untuk navigasi dan alasan pemilihan tujuan sudah disampaikan dengan baik.",
+          "dimension": "navigation_clarity"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T10:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "7.21, 2, 8.7"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 3,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Ada tiga objek budaya menarik yang bisa Anda kunjungi di sini. Saya sarankan kita mulai dari Julang Ngapak sebagai tujuan utama. Selain itu, Kujang dan Surabi juga bisa dipilih jika Anda ingin menjelajah lebih lanjut.",
+        "subtitle_output": "Mari kita menuju Julang Ngapak.",
+        "recommendation_dialogue": "Tiga tujuan budaya tersedia. Silakan pilih yang ingin Anda kunjungi.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": false,
+      "subtitle_word_count": 5
+    },
+    {
+      "scenario_id": "sc15_subtitle_compression_quality",
+      "layer": "llm_quality",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:34:33.690104",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {
+        "subtitle_quality": {
+          "score": 5,
+          "reasoning": "Subtitle_output 'Mari menuju Julang Ngapak terlebih dahulu.' merupakan rangkuman yang utuh dan bermakna dari spoken_output, menyoroti inti rekomendasi utama tanpa terpotong di tengah kalimat. Subtitle ini jelas, tidak mengalami truncation kasar, dan sesuai dengan intent dialog. Tidak ada kehilangan makna penting dari spoken_output, meskipun detail alternatif tidak disebutkan, namun inti rekomendasi utama tetap tersampaikan dengan baik.",
+          "dimension": "subtitle_quality"
+        },
+        "ui_usefulness": {
+          "score": 5,
+          "reasoning": "subtitle_output 'Mari menuju Julang Ngapak terlebih dahulu.' singkat, jelas, dan langsung mengarahkan pemain ke tujuan utama yang direkomendasikan. Kalimat ini mudah dipahami, tidak ambigu, dan sangat sesuai untuk teks HUD VR karena tidak mengganggu pengalaman visual pemain. Subtitle ini juga informatif karena menyampaikan tindakan selanjutnya secara eksplisit. Namun, subtitle ini tidak menyebutkan alternatif lain, tetapi sesuai dengan intent utama untuk menavigasi ke tujuan prioritas. Secara keseluruhan, subtitle_output memenuhi kriteria dengan baik.",
+          "dimension": "ui_usefulness"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T11:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "7.21, 2, 8.7"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 3,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Ada tiga tujuan budaya yang bisa Anda jelajahi di area ini. Saya sarankan mulai dari Julang Ngapak sebagai tujuan utama. Jika ingin alternatif, Kujang dan Surabi juga tersedia untuk dipilih.",
+        "subtitle_output": "Mari menuju Julang Ngapak terlebih dahulu.",
+        "recommendation_dialogue": "Tiga tujuan budaya tersedia. Pilih sesuai keinginan Anda.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc16_near_end_exploration_tone",
+      "layer": "llm_persona",
+      "focus": [
+        "context_agent",
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:34:55.847815",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 0.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {
+        "persona_alignment": {
+          "score": 2,
+          "reasoning": "Dialog tidak menunjukkan apresiasi atas progress pemain (4 dari 5 site sudah dikunjungi) dan tidak ada penyemangat untuk menyelesaikan kunjungan. NPC hanya menyebutkan tujuan berikutnya tanpa mengakui pencapaian pemain.",
+          "dimension": "persona_alignment"
+        },
+        "context_relevance": {
+          "score": 3,
+          "reasoning": "Spoken_output menyebutkan bahwa hanya ada satu tujuan budaya yang bisa dikunjungi, yaitu Wayang Golek, dan menawarkan panduan ke sana. Namun, kalimatnya masih cukup generik dan tidak menekankan bahwa ini adalah tujuan terakhir atau menyoroti momen 'hampir selesai' eksplorasi. Tidak ada penekanan pada pencapaian pemain atau nuansa penutup, sehingga kurang relevan dengan kondisi 'hampir selesai'.",
+          "dimension": "context_relevance"
+        },
+        "language_quality": {
+          "score": 4,
+          "reasoning": "Bahasa yang digunakan dalam spoken_output dan subtitle_output cukup natural dan mudah dipahami, serta ekspresif dalam mengajak pengguna untuk mengikuti pemandu. Kalimat seperti 'Mari saya pandu Anda ke sana' dan 'Mari menuju Wayang Golek sekarang' terdengar ramah dan sesuai konteks. Tidak ada kesalahan tata bahasa atau kekakuan yang berarti. Namun, recommendation_dialogue terdengar agak kaku dan kurang natural ('Satu tujuan budaya belum dikunjungi. Silakan pilih untuk melanjutkan.'), sebaiknya bisa dibuat lebih komunikatif. Secara keseluruhan, bahasa sudah baik, namun masih ada ruang perbaikan pada bagian recommendation_dialogue.",
+          "dimension": "language_quality"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T16:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan satu tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan satu objek budaya belum dikunjungi yang siap diarahkan, yaitu Wayang Golek.",
+        "situation_type": "single_recommendation",
+        "recommendation_reason": "Wayang Golek menjadi satu-satunya tujuan yang belum dikunjungi dan direkomendasikan sebagai destinasi berikutnya.",
+        "dialogue_intent": "guide_to_single_primary",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Wayang Golek",
+            "name": "Wayang Golek",
+            "cultural_position": "20.0, 1.0, 20.0"
+          }
+        ],
+        "nav_target": "Wayang Golek"
+      },
+      "dialogue_output": {
+        "spoken_output": "Saat ini ada satu tujuan budaya yang bisa kita kunjungi, yaitu Wayang Golek. Mari saya pandu Anda ke sana. Setelah itu, Anda bisa melanjutkan eksplorasi dari area tersebut.",
+        "subtitle_output": "Mari menuju Wayang Golek sekarang.",
+        "recommendation_dialogue": "Satu tujuan budaya belum dikunjungi. Silakan pilih untuk melanjutkan.",
+        "recommendation_options": [
+          "Wayang Golek"
+        ]
+      },
+      "errors": [],
+      "passed": false,
+      "subtitle_word_count": 5
+    },
+    {
+      "scenario_id": "sc17_recommendation_options_ui_consistency",
+      "layer": "llm_quality",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:35:23.129437",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {
+        "ui_usefulness": {
+          "score": 5,
+          "reasoning": "Semua entri dalam recommendation_options ('Julang Ngapak', 'Kujang', 'Surabi') adalah nama objek budaya yang jelas dan dapat langsung digunakan sebagai label tombol UI tanpa kode internal atau ambiguitas. Nama-nama tersebut konsisten dengan daftar rekomendasi di context dan mudah dipahami pengguna.",
+          "dimension": "ui_usefulness"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Semua nama pada recommendation_options ('Julang Ngapak', 'Kujang', 'Surabi') persis sama dengan nama site pada context recommendations. Tidak ada perbedaan atau kesalahan penamaan, sehingga kriteria terpenuhi dengan sempurna.",
+          "dimension": "faithfulness"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "7.21, 2, 8.7"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 3,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, ada tiga tujuan budaya menarik yang bisa Anda kunjungi. Saya sarankan kita mulai dari Julang Ngapak sebagai tujuan utama. Jika ingin opsi lain, Kujang dan Surabi juga tersedia untuk dipilih.",
+        "subtitle_output": "Mari menuju Julang Ngapak lebih dulu.",
+        "recommendation_dialogue": "Tiga tujuan budaya dapat dipilih. Silakan tentukan pilihan Anda.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc18_react_trajectory_tool_calls",
+      "layer": "llm_trajectory",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-01T15:35:44.998996",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {
+        "tool_call_validity": {
+          "score": 1,
+          "reasoning": "Pada dialogue output, tidak terdapat bukti bahwa agent memanggil ketiga bounded tools dengan argumen valid. Output hanya berupa spoken_output, subtitle_output, dan daftar opsi rekomendasi, tanpa indikasi pemanggilan tool atau argumen yang digunakan. Karena tidak ada pemanggilan tool sama sekali, kriteria tidak terpenuhi.",
+          "dimension": "tool_call_validity"
+        },
+        "reasoning_quality": {
+          "score": 5,
+          "reasoning": "Sistem secara eksplisit menggunakan data dari tool, yaitu daftar tiga objek budaya yang belum dikunjungi, dan memprioritaskan Julang Ngapak sesuai urutan rekomendasi pada context. Alternatif Kujang dan Surabi juga disebutkan, konsisten dengan data. Rekomendasi dan opsi yang diberikan pada dialogue output sesuai dengan observasi dari tool, menunjukkan reasoning trace yang jelas dan bukan formalitas.",
+          "dimension": "reasoning_quality"
+        }
+      },
+      "trajectory": {
+        "tools_called": [],
+        "all_required_called": false,
+        "tools_missing": [
+          "tool_get_runtime_user_status",
+          "tool_get_runtime_cultural_sites",
+          "tool_get_runtime_recommendations"
+        ],
+        "tool_call_count": 0,
+        "note": "Current Strands trace is not exposed by the production orchestrator; this is a best-effort raw-output check."
+      },
+      "context_output": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "7.21, 2, 8.7"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 3,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Ada tiga tujuan budaya yang bisa Anda jelajahi di sini. Saya sarankan kita mulai dari Julang Ngapak sebagai tujuan utama. Jika Anda ingin melihat yang lain, Kujang dan Surabi juga tersedia sebagai alternatif.",
+        "subtitle_output": "Mari menuju Julang Ngapak terlebih dahulu.",
+        "recommendation_dialogue": "Tiga tujuan budaya tersedia. Silakan pilih sesuai minat Anda.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": false,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc19_pass_k_reliability",
+      "layer": "llm_reliability",
+      "focus": [
+        "context_agent",
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:35:59.468291",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {
+        "consistency": {
+          "score": 5,
+          "reasoning": "Field kritis seperti nav_target ('Julang Ngapak'), situation_type ('multiple_recommendations'), dan recommendation_options (['Julang Ngapak', 'Kujang', 'Surabi']) konsisten antara context dan dialogue output. Dialogue output juga secara eksplisit menyebutkan ketiga opsi dan memprioritaskan Julang Ngapak sesuai dengan context. Tidak ada inkonsistensi yang ditemukan.",
+          "dimension": "consistency"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Semua nama tujuan budaya yang direkomendasikan dalam dialogue output (Julang Ngapak, Kujang, Surabi) sesuai dengan daftar rekomendasi pada context output, tidak ada nama yang dikarang. Alasan prioritas (Julang Ngapak sebagai tujuan utama) juga konsisten dengan recommendation_reason di context. Dialogue output secara akurat merefleksikan data context dan tidak menambahkan atau mengubah informasi. Oleh karena itu, kriteria faithfulness terpenuhi dengan baik.",
+          "dimension": "faithfulness"
+        },
+        "persona_alignment": {
+          "score": 2,
+          "reasoning": "Spoken_output pada dialogue output bersifat netral dan informatif, namun tidak menunjukkan ciri khas persona Arif yang seharusnya ramah, komunikatif, dan sedikit membangun suasana keakraban khas pemandu budaya. Tidak ada sapaan, ekspresi khas, atau sentuhan personal yang membedakan Arif dari NPC generik. Tone terlalu formal dan instruksional. Oleh karena itu, konsistensi dengan persona Arif kurang terpenuhi.",
+          "dimension": "persona_alignment"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "7.21, 2, 8.7"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 3,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di sini tersedia tiga tujuan budaya yang belum Anda kunjungi. Saya sarankan kita mulai dari Julang Ngapak sebagai tujuan utama. Jika Anda ingin pilihan lain, Kujang dan Surabi juga bisa dipilih.",
+        "subtitle_output": "Mari menuju Julang Ngapak terlebih dahulu.",
+        "recommendation_dialogue": "Tiga tujuan budaya tersedia. Pilih yang ingin Anda kunjungi.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": false,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc19_pass_k_reliability",
+      "layer": "llm_reliability",
+      "focus": [
+        "context_agent",
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:36:20.326308",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {
+        "consistency": {
+          "score": 5,
+          "reasoning": "Field kritis seperti nav_target ('Julang Ngapak'), situation_type ('multiple_recommendations'), dan recommendation_options (['Julang Ngapak', 'Kujang', 'Surabi']) pada dialogue output konsisten dengan context output. Tidak ada kontradiksi atau perubahan data pada field-field tersebut. Semua rekomendasi dan urutan tujuan budaya sesuai dengan prioritas dan alternatif yang diberikan di context. Bukti spesifik: nav_target pada context dan dialogue sama, recommendation_options urutannya sama, dan situation_type tidak berubah. Ini menunjukkan konsistensi yang sangat baik.",
+          "dimension": "consistency"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Semua nama tujuan budaya yang direkomendasikan dalam dialogue output (Julang Ngapak, Kujang, Surabi) sesuai dengan daftar rekomendasi pada context output, tidak ada nama yang dikarang. Alasan prioritas juga konsisten dengan recommendation_reason di context. Dialogue output grounded pada data context. Tidak ada pelanggaran faithfulness.",
+          "dimension": "faithfulness"
+        },
+        "persona_alignment": {
+          "score": 3,
+          "reasoning": "Spoken_output menggunakan bahasa yang sopan dan informatif, namun tidak ada indikasi persona Arif secara eksplisit atau ciri khas tertentu yang membedakan tone-nya sebagai Arif. Kalimatnya netral dan generik, tidak menunjukkan keunikan persona pemandu budaya yang seharusnya dimiliki Arif. Tidak ada sapaan personal, gaya bicara khas, atau sentuhan naratif yang memperkuat persona. Oleh karena itu, konsistensi tone dan persona Arif belum terpenuhi.",
+          "dimension": "persona_alignment"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "7.21, 2, 8.7"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 3,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Terdapat tiga tujuan budaya yang menarik di area ini. Saya sarankan kita mulai dari Julang Ngapak sebagai tujuan utama. Jika Anda ingin melihat yang lain, Kujang dan Surabi juga dapat dipilih sebagai alternatif.",
+        "subtitle_output": "Mari menuju Julang Ngapak terlebih dahulu.",
+        "recommendation_dialogue": "Tiga tujuan budaya dapat dipilih. Silakan pilih sesuai keinginan.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": false,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc19_pass_k_reliability",
+      "layer": "llm_reliability",
+      "focus": [
+        "context_agent",
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:36:41.790451",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {
+        "consistency": {
+          "score": 5,
+          "reasoning": "Field kritis seperti nav_target ('Julang Ngapak'), situation_type ('multiple_recommendations'), dan recommendation_options (['Julang Ngapak', 'Kujang', 'Surabi']) pada dialogue output konsisten dengan context output. Tidak ada kontradiksi atau perubahan data pada field-field tersebut. Semua rekomendasi dan urutan prioritas juga sesuai. Bukti: nav_target pada context dan dialogue sama, recommendation_options identik, dan situasi yang digambarkan konsisten.",
+          "dimension": "consistency"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Semua rekomendasi yang diberikan dalam dialogue output (Julang Ngapak, Kujang, Surabi) sepenuhnya sesuai dengan daftar rekomendasi pada context output. Tidak ada nama site yang dikarang, dan alasan prioritas (Julang Ngapak sebagai tujuan utama) konsisten dengan recommendation_reason di context. Dialogue juga tidak menambahkan atau mengubah fakta dari context. Oleh karena itu, faithfulness sangat terjaga.",
+          "dimension": "faithfulness"
+        },
+        "persona_alignment": {
+          "score": 3,
+          "reasoning": "Spoken_output bersifat informatif dan sopan, namun tidak ada bukti eksplisit bahwa tone dan persona Arif (yang seharusnya khas, misal ramah, komunikatif, atau memiliki ciri khas tertentu) benar-benar tercermin. Tanpa deskripsi persona Arif, sulit menilai konsistensi, namun spoken_output ini netral dan tidak menonjolkan persona khusus. Skor diberikan cukup karena tidak ada pelanggaran, tapi juga tidak ada keunikan persona.",
+          "dimension": "persona_alignment"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "7.21, 2, 8.7"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 3,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Ada tiga tujuan budaya yang bisa Anda pilih di area ini. Saya sarankan mulai dari Julang Ngapak sebagai tujuan utama. Jika ingin, Kujang dan Surabi juga dapat dijelajahi setelahnya.",
+        "subtitle_output": "Mari menuju Julang Ngapak terlebih dahulu.",
+        "recommendation_dialogue": "Tiga tujuan budaya tersedia. Silakan pilih yang ingin dikunjungi.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": false,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc19_pass_k_reliability",
+      "layer": "llm_reliability",
+      "focus": [
+        "context_agent",
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:37:02.292937",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {
+        "consistency": {
+          "score": 5,
+          "reasoning": "Field kritis seperti nav_target ('Julang Ngapak'), situation_type ('multiple_recommendations'), dan recommendation_options (['Julang Ngapak', 'Kujang', 'Surabi']) konsisten antara context dan dialogue output. Rekomendasi utama dan alternatif juga selaras. Tidak ditemukan inkonsistensi pada field kritis. Skor maksimal diberikan.",
+          "dimension": "consistency"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Semua rekomendasi yang diberikan dalam dialogue output (Julang Ngapak, Kujang, Surabi) sesuai dengan daftar rekomendasi pada context output, tanpa ada nama site yang dikarang. Alasan prioritas (Julang Ngapak sebagai tujuan utama) juga konsisten dengan recommendation_reason di context. Tidak ada informasi yang tidak grounded. Oleh karena itu, kriteria terpenuhi sepenuhnya.",
+          "dimension": "faithfulness"
+        },
+        "persona_alignment": {
+          "score": 3,
+          "reasoning": "Spoken_output menggunakan bahasa yang sopan dan informatif, namun tidak ada indikasi persona Arif secara eksplisit atau ciri khas yang membedakan Arif dari NPC generik. Tone netral dan ramah, tetapi tidak ada bukti konsistensi persona khusus Arif. Oleh karena itu, kriteria persona_alignment hanya terpenuhi sebagian.",
+          "dimension": "persona_alignment"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "7.21, 2, 8.7"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 3,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Ada tiga tujuan budaya yang bisa Anda pilih di sini. Saya sarankan kita mulai dari Julang Ngapak sebagai tujuan utama. Jika Anda tertarik, Kujang dan Surabi juga bisa dijelajahi setelahnya.",
+        "subtitle_output": "Mari menuju Julang Ngapak terlebih dahulu.",
+        "recommendation_dialogue": "Tiga tujuan budaya tersedia. Silakan pilih sesuai keinginan Anda.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": false,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc19_pass_k_reliability",
+      "layer": "llm_reliability",
+      "focus": [
+        "context_agent",
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:37:28.491307",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {
+        "consistency": {
+          "score": 5,
+          "reasoning": "Field kritis seperti nav_target ('Julang Ngapak'), situation_type ('multiple_recommendations'), dan recommendation_options (['Julang Ngapak', 'Kujang', 'Surabi']) pada dialogue output konsisten dengan context output. Tidak ada perbedaan atau kontradiksi pada data penting tersebut. Semua rekomendasi dan urutan tujuan sesuai dengan prioritas dan alternatif yang dijelaskan di context. Bukti spesifik: nav_target pada context dan dialogue sama, recommendation_options identik, dan situation_type sesuai dengan skenario multi-rekomendasi. Skor maksimal diberikan karena tidak ditemukan inkonsistensi.",
+          "dimension": "consistency"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Semua rekomendasi yang diberikan dalam dialogue output (Julang Ngapak, Kujang, Surabi) sesuai dengan daftar objek budaya yang ada di context output. Rekomendasi utama (Julang Ngapak) juga konsisten dengan recommendation_reason dan nav_target. Tidak ada nama site yang dikarang, dan alasan pemilihan tujuan utama dijelaskan secara grounded. Bukti spesifik: semua nama dan urutan objek cocok antara context dan dialogue.",
+          "dimension": "faithfulness"
+        },
+        "persona_alignment": {
+          "score": 5,
+          "reasoning": "Spoken_output menggunakan bahasa yang sopan, informatif, dan mengarahkan dengan jelas, sesuai dengan persona Arif sebagai pemandu budaya yang ramah dan membantu. Tidak ada nada yang terlalu formal atau terlalu santai, dan pilihan kata mendukung peran sebagai pemandu. Konsistensi tone dan persona terjaga dengan baik.",
+          "dimension": "persona_alignment"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "7.21, 2, 8.7"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 3,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, ada tiga objek budaya yang bisa Anda kunjungi. Saya sarankan kita mulai dari Julang Ngapak sebagai tujuan utama. Jika ingin, Kujang dan Surabi juga dapat dijelajahi setelahnya.",
+        "subtitle_output": "Mari menuju Julang Ngapak terlebih dahulu.",
+        "recommendation_dialogue": "Tiga tujuan budaya dapat dipilih. Silakan pilih sesuai minat Anda.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc20_ablation_no_recommendation_reason",
+      "layer": "llm_ablation",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:37:50.044569",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {
+        "context_relevance": {
+          "score": 5,
+          "reasoning": "Dialogue output secara konsisten merefleksikan konteks dengan baik: NPC menyebutkan tiga tujuan budaya yang tersedia, memprioritaskan Kujang sebagai tujuan utama sesuai recommendation_reason, dan menawarkan dua alternatif (Surabi dan Wayang Golek). Pilihan yang diberikan pada recommendation_options juga sesuai dengan daftar rekomendasi di context. Penjelasan NPC jelas dan relevan dengan situasi multiple_recommendations, serta mendukung intent guide_to_primary_with_alternatives. Tidak ada informasi penting yang terlewat atau salah konteks.",
+          "dimension": "context_relevance"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Dialog output secara eksplisit menyebut Kujang sebagai tujuan utama, baik dalam spoken_output maupun recommendation_options. Penyebutan Kujang juga dilakukan secara natural dan sesuai konteks, memenuhi kriteria faithfulness dengan baik.",
+          "dimension": "faithfulness"
+        },
+        "navigation_clarity": {
+          "score": 5,
+          "reasoning": "Dialog secara eksplisit menyebutkan Kujang sebagai tujuan utama dan mengajak pemain untuk menuju ke sana, baik melalui spoken_output maupun subtitle_output. Alternatif juga disebutkan dengan jelas, dan opsi pilihan diberikan. Pemain akan tahu ke mana harus pergi, terutama diarahkan ke Kujang terlebih dahulu. Bukti: 'Saya sarankan kita mulai dari Kujang sebagai tujuan utama', 'Mari menuju Kujang terlebih dahulu.'",
+          "dimension": "navigation_clarity"
+        },
+        "persona_alignment": {
+          "score": 4,
+          "reasoning": "Persona Arif sebagai pemandu yang hangat cukup tercermin dalam spoken_output yang menggunakan bahasa sopan dan mengajak secara ramah ('Saya sarankan kita mulai dari Kujang', 'juga bisa dipilih setelahnya'). Namun, ekspresi kehangatan bisa lebih ditingkatkan dengan menambahkan sapaan atau kalimat yang lebih personal. Secara keseluruhan, persona alignment sudah baik, namun belum maksimal.",
+          "dimension": "persona_alignment"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T13:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Kujang diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Surabi, Wayang Golek.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 2,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          },
+          {
+            "rank": 3,
+            "id": "Wayang Golek",
+            "name": "Wayang Golek",
+            "cultural_position": "20.0, 1.0, 20.0"
+          }
+        ],
+        "nav_target": "Kujang"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, ada tiga tujuan budaya yang menarik untuk dikunjungi. Saya sarankan kita mulai dari Kujang sebagai tujuan utama. Jika ingin melihat yang lain, Surabi dan Wayang Golek juga bisa dipilih setelahnya.",
+        "subtitle_output": "Mari menuju Kujang terlebih dahulu.",
+        "recommendation_dialogue": "Tiga tujuan budaya tersedia. Silakan pilih sesuai keinginan Anda.",
+        "recommendation_options": [
+          "Kujang",
+          "Surabi",
+          "Wayang Golek"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 5
+    },
+    {
+      "scenario_id": "sc20_ablation_no_recommendation_reason_stripped",
+      "layer": "llm_ablation_run_b",
+      "deterministic_checks": {
+        "dialogue_schema_valid": true,
+        "options_match_context_order": true,
+        "no_internal_tokens_or_coordinates": true
+      },
+      "llm_judge_scores": {
+        "context_relevance": {
+          "score": 3,
+          "reasoning": "Output dialog sudah relevan dengan konteks, merekomendasikan tiga tujuan budaya yang sesuai dengan data context. Namun, tidak ada informasi alasan rekomendasi (recommendation_reason tidak tersedia), sehingga konteks yang diberikan kepada pengguna kurang kaya. Dialog hanya menyebutkan pilihan dan saran urutan tanpa penjelasan mengapa Kujang dipilih sebagai utama. Karena kriteria menekankan pentingnya recommendation_reason untuk konteks yang lebih kaya, skor tidak bisa maksimal. Namun, secara fungsional sudah cukup baik dan sesuai konteks.",
+          "dimension": "context_relevance"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Semua bagian output dialog, baik spoken_output, subtitle_output, maupun recommendation_dialogue dan recommendation_options, secara eksplisit menyebut Kujang sebagai salah satu tujuan, bahkan menempatkannya sebagai rekomendasi utama. Penyebutan Kujang dilakukan secara natural dan konsisten sesuai konteks dan kriteria evaluasi.",
+          "dimension": "faithfulness"
+        },
+        "navigation_clarity": {
+          "score": 5,
+          "reasoning": "Dialog dengan jelas menyebutkan tiga tujuan budaya yang tersedia dan secara eksplisit merekomendasikan Kujang sebagai tujuan utama. Subtitle juga mengarahkan pemain untuk menuju Kujang terlebih dahulu. Opsi lain juga disebutkan, sehingga pemain tahu ke mana harus pergi dan apa saja pilihannya. Informasi navigasi utama sangat jelas.",
+          "dimension": "navigation_clarity"
+        },
+        "persona_alignment": {
+          "score": 5,
+          "reasoning": "Dialog yang diberikan menunjukkan kehangatan dengan penggunaan bahasa yang ramah dan mengajak, seperti 'Saya sarankan kita mulai dari Kujang' dan 'Silakan pilih sesuai minat Anda.' Tidak ada nada kaku atau dingin, dan Arif tetap konsisten hangat dalam membimbing pemain. Pilihan kata seperti 'bisa Anda pilih' dan 'Mari menuju' juga memperkuat persona hangat Arif.",
+          "dimension": "persona_alignment"
+        }
+      },
+      "context_output": {
+        "timestamp": "2026-05-01T13:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Informasi alasan rekomendasi tidak tersedia.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 2,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          },
+          {
+            "rank": 3,
+            "id": "Wayang Golek",
+            "name": "Wayang Golek",
+            "cultural_position": "20.0, 1.0, 20.0"
+          }
+        ],
+        "nav_target": "Kujang"
+      },
+      "dialogue_output": {
+        "spoken_output": "Ada tiga tujuan budaya yang bisa Anda kunjungi di sini. Saya sarankan kita mulai dari Kujang sebagai tujuan utama. Selain itu, Surabi dan Wayang Golek juga bisa Anda pilih jika ingin melihat yang lain.",
+        "subtitle_output": "Mari menuju Kujang terlebih dahulu.",
+        "recommendation_dialogue": "Tiga tujuan budaya tersedia. Silakan pilih sesuai minat Anda.",
+        "recommendation_options": [
+          "Kujang",
+          "Surabi",
+          "Wayang Golek"
+        ]
+      },
+      "errors": [],
+      "passed": true
+    }
+  ],
+  "pass_k": {
+    "scenario_id": "sc19_pass_k_reliability",
+    "layer": "llm_reliability",
+    "k": 5,
+    "pass_count": 5,
+    "pass_k_score": 1.0,
+    "judge_stats": {
+      "persona_alignment": {
+        "mean": 3.2,
+        "std": 1.0954,
+        "min": 2,
+        "max": 5,
+        "scores": [
+          2,
+          3,
+          3,
+          3,
+          5
+        ]
+      },
+      "consistency": {
+        "mean": 5,
+        "std": 0.0,
+        "min": 5,
+        "max": 5,
+        "scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ]
+      },
+      "faithfulness": {
+        "mean": 5,
+        "std": 0.0,
+        "min": 5,
+        "max": 5,
+        "scores": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ]
+      }
+    },
+    "field_variance": {
+      "user_action": 1,
+      "recommendation_reason": 1,
+      "spoken_output": 5
+    },
+    "all_runs": [
+      {
+        "scenario_id": "sc19_pass_k_reliability",
+        "layer": "llm_reliability",
+        "focus": [
+          "context_agent",
+          "dialogue_agent"
+        ],
+        "timestamp": "2026-06-01T15:35:59.468291",
+        "deterministic_checks": {
+          "context_schema_valid": true,
+          "dialogue_schema_valid": true,
+          "no_visited_sites_recommended": true,
+          "ranking_exact_match": true,
+          "nav_target_matches_rank_1": true,
+          "nav_target_empty_when_no_recommendations": true,
+          "max_three_recommendations": true,
+          "situation_type_supported": true,
+          "dialogue_intent_supported": true,
+          "recommendation_reason_present": true,
+          "no_coordinates_in_interpretive_fields": true,
+          "subtitle_max_15_words": true,
+          "no_internal_tokens_or_coordinates": true,
+          "options_match_context_order": true,
+          "option_count": true,
+          "empty_recommendations_handled": true,
+          "primary_option_mentioned": true,
+          "invalid_option_returns_error": true
+        },
+        "ir_metrics": {
+          "precision_at_3": 1.0,
+          "recall_at_3": 1.0,
+          "mrr": 1.0,
+          "ndcg_at_3": 1.0
+        },
+        "faithfulness": {},
+        "llm_judge_scores": {
+          "consistency": {
+            "score": 5,
+            "reasoning": "Field kritis seperti nav_target ('Julang Ngapak'), situation_type ('multiple_recommendations'), dan recommendation_options (['Julang Ngapak', 'Kujang', 'Surabi']) konsisten antara context dan dialogue output. Dialogue output juga secara eksplisit menyebutkan ketiga opsi dan memprioritaskan Julang Ngapak sesuai dengan context. Tidak ada inkonsistensi yang ditemukan.",
+            "dimension": "consistency"
+          },
+          "faithfulness": {
+            "score": 5,
+            "reasoning": "Semua nama tujuan budaya yang direkomendasikan dalam dialogue output (Julang Ngapak, Kujang, Surabi) sesuai dengan daftar rekomendasi pada context output, tidak ada nama yang dikarang. Alasan prioritas (Julang Ngapak sebagai tujuan utama) juga konsisten dengan recommendation_reason di context. Dialogue output secara akurat merefleksikan data context dan tidak menambahkan atau mengubah informasi. Oleh karena itu, kriteria faithfulness terpenuhi dengan baik.",
+            "dimension": "faithfulness"
+          },
+          "persona_alignment": {
+            "score": 2,
+            "reasoning": "Spoken_output pada dialogue output bersifat netral dan informatif, namun tidak menunjukkan ciri khas persona Arif yang seharusnya ramah, komunikatif, dan sedikit membangun suasana keakraban khas pemandu budaya. Tidak ada sapaan, ekspresi khas, atau sentuhan personal yang membedakan Arif dari NPC generik. Tone terlalu formal dan instruksional. Oleh karena itu, konsistensi dengan persona Arif kurang terpenuhi.",
+            "dimension": "persona_alignment"
+          }
+        },
+        "trajectory": {},
+        "context_output": {
+          "timestamp": "2026-05-01T12:00:00Z",
+          "scene": "Heritage_Museum_Wing_A",
+          "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+          "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+          "situation_type": "multiple_recommendations",
+          "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+          "dialogue_intent": "guide_to_primary_with_alternatives",
+          "recommendations": [
+            {
+              "rank": 1,
+              "id": "Julang Ngapak",
+              "name": "Julang Ngapak",
+              "cultural_position": "7.21, 2, 8.7"
+            },
+            {
+              "rank": 2,
+              "id": "Kujang",
+              "name": "Kujang",
+              "cultural_position": "8.99, 3, 13.65"
+            },
+            {
+              "rank": 3,
+              "id": "Surabi",
+              "name": "Surabi",
+              "cultural_position": "5.448, 3, 16.256"
+            }
+          ],
+          "nav_target": "Julang Ngapak"
+        },
+        "dialogue_output": {
+          "spoken_output": "Di sini tersedia tiga tujuan budaya yang belum Anda kunjungi. Saya sarankan kita mulai dari Julang Ngapak sebagai tujuan utama. Jika Anda ingin pilihan lain, Kujang dan Surabi juga bisa dipilih.",
+          "subtitle_output": "Mari menuju Julang Ngapak terlebih dahulu.",
+          "recommendation_dialogue": "Tiga tujuan budaya tersedia. Pilih yang ingin Anda kunjungi.",
+          "recommendation_options": [
+            "Julang Ngapak",
+            "Kujang",
+            "Surabi"
+          ]
+        },
+        "errors": [],
+        "passed": false,
+        "subtitle_word_count": 6
+      },
+      {
+        "scenario_id": "sc19_pass_k_reliability",
+        "layer": "llm_reliability",
+        "focus": [
+          "context_agent",
+          "dialogue_agent"
+        ],
+        "timestamp": "2026-06-01T15:36:20.326308",
+        "deterministic_checks": {
+          "context_schema_valid": true,
+          "dialogue_schema_valid": true,
+          "no_visited_sites_recommended": true,
+          "ranking_exact_match": true,
+          "nav_target_matches_rank_1": true,
+          "nav_target_empty_when_no_recommendations": true,
+          "max_three_recommendations": true,
+          "situation_type_supported": true,
+          "dialogue_intent_supported": true,
+          "recommendation_reason_present": true,
+          "no_coordinates_in_interpretive_fields": true,
+          "subtitle_max_15_words": true,
+          "no_internal_tokens_or_coordinates": true,
+          "options_match_context_order": true,
+          "option_count": true,
+          "empty_recommendations_handled": true,
+          "primary_option_mentioned": true,
+          "invalid_option_returns_error": true
+        },
+        "ir_metrics": {
+          "precision_at_3": 1.0,
+          "recall_at_3": 1.0,
+          "mrr": 1.0,
+          "ndcg_at_3": 1.0
+        },
+        "faithfulness": {},
+        "llm_judge_scores": {
+          "consistency": {
+            "score": 5,
+            "reasoning": "Field kritis seperti nav_target ('Julang Ngapak'), situation_type ('multiple_recommendations'), dan recommendation_options (['Julang Ngapak', 'Kujang', 'Surabi']) pada dialogue output konsisten dengan context output. Tidak ada kontradiksi atau perubahan data pada field-field tersebut. Semua rekomendasi dan urutan tujuan budaya sesuai dengan prioritas dan alternatif yang diberikan di context. Bukti spesifik: nav_target pada context dan dialogue sama, recommendation_options urutannya sama, dan situation_type tidak berubah. Ini menunjukkan konsistensi yang sangat baik.",
+            "dimension": "consistency"
+          },
+          "faithfulness": {
+            "score": 5,
+            "reasoning": "Semua nama tujuan budaya yang direkomendasikan dalam dialogue output (Julang Ngapak, Kujang, Surabi) sesuai dengan daftar rekomendasi pada context output, tidak ada nama yang dikarang. Alasan prioritas juga konsisten dengan recommendation_reason di context. Dialogue output grounded pada data context. Tidak ada pelanggaran faithfulness.",
+            "dimension": "faithfulness"
+          },
+          "persona_alignment": {
+            "score": 3,
+            "reasoning": "Spoken_output menggunakan bahasa yang sopan dan informatif, namun tidak ada indikasi persona Arif secara eksplisit atau ciri khas tertentu yang membedakan tone-nya sebagai Arif. Kalimatnya netral dan generik, tidak menunjukkan keunikan persona pemandu budaya yang seharusnya dimiliki Arif. Tidak ada sapaan personal, gaya bicara khas, atau sentuhan naratif yang memperkuat persona. Oleh karena itu, konsistensi tone dan persona Arif belum terpenuhi.",
+            "dimension": "persona_alignment"
+          }
+        },
+        "trajectory": {},
+        "context_output": {
+          "timestamp": "2026-05-01T12:00:00Z",
+          "scene": "Heritage_Museum_Wing_A",
+          "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+          "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+          "situation_type": "multiple_recommendations",
+          "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+          "dialogue_intent": "guide_to_primary_with_alternatives",
+          "recommendations": [
+            {
+              "rank": 1,
+              "id": "Julang Ngapak",
+              "name": "Julang Ngapak",
+              "cultural_position": "7.21, 2, 8.7"
+            },
+            {
+              "rank": 2,
+              "id": "Kujang",
+              "name": "Kujang",
+              "cultural_position": "8.99, 3, 13.65"
+            },
+            {
+              "rank": 3,
+              "id": "Surabi",
+              "name": "Surabi",
+              "cultural_position": "5.448, 3, 16.256"
+            }
+          ],
+          "nav_target": "Julang Ngapak"
+        },
+        "dialogue_output": {
+          "spoken_output": "Terdapat tiga tujuan budaya yang menarik di area ini. Saya sarankan kita mulai dari Julang Ngapak sebagai tujuan utama. Jika Anda ingin melihat yang lain, Kujang dan Surabi juga dapat dipilih sebagai alternatif.",
+          "subtitle_output": "Mari menuju Julang Ngapak terlebih dahulu.",
+          "recommendation_dialogue": "Tiga tujuan budaya dapat dipilih. Silakan pilih sesuai keinginan.",
+          "recommendation_options": [
+            "Julang Ngapak",
+            "Kujang",
+            "Surabi"
+          ]
+        },
+        "errors": [],
+        "passed": false,
+        "subtitle_word_count": 6
+      },
+      {
+        "scenario_id": "sc19_pass_k_reliability",
+        "layer": "llm_reliability",
+        "focus": [
+          "context_agent",
+          "dialogue_agent"
+        ],
+        "timestamp": "2026-06-01T15:36:41.790451",
+        "deterministic_checks": {
+          "context_schema_valid": true,
+          "dialogue_schema_valid": true,
+          "no_visited_sites_recommended": true,
+          "ranking_exact_match": true,
+          "nav_target_matches_rank_1": true,
+          "nav_target_empty_when_no_recommendations": true,
+          "max_three_recommendations": true,
+          "situation_type_supported": true,
+          "dialogue_intent_supported": true,
+          "recommendation_reason_present": true,
+          "no_coordinates_in_interpretive_fields": true,
+          "subtitle_max_15_words": true,
+          "no_internal_tokens_or_coordinates": true,
+          "options_match_context_order": true,
+          "option_count": true,
+          "empty_recommendations_handled": true,
+          "primary_option_mentioned": true,
+          "invalid_option_returns_error": true
+        },
+        "ir_metrics": {
+          "precision_at_3": 1.0,
+          "recall_at_3": 1.0,
+          "mrr": 1.0,
+          "ndcg_at_3": 1.0
+        },
+        "faithfulness": {},
+        "llm_judge_scores": {
+          "consistency": {
+            "score": 5,
+            "reasoning": "Field kritis seperti nav_target ('Julang Ngapak'), situation_type ('multiple_recommendations'), dan recommendation_options (['Julang Ngapak', 'Kujang', 'Surabi']) pada dialogue output konsisten dengan context output. Tidak ada kontradiksi atau perubahan data pada field-field tersebut. Semua rekomendasi dan urutan prioritas juga sesuai. Bukti: nav_target pada context dan dialogue sama, recommendation_options identik, dan situasi yang digambarkan konsisten.",
+            "dimension": "consistency"
+          },
+          "faithfulness": {
+            "score": 5,
+            "reasoning": "Semua rekomendasi yang diberikan dalam dialogue output (Julang Ngapak, Kujang, Surabi) sepenuhnya sesuai dengan daftar rekomendasi pada context output. Tidak ada nama site yang dikarang, dan alasan prioritas (Julang Ngapak sebagai tujuan utama) konsisten dengan recommendation_reason di context. Dialogue juga tidak menambahkan atau mengubah fakta dari context. Oleh karena itu, faithfulness sangat terjaga.",
+            "dimension": "faithfulness"
+          },
+          "persona_alignment": {
+            "score": 3,
+            "reasoning": "Spoken_output bersifat informatif dan sopan, namun tidak ada bukti eksplisit bahwa tone dan persona Arif (yang seharusnya khas, misal ramah, komunikatif, atau memiliki ciri khas tertentu) benar-benar tercermin. Tanpa deskripsi persona Arif, sulit menilai konsistensi, namun spoken_output ini netral dan tidak menonjolkan persona khusus. Skor diberikan cukup karena tidak ada pelanggaran, tapi juga tidak ada keunikan persona.",
+            "dimension": "persona_alignment"
+          }
+        },
+        "trajectory": {},
+        "context_output": {
+          "timestamp": "2026-05-01T12:00:00Z",
+          "scene": "Heritage_Museum_Wing_A",
+          "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+          "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+          "situation_type": "multiple_recommendations",
+          "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+          "dialogue_intent": "guide_to_primary_with_alternatives",
+          "recommendations": [
+            {
+              "rank": 1,
+              "id": "Julang Ngapak",
+              "name": "Julang Ngapak",
+              "cultural_position": "7.21, 2, 8.7"
+            },
+            {
+              "rank": 2,
+              "id": "Kujang",
+              "name": "Kujang",
+              "cultural_position": "8.99, 3, 13.65"
+            },
+            {
+              "rank": 3,
+              "id": "Surabi",
+              "name": "Surabi",
+              "cultural_position": "5.448, 3, 16.256"
+            }
+          ],
+          "nav_target": "Julang Ngapak"
+        },
+        "dialogue_output": {
+          "spoken_output": "Ada tiga tujuan budaya yang bisa Anda pilih di area ini. Saya sarankan mulai dari Julang Ngapak sebagai tujuan utama. Jika ingin, Kujang dan Surabi juga dapat dijelajahi setelahnya.",
+          "subtitle_output": "Mari menuju Julang Ngapak terlebih dahulu.",
+          "recommendation_dialogue": "Tiga tujuan budaya tersedia. Silakan pilih yang ingin dikunjungi.",
+          "recommendation_options": [
+            "Julang Ngapak",
+            "Kujang",
+            "Surabi"
+          ]
+        },
+        "errors": [],
+        "passed": false,
+        "subtitle_word_count": 6
+      },
+      {
+        "scenario_id": "sc19_pass_k_reliability",
+        "layer": "llm_reliability",
+        "focus": [
+          "context_agent",
+          "dialogue_agent"
+        ],
+        "timestamp": "2026-06-01T15:37:02.292937",
+        "deterministic_checks": {
+          "context_schema_valid": true,
+          "dialogue_schema_valid": true,
+          "no_visited_sites_recommended": true,
+          "ranking_exact_match": true,
+          "nav_target_matches_rank_1": true,
+          "nav_target_empty_when_no_recommendations": true,
+          "max_three_recommendations": true,
+          "situation_type_supported": true,
+          "dialogue_intent_supported": true,
+          "recommendation_reason_present": true,
+          "no_coordinates_in_interpretive_fields": true,
+          "subtitle_max_15_words": true,
+          "no_internal_tokens_or_coordinates": true,
+          "options_match_context_order": true,
+          "option_count": true,
+          "empty_recommendations_handled": true,
+          "primary_option_mentioned": true,
+          "invalid_option_returns_error": true
+        },
+        "ir_metrics": {
+          "precision_at_3": 1.0,
+          "recall_at_3": 1.0,
+          "mrr": 1.0,
+          "ndcg_at_3": 1.0
+        },
+        "faithfulness": {},
+        "llm_judge_scores": {
+          "consistency": {
+            "score": 5,
+            "reasoning": "Field kritis seperti nav_target ('Julang Ngapak'), situation_type ('multiple_recommendations'), dan recommendation_options (['Julang Ngapak', 'Kujang', 'Surabi']) konsisten antara context dan dialogue output. Rekomendasi utama dan alternatif juga selaras. Tidak ditemukan inkonsistensi pada field kritis. Skor maksimal diberikan.",
+            "dimension": "consistency"
+          },
+          "faithfulness": {
+            "score": 5,
+            "reasoning": "Semua rekomendasi yang diberikan dalam dialogue output (Julang Ngapak, Kujang, Surabi) sesuai dengan daftar rekomendasi pada context output, tanpa ada nama site yang dikarang. Alasan prioritas (Julang Ngapak sebagai tujuan utama) juga konsisten dengan recommendation_reason di context. Tidak ada informasi yang tidak grounded. Oleh karena itu, kriteria terpenuhi sepenuhnya.",
+            "dimension": "faithfulness"
+          },
+          "persona_alignment": {
+            "score": 3,
+            "reasoning": "Spoken_output menggunakan bahasa yang sopan dan informatif, namun tidak ada indikasi persona Arif secara eksplisit atau ciri khas yang membedakan Arif dari NPC generik. Tone netral dan ramah, tetapi tidak ada bukti konsistensi persona khusus Arif. Oleh karena itu, kriteria persona_alignment hanya terpenuhi sebagian.",
+            "dimension": "persona_alignment"
+          }
+        },
+        "trajectory": {},
+        "context_output": {
+          "timestamp": "2026-05-01T12:00:00Z",
+          "scene": "Heritage_Museum_Wing_A",
+          "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+          "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+          "situation_type": "multiple_recommendations",
+          "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+          "dialogue_intent": "guide_to_primary_with_alternatives",
+          "recommendations": [
+            {
+              "rank": 1,
+              "id": "Julang Ngapak",
+              "name": "Julang Ngapak",
+              "cultural_position": "7.21, 2, 8.7"
+            },
+            {
+              "rank": 2,
+              "id": "Kujang",
+              "name": "Kujang",
+              "cultural_position": "8.99, 3, 13.65"
+            },
+            {
+              "rank": 3,
+              "id": "Surabi",
+              "name": "Surabi",
+              "cultural_position": "5.448, 3, 16.256"
+            }
+          ],
+          "nav_target": "Julang Ngapak"
+        },
+        "dialogue_output": {
+          "spoken_output": "Ada tiga tujuan budaya yang bisa Anda pilih di sini. Saya sarankan kita mulai dari Julang Ngapak sebagai tujuan utama. Jika Anda tertarik, Kujang dan Surabi juga bisa dijelajahi setelahnya.",
+          "subtitle_output": "Mari menuju Julang Ngapak terlebih dahulu.",
+          "recommendation_dialogue": "Tiga tujuan budaya tersedia. Silakan pilih sesuai keinginan Anda.",
+          "recommendation_options": [
+            "Julang Ngapak",
+            "Kujang",
+            "Surabi"
+          ]
+        },
+        "errors": [],
+        "passed": false,
+        "subtitle_word_count": 6
+      },
+      {
+        "scenario_id": "sc19_pass_k_reliability",
+        "layer": "llm_reliability",
+        "focus": [
+          "context_agent",
+          "dialogue_agent"
+        ],
+        "timestamp": "2026-06-01T15:37:28.491307",
+        "deterministic_checks": {
+          "context_schema_valid": true,
+          "dialogue_schema_valid": true,
+          "no_visited_sites_recommended": true,
+          "ranking_exact_match": true,
+          "nav_target_matches_rank_1": true,
+          "nav_target_empty_when_no_recommendations": true,
+          "max_three_recommendations": true,
+          "situation_type_supported": true,
+          "dialogue_intent_supported": true,
+          "recommendation_reason_present": true,
+          "no_coordinates_in_interpretive_fields": true,
+          "subtitle_max_15_words": true,
+          "no_internal_tokens_or_coordinates": true,
+          "options_match_context_order": true,
+          "option_count": true,
+          "empty_recommendations_handled": true,
+          "primary_option_mentioned": true,
+          "invalid_option_returns_error": true
+        },
+        "ir_metrics": {
+          "precision_at_3": 1.0,
+          "recall_at_3": 1.0,
+          "mrr": 1.0,
+          "ndcg_at_3": 1.0
+        },
+        "faithfulness": {},
+        "llm_judge_scores": {
+          "consistency": {
+            "score": 5,
+            "reasoning": "Field kritis seperti nav_target ('Julang Ngapak'), situation_type ('multiple_recommendations'), dan recommendation_options (['Julang Ngapak', 'Kujang', 'Surabi']) pada dialogue output konsisten dengan context output. Tidak ada perbedaan atau kontradiksi pada data penting tersebut. Semua rekomendasi dan urutan tujuan sesuai dengan prioritas dan alternatif yang dijelaskan di context. Bukti spesifik: nav_target pada context dan dialogue sama, recommendation_options identik, dan situation_type sesuai dengan skenario multi-rekomendasi. Skor maksimal diberikan karena tidak ditemukan inkonsistensi.",
+            "dimension": "consistency"
+          },
+          "faithfulness": {
+            "score": 5,
+            "reasoning": "Semua rekomendasi yang diberikan dalam dialogue output (Julang Ngapak, Kujang, Surabi) sesuai dengan daftar objek budaya yang ada di context output. Rekomendasi utama (Julang Ngapak) juga konsisten dengan recommendation_reason dan nav_target. Tidak ada nama site yang dikarang, dan alasan pemilihan tujuan utama dijelaskan secara grounded. Bukti spesifik: semua nama dan urutan objek cocok antara context dan dialogue.",
+            "dimension": "faithfulness"
+          },
+          "persona_alignment": {
+            "score": 5,
+            "reasoning": "Spoken_output menggunakan bahasa yang sopan, informatif, dan mengarahkan dengan jelas, sesuai dengan persona Arif sebagai pemandu budaya yang ramah dan membantu. Tidak ada nada yang terlalu formal atau terlalu santai, dan pilihan kata mendukung peran sebagai pemandu. Konsistensi tone dan persona terjaga dengan baik.",
+            "dimension": "persona_alignment"
+          }
+        },
+        "trajectory": {},
+        "context_output": {
+          "timestamp": "2026-05-01T12:00:00Z",
+          "scene": "Heritage_Museum_Wing_A",
+          "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+          "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+          "situation_type": "multiple_recommendations",
+          "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+          "dialogue_intent": "guide_to_primary_with_alternatives",
+          "recommendations": [
+            {
+              "rank": 1,
+              "id": "Julang Ngapak",
+              "name": "Julang Ngapak",
+              "cultural_position": "7.21, 2, 8.7"
+            },
+            {
+              "rank": 2,
+              "id": "Kujang",
+              "name": "Kujang",
+              "cultural_position": "8.99, 3, 13.65"
+            },
+            {
+              "rank": 3,
+              "id": "Surabi",
+              "name": "Surabi",
+              "cultural_position": "5.448, 3, 16.256"
+            }
+          ],
+          "nav_target": "Julang Ngapak"
+        },
+        "dialogue_output": {
+          "spoken_output": "Di area ini, ada tiga objek budaya yang bisa Anda kunjungi. Saya sarankan kita mulai dari Julang Ngapak sebagai tujuan utama. Jika ingin, Kujang dan Surabi juga dapat dijelajahi setelahnya.",
+          "subtitle_output": "Mari menuju Julang Ngapak terlebih dahulu.",
+          "recommendation_dialogue": "Tiga tujuan budaya dapat dipilih. Silakan pilih sesuai minat Anda.",
+          "recommendation_options": [
+            "Julang Ngapak",
+            "Kujang",
+            "Surabi"
+          ]
+        },
+        "errors": [],
+        "passed": true,
+        "subtitle_word_count": 6
+      }
+    ]
+  },
+  "ablation": {
+    "scenario_id": "sc20_ablation_no_recommendation_reason",
+    "layer": "llm_ablation",
+    "run_a_scores": {
+      "context_relevance": 5,
+      "faithfulness": 5,
+      "navigation_clarity": 5,
+      "persona_alignment": 4
+    },
+    "run_b_scores": {
+      "context_relevance": 3,
+      "faithfulness": 5,
+      "navigation_clarity": 5,
+      "persona_alignment": 5
+    },
+    "delta": {
+      "context_relevance": 2,
+      "faithfulness": 0,
+      "navigation_clarity": 0,
+      "persona_alignment": -1
+    },
+    "hypothesis_confirmed": false,
+    "ablation_hypothesis": "Run A (full context) diharapkan menghasilkan skor context_relevance dan navigation_clarity lebih tinggi dari Run B. Delta positif membuktikan kontribusi recommendation_reason dari Context Agent.",
+    "run_a_detail": {
+      "scenario_id": "sc20_ablation_no_recommendation_reason",
+      "layer": "llm_ablation",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:37:50.044569",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {
+        "context_relevance": {
+          "score": 5,
+          "reasoning": "Dialogue output secara konsisten merefleksikan konteks dengan baik: NPC menyebutkan tiga tujuan budaya yang tersedia, memprioritaskan Kujang sebagai tujuan utama sesuai recommendation_reason, dan menawarkan dua alternatif (Surabi dan Wayang Golek). Pilihan yang diberikan pada recommendation_options juga sesuai dengan daftar rekomendasi di context. Penjelasan NPC jelas dan relevan dengan situasi multiple_recommendations, serta mendukung intent guide_to_primary_with_alternatives. Tidak ada informasi penting yang terlewat atau salah konteks.",
+          "dimension": "context_relevance"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Dialog output secara eksplisit menyebut Kujang sebagai tujuan utama, baik dalam spoken_output maupun recommendation_options. Penyebutan Kujang juga dilakukan secara natural dan sesuai konteks, memenuhi kriteria faithfulness dengan baik.",
+          "dimension": "faithfulness"
+        },
+        "navigation_clarity": {
+          "score": 5,
+          "reasoning": "Dialog secara eksplisit menyebutkan Kujang sebagai tujuan utama dan mengajak pemain untuk menuju ke sana, baik melalui spoken_output maupun subtitle_output. Alternatif juga disebutkan dengan jelas, dan opsi pilihan diberikan. Pemain akan tahu ke mana harus pergi, terutama diarahkan ke Kujang terlebih dahulu. Bukti: 'Saya sarankan kita mulai dari Kujang sebagai tujuan utama', 'Mari menuju Kujang terlebih dahulu.'",
+          "dimension": "navigation_clarity"
+        },
+        "persona_alignment": {
+          "score": 4,
+          "reasoning": "Persona Arif sebagai pemandu yang hangat cukup tercermin dalam spoken_output yang menggunakan bahasa sopan dan mengajak secara ramah ('Saya sarankan kita mulai dari Kujang', 'juga bisa dipilih setelahnya'). Namun, ekspresi kehangatan bisa lebih ditingkatkan dengan menambahkan sapaan atau kalimat yang lebih personal. Secara keseluruhan, persona alignment sudah baik, namun belum maksimal.",
+          "dimension": "persona_alignment"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T13:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Kujang diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Surabi, Wayang Golek.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 2,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          },
+          {
+            "rank": 3,
+            "id": "Wayang Golek",
+            "name": "Wayang Golek",
+            "cultural_position": "20.0, 1.0, 20.0"
+          }
+        ],
+        "nav_target": "Kujang"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, ada tiga tujuan budaya yang menarik untuk dikunjungi. Saya sarankan kita mulai dari Kujang sebagai tujuan utama. Jika ingin melihat yang lain, Surabi dan Wayang Golek juga bisa dipilih setelahnya.",
+        "subtitle_output": "Mari menuju Kujang terlebih dahulu.",
+        "recommendation_dialogue": "Tiga tujuan budaya tersedia. Silakan pilih sesuai keinginan Anda.",
+        "recommendation_options": [
+          "Kujang",
+          "Surabi",
+          "Wayang Golek"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 5
+    },
+    "run_b_detail": {
+      "scenario_id": "sc20_ablation_no_recommendation_reason_stripped",
+      "layer": "llm_ablation_run_b",
+      "deterministic_checks": {
+        "dialogue_schema_valid": true,
+        "options_match_context_order": true,
+        "no_internal_tokens_or_coordinates": true
+      },
+      "llm_judge_scores": {
+        "context_relevance": {
+          "score": 3,
+          "reasoning": "Output dialog sudah relevan dengan konteks, merekomendasikan tiga tujuan budaya yang sesuai dengan data context. Namun, tidak ada informasi alasan rekomendasi (recommendation_reason tidak tersedia), sehingga konteks yang diberikan kepada pengguna kurang kaya. Dialog hanya menyebutkan pilihan dan saran urutan tanpa penjelasan mengapa Kujang dipilih sebagai utama. Karena kriteria menekankan pentingnya recommendation_reason untuk konteks yang lebih kaya, skor tidak bisa maksimal. Namun, secara fungsional sudah cukup baik dan sesuai konteks.",
+          "dimension": "context_relevance"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Semua bagian output dialog, baik spoken_output, subtitle_output, maupun recommendation_dialogue dan recommendation_options, secara eksplisit menyebut Kujang sebagai salah satu tujuan, bahkan menempatkannya sebagai rekomendasi utama. Penyebutan Kujang dilakukan secara natural dan konsisten sesuai konteks dan kriteria evaluasi.",
+          "dimension": "faithfulness"
+        },
+        "navigation_clarity": {
+          "score": 5,
+          "reasoning": "Dialog dengan jelas menyebutkan tiga tujuan budaya yang tersedia dan secara eksplisit merekomendasikan Kujang sebagai tujuan utama. Subtitle juga mengarahkan pemain untuk menuju Kujang terlebih dahulu. Opsi lain juga disebutkan, sehingga pemain tahu ke mana harus pergi dan apa saja pilihannya. Informasi navigasi utama sangat jelas.",
+          "dimension": "navigation_clarity"
+        },
+        "persona_alignment": {
+          "score": 5,
+          "reasoning": "Dialog yang diberikan menunjukkan kehangatan dengan penggunaan bahasa yang ramah dan mengajak, seperti 'Saya sarankan kita mulai dari Kujang' dan 'Silakan pilih sesuai minat Anda.' Tidak ada nada kaku atau dingin, dan Arif tetap konsisten hangat dalam membimbing pemain. Pilihan kata seperti 'bisa Anda pilih' dan 'Mari menuju' juga memperkuat persona hangat Arif.",
+          "dimension": "persona_alignment"
+        }
+      },
+      "context_output": {
+        "timestamp": "2026-05-01T13:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Informasi alasan rekomendasi tidak tersedia.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 2,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          },
+          {
+            "rank": 3,
+            "id": "Wayang Golek",
+            "name": "Wayang Golek",
+            "cultural_position": "20.0, 1.0, 20.0"
+          }
+        ],
+        "nav_target": "Kujang"
+      },
+      "dialogue_output": {
+        "spoken_output": "Ada tiga tujuan budaya yang bisa Anda kunjungi di sini. Saya sarankan kita mulai dari Kujang sebagai tujuan utama. Selain itu, Surabi dan Wayang Golek juga bisa Anda pilih jika ingin melihat yang lain.",
+        "subtitle_output": "Mari menuju Kujang terlebih dahulu.",
+        "recommendation_dialogue": "Tiga tujuan budaya tersedia. Silakan pilih sesuai minat Anda.",
+        "recommendation_options": [
+          "Kujang",
+          "Surabi",
+          "Wayang Golek"
+        ]
+      },
+      "errors": [],
+      "passed": true
+    }
+  }
+}

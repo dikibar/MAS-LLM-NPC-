@@ -1,185 +1,504 @@
-[
-  {
-    "id": "three_unvisited_nearest_order",
-    "description": "Normal case: three unvisited sites should be ranked by Euclidean distance from playerPosition.",
-    "request": {
-      "timestamp": "2026-05-01T12:30:00Z",
-      "scene": "Heritage_Museum_Wing_A",
-      "playerPosition": "8.0, 2.0, 10.0",
-      "culturalSites": [
-        {
-          "id": "Julang Ngapak",
-          "name": "Julang Ngapak",
-          "cultural_position": "7.21, 2, 8.7",
-          "visited": false
-        },
-        {
-          "id": "Kujang",
-          "name": "Kujang",
-          "cultural_position": "8.99, 3, 13.65",
-          "visited": false
-        },
-        {
-          "id": "Surabi",
-          "name": "Surabi",
-          "cultural_position": "5.448, 3, 16.256",
-          "visited": false
-        }
-      ]
+{
+  "scenarios": [
+    {
+      "id": "sc01_three_unvisited_nearest_order",
+      "layer": "structural",
+      "description": "Tiga site unvisited, ranking berdasarkan jarak Euclidean dari player.",
+      "focus": ["context_agent", "dialogue_agent"],
+      "primary_eval": "structural",
+      "llm_judge": false,
+      "request": {
+        "timestamp": "2026-05-01T12:30:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "8.0, 2.0, 10.0",
+        "culturalSites": [
+          {"id": "Julang Ngapak", "name": "Julang Ngapak", "cultural_position": "7.21, 2, 8.7", "visited": false},
+          {"id": "Kujang", "name": "Kujang", "cultural_position": "8.99, 3, 13.65", "visited": false},
+          {"id": "Surabi", "name": "Surabi", "cultural_position": "5.448, 3, 16.256", "visited": false}
+        ]
+      },
+      "expected_context": {"nav_target": "Julang Ngapak", "recommendation_rank_1": "Julang Ngapak", "recommendation_rank_2": "Kujang", "recommendation_rank_3": "Surabi", "situation_type": "multiple_recommendations", "dialogue_intent": "guide_to_primary_with_alternatives"},
+      "expected_dialogue": {"recommendation_options": ["Julang Ngapak", "Kujang", "Surabi"], "subtitle_max_words": 15, "no_technical_leak": true},
+      "deterministic_checks": ["schema_valid", "ranking_exact_match", "nav_target_matches_rank_1", "no_visited_sites_recommended", "max_three_recommendations", "options_match_context_order", "subtitle_max_15_words", "no_internal_tokens_or_coordinates"]
     },
-    "selectedOption": "Kujang"
-  },
-  {
-    "id": "visited_site_filtered_out",
-    "description": "Visited sites must not appear in context recommendations even when they are closest.",
-    "request": {
-      "timestamp": "2026-05-01T12:32:00Z",
-      "scene": "Heritage_Museum_Wing_A",
-      "playerPosition": "8.0, 2.0, 10.0",
-      "culturalSites": [
-        {
-          "id": "Visited_Close_Object",
-          "name": "Visited Close Object",
-          "cultural_position": "8.1, 2, 10.1",
-          "visited": true
-        },
-        {
-          "id": "Kujang",
-          "name": "Kujang",
-          "cultural_position": "8.99, 3, 13.65",
-          "visited": false
-        },
-        {
-          "id": "Surabi",
-          "name": "Surabi",
-          "cultural_position": "5.448, 3, 16.256",
-          "visited": false
-        }
-      ]
+    {
+      "id": "sc02_visited_site_filtered_out",
+      "layer": "structural",
+      "description": "Satu site sudah visited. Verifikasi bahwa site visited tidak masuk ke recommendations.",
+      "focus": ["context_agent", "dialogue_agent"],
+      "primary_eval": "structural",
+      "llm_judge": false,
+      "request": {
+        "timestamp": "2026-05-01T13:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "10.0, 1.0, 15.0",
+        "culturalSites": [
+          {"id": "Angklung", "name": "Angklung", "cultural_position": "14.62413, 1.37554, 18.67057", "visited": true},
+          {"id": "Wayang", "name": "Wayang", "cultural_position": "5.0, 1.0, 10.0", "visited": false},
+          {"id": "Batik", "name": "Batik", "cultural_position": "20.0, 1.0, 25.0", "visited": false}
+        ]
+      },
+      "expected_context": {"nav_target": "Wayang", "recommendation_rank_1": "Wayang", "recommendation_rank_2": "Batik", "no_site_in_recommendations": ["Angklung"], "situation_type": "multiple_recommendations"},
+      "expected_dialogue": {"recommendation_options": ["Wayang", "Batik"], "no_option": ["Angklung"], "no_technical_leak": true},
+      "deterministic_checks": ["schema_valid", "no_visited_sites_recommended", "nav_target_matches_rank_1", "ranking_exact_match", "options_match_context_order", "subtitle_max_15_words", "no_internal_tokens_or_coordinates"]
     },
-    "selectedOption": "Surabi"
-  },
-  {
-    "id": "single_remaining_site",
-    "description": "Only one unvisited site should produce one recommendation and one UI option.",
-    "request": {
-      "timestamp": "2026-05-01T12:35:00Z",
-      "scene": "Heritage_Museum_Wing_B",
-      "playerPosition": "0, 0, 0",
-      "culturalSites": [
-        {
-          "id": "Angklung",
-          "name": "Angklung",
-          "cultural_position": "2, 0, 0",
-          "visited": false
-        },
-        {
-          "id": "Surabi",
-          "name": "Surabi",
-          "cultural_position": "1, 0, 0",
-          "visited": true
-        }
-      ]
+    {
+      "id": "sc03_single_remaining_site",
+      "layer": "structural",
+      "description": "Hanya satu site belum dikunjungi. Verifikasi situation_type = single_recommendation.",
+      "focus": ["context_agent", "dialogue_agent"],
+      "primary_eval": "structural",
+      "llm_judge": false,
+      "request": {
+        "timestamp": "2026-05-01T14:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "10.0, 1.0, 15.0",
+        "culturalSites": [
+          {"id": "Julang Ngapak", "name": "Julang Ngapak", "cultural_position": "7.21, 2, 8.7", "visited": true},
+          {"id": "Kujang", "name": "Kujang", "cultural_position": "8.99, 3, 13.65", "visited": true},
+          {"id": "Surabi", "name": "Surabi", "cultural_position": "5.448, 3, 16.256", "visited": false}
+        ]
+      },
+      "expected_context": {"nav_target": "Surabi", "recommendation_rank_1": "Surabi", "recommendation_count": 1, "situation_type": "single_recommendation", "dialogue_intent": "guide_to_single_primary"},
+      "expected_dialogue": {"recommendation_options": ["Surabi"], "no_technical_leak": true},
+      "deterministic_checks": ["schema_valid", "no_visited_sites_recommended", "nav_target_matches_rank_1", "max_three_recommendations", "options_match_context_order", "subtitle_max_15_words", "no_internal_tokens_or_coordinates"]
     },
-    "selectedOption": "Angklung"
-  },
-  {
-    "id": "all_sites_visited",
-    "description": "All visited sites should produce no recommendations, empty nav_target, and empty UI options.",
-    "request": {
-      "timestamp": "2026-05-01T12:40:00Z",
-      "scene": "Heritage_Museum_Wing_C",
-      "playerPosition": "0, 0, 0",
-      "culturalSites": [
-        {
-          "id": "Kujang",
-          "name": "Kujang",
-          "cultural_position": "1, 0, 0",
-          "visited": true
-        },
-        {
-          "id": "Surabi",
-          "name": "Surabi",
-          "cultural_position": "2, 0, 0",
-          "visited": true
-        }
-      ]
+    {
+      "id": "sc04_all_sites_visited",
+      "layer": "structural",
+      "description": "Semua site sudah visited. Verifikasi empty recommendations dan dialogue empty state.",
+      "focus": ["context_agent", "dialogue_agent"],
+      "primary_eval": "structural",
+      "llm_judge": false,
+      "request": {
+        "timestamp": "2026-05-01T15:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "10.0, 1.0, 15.0",
+        "culturalSites": [
+          {"id": "Julang Ngapak", "name": "Julang Ngapak", "cultural_position": "7.21, 2, 8.7", "visited": true},
+          {"id": "Kujang", "name": "Kujang", "cultural_position": "8.99, 3, 13.65", "visited": true},
+          {"id": "Surabi", "name": "Surabi", "cultural_position": "5.448, 3, 16.256", "visited": true}
+        ]
+      },
+      "expected_context": {"nav_target": "", "recommendation_count": 0, "situation_type": "all_sites_visited", "dialogue_intent": "no_new_destination"},
+      "expected_dialogue": {"recommendation_options": [], "no_technical_leak": true},
+      "deterministic_checks": ["schema_valid", "nav_target_empty_when_no_recommendations", "empty_recommendations_handled", "no_internal_tokens_or_coordinates", "subtitle_max_15_words"]
+    },
+    {
+      "id": "sc05_tie_distance_uses_name_sort",
+      "layer": "structural",
+      "description": "Dua site dengan jarak identik. Tie-breaking alphabetical.",
+      "focus": ["context_agent"],
+      "primary_eval": "structural",
+      "llm_judge": false,
+      "request": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "0.0, 0.0, 0.0",
+        "culturalSites": [
+          {"id": "Zeta", "name": "Zeta", "cultural_position": "3.0, 0.0, 4.0", "visited": false},
+          {"id": "Alpha", "name": "Alpha", "cultural_position": "4.0, 0.0, 3.0", "visited": false},
+          {"id": "Beta", "name": "Beta", "cultural_position": "0.0, 0.0, 5.0", "visited": false}
+        ]
+      },
+      "expected_context": {"recommendation_rank_1": "Alpha", "recommendation_rank_2": "Beta", "recommendation_rank_3": "Zeta", "nav_target": "Alpha"},
+      "deterministic_checks": ["schema_valid", "ranking_exact_match", "nav_target_matches_rank_1"]
+    },
+    {
+      "id": "sc06_compatibility_alias_cultural_objects",
+      "layer": "structural",
+      "description": "Unity mengirim payload lama dengan alias culturalObjects dan coordinate.",
+      "focus": ["context_agent"],
+      "primary_eval": "structural",
+      "llm_judge": false,
+      "request": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "8.0, 2.0, 10.0",
+        "culturalObjects": [
+          {"id": "Julang Ngapak", "name": "Julang Ngapak", "coordinate": "7.21, 2, 8.7", "isObjectVisited": false},
+          {"id": "Kujang", "name": "Kujang", "coordinate": "8.99, 3, 13.65", "isObjectVisited": false}
+        ]
+      },
+      "expected_context": {"nav_target": "Julang Ngapak", "recommendation_rank_1": "Julang Ngapak"},
+      "deterministic_checks": ["schema_valid", "nav_target_matches_rank_1", "no_visited_sites_recommended"]
+    },
+    {
+      "id": "sc07_invalid_selected_option",
+      "layer": "structural",
+      "description": "Player memilih opsi yang tidak ada di recommendations aktif.",
+      "focus": ["orchestrator"],
+      "primary_eval": "structural",
+      "llm_judge": false,
+      "request": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "8.0, 2.0, 10.0",
+        "culturalSites": [
+          {"id": "Julang Ngapak", "name": "Julang Ngapak", "cultural_position": "7.21, 2, 8.7", "visited": false},
+          {"id": "Kujang", "name": "Kujang", "cultural_position": "8.99, 3, 13.65", "visited": false}
+        ]
+      },
+      "selection_request": {"selectedOption": "Site Yang Tidak Ada"},
+      "expected": {"selection_error": true, "error_code": 400},
+      "deterministic_checks": ["invalid_option_returns_error"]
+    },
+    {
+      "id": "sc08_user_action_first_entry",
+      "layer": "llm_interpretive",
+      "description": "Player baru pertama masuk museum. Semua site unvisited. Menguji kualitas interpretasi user_action LLM.",
+      "focus": ["context_agent"],
+      "primary_eval": "llm_judge",
+      "llm_judge": true,
+      "judge_dimensions": ["user_action_quality", "recommendation_reason_quality"],
+      "request": {
+        "timestamp": "2026-05-01T09:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "0.5, 0.0, 0.5",
+        "culturalSites": [
+          {"id": "Julang Ngapak", "name": "Julang Ngapak", "cultural_position": "7.21, 2, 8.7", "visited": false},
+          {"id": "Kujang", "name": "Kujang", "cultural_position": "8.99, 3, 13.65", "visited": false},
+          {"id": "Surabi", "name": "Surabi", "cultural_position": "5.448, 3, 16.256", "visited": false},
+          {"id": "Angklung", "name": "Angklung", "cultural_position": "14.62413, 1.37554, 18.67057", "visited": false}
+        ]
+      },
+      "expected_context": {"nav_target": "Julang Ngapak", "situation_type": "multiple_recommendations", "user_action_not_fallback": true},
+      "llm_judge_criteria": {
+        "user_action_quality": "user_action harus mendeskripsikan kondisi player yang baru masuk, bukan string generik 'Menunggu interaksi pemain'. Nilai 1-5.",
+        "recommendation_reason_quality": "recommendation_reason harus menyebut nama site rank-1 yang benar dan memberikan alasan yang logis. Nilai 1-5."
+      },
+      "faithfulness_check": {"field": "recommendation_reason", "valid_site_names": ["Julang Ngapak", "Kujang", "Surabi", "Angklung"], "check_no_hallucinated_names": true},
+      "deterministic_checks": ["schema_valid", "nav_target_matches_rank_1", "no_visited_sites_recommended", "no_coordinates_in_interpretive_fields", "recommendation_reason_present"]
+    },
+    {
+      "id": "sc09_user_action_mid_exploration",
+      "layer": "llm_interpretive",
+      "description": "Player di tengah eksplorasi, beberapa site sudah visited. Menguji kualitas interpretasi dan faithfulness recommendation_reason.",
+      "focus": ["context_agent", "dialogue_agent"],
+      "primary_eval": "llm_judge",
+      "llm_judge": true,
+      "judge_dimensions": ["user_action_quality", "recommendation_reason_quality", "faithfulness", "context_relevance"],
+      "request": {
+        "timestamp": "2026-05-01T10:30:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "12.0, 1.0, 20.0",
+        "culturalSites": [
+          {"id": "Julang Ngapak", "name": "Julang Ngapak", "cultural_position": "7.21, 2, 8.7", "visited": true},
+          {"id": "Kujang", "name": "Kujang", "cultural_position": "8.99, 3, 13.65", "visited": true},
+          {"id": "Surabi", "name": "Surabi", "cultural_position": "5.448, 3, 16.256", "visited": false},
+          {"id": "Angklung", "name": "Angklung", "cultural_position": "14.62413, 1.37554, 18.67057", "visited": false},
+          {"id": "Wayang", "name": "Wayang", "cultural_position": "20.0, 1.0, 25.0", "visited": false}
+        ]
+      },
+      "expected_context": {"nav_target": "Surabi", "situation_type": "multiple_recommendations", "user_action_not_fallback": true},
+      "faithfulness_check": {"field": "recommendation_reason", "valid_site_names": ["Julang Ngapak", "Kujang", "Surabi", "Angklung", "Wayang"], "check_no_hallucinated_names": true},
+      "llm_judge_criteria": {
+        "user_action_quality": "user_action harus mendeskripsikan aktivitas eksplorasi player, bukan string generik. Nilai 1-5.",
+        "recommendation_reason_quality": "recommendation_reason harus menyebut Surabi sebagai prioritas dengan alasan logis. Nilai 1-5.",
+        "faithfulness": "recommendation_reason tidak boleh menyebut nama site yang tidak ada di input. Nilai 1 jika ada hallusinasi, 5 jika bersih.",
+        "context_relevance": "spoken_output Dialogue Agent harus relevan dengan context rekomendasi. Nilai 1-5."
+      },
+      "deterministic_checks": ["schema_valid", "no_visited_sites_recommended", "nav_target_matches_rank_1", "no_coordinates_in_interpretive_fields", "recommendation_reason_present"]
+    },
+    {
+      "id": "sc10_situation_type_two_remaining",
+      "layer": "llm_interpretive",
+      "description": "Dua site tersisa. Menguji consistency situation_type dan dialogue_intent.",
+      "focus": ["context_agent", "dialogue_agent"],
+      "primary_eval": "llm_judge",
+      "llm_judge": true,
+      "judge_dimensions": ["situation_type_consistency", "dialogue_intent_consistency"],
+      "request": {
+        "timestamp": "2026-05-01T11:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "10.0, 1.0, 12.0",
+        "culturalSites": [
+          {"id": "Julang Ngapak", "name": "Julang Ngapak", "cultural_position": "7.21, 2, 8.7", "visited": true},
+          {"id": "Kujang", "name": "Kujang", "cultural_position": "8.99, 3, 13.65", "visited": false},
+          {"id": "Surabi", "name": "Surabi", "cultural_position": "5.448, 3, 16.256", "visited": false},
+          {"id": "Angklung", "name": "Angklung", "cultural_position": "14.62413, 1.37554, 18.67057", "visited": true}
+        ]
+      },
+      "expected_context": {"nav_target": "Kujang", "recommendation_count": 2, "situation_type": "multiple_recommendations", "dialogue_intent": "guide_to_primary_with_alternatives"},
+      "llm_judge_criteria": {
+        "situation_type_consistency": "situation_type harus multiple_recommendations karena ada 2 site tersisa. Nilai 5 jika benar, 1 jika salah.",
+        "dialogue_intent_consistency": "dialogue_intent harus guide_to_primary_with_alternatives karena ada alternatif. Nilai 5 jika benar, 1 jika salah."
+      },
+      "deterministic_checks": ["schema_valid", "no_visited_sites_recommended", "nav_target_matches_rank_1", "max_three_recommendations", "options_match_context_order", "subtitle_max_15_words", "no_internal_tokens_or_coordinates"]
+    },
+    {
+      "id": "sc11_recommendation_reason_faithfulness",
+      "layer": "llm_faithfulness",
+      "description": "Uji faithfulness utama. recommendation_reason hanya boleh menyebut nama dari 5 site valid.",
+      "focus": ["context_agent"],
+      "primary_eval": "faithfulness",
+      "llm_judge": true,
+      "judge_dimensions": ["faithfulness", "recommendation_reason_quality"],
+      "request": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "playerPosition": "5.0, 1.0, 5.0",
+        "culturalSites": [
+          {"id": "Julang Ngapak", "name": "Julang Ngapak", "cultural_position": "7.21, 2, 8.7", "visited": false},
+          {"id": "Kujang", "name": "Kujang", "cultural_position": "8.99, 3, 13.65", "visited": false},
+          {"id": "Surabi", "name": "Surabi", "cultural_position": "5.448, 3, 16.256", "visited": false},
+          {"id": "Angklung", "name": "Angklung", "cultural_position": "14.62413, 1.37554, 18.67057", "visited": false},
+          {"id": "Wayang Golek", "name": "Wayang Golek", "cultural_position": "20.0, 1.0, 20.0", "visited": false}
+        ]
+      },
+      "expected_context": {"nav_target": "Julang Ngapak", "situation_type": "multiple_recommendations"},
+      "faithfulness_check": {"field": "recommendation_reason", "valid_site_names": ["Julang Ngapak", "Kujang", "Surabi", "Angklung", "Wayang Golek"], "check_no_hallucinated_names": true, "check_rank1_mentioned": true},
+      "llm_judge_criteria": {
+        "faithfulness": "recommendation_reason hanya boleh menyebut nama dari daftar site yang ada. Nilai 1 jika ada hallusinasi, 5 jika semua nama benar.",
+        "recommendation_reason_quality": "recommendation_reason harus menyebut Julang Ngapak sebagai prioritas dengan alasan logis. Nilai 1-5."
+      },
+      "deterministic_checks": ["schema_valid", "no_visited_sites_recommended", "nav_target_matches_rank_1", "no_coordinates_in_interpretive_fields", "recommendation_reason_present", "situation_type_supported", "dialogue_intent_supported"]
+    },
+    {
+      "id": "sc12_technical_leak_prevention",
+      "layer": "llm_safety",
+      "description": "Menguji bahwa koordinat presisi tinggi tidak bocor ke output dialogue.",
+      "focus": ["context_agent", "dialogue_agent"],
+      "primary_eval": "llm_judge",
+      "llm_judge": true,
+      "judge_dimensions": ["technical_leak_safety", "persona_alignment"],
+      "request": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "8.0, 2.0, 10.0",
+        "culturalSites": [
+          {"id": "Julang Ngapak", "name": "Julang Ngapak", "cultural_position": "7.21413, 1.37554, 8.67057", "visited": false},
+          {"id": "Kujang", "name": "Kujang", "cultural_position": "8.99234, 3.12345, 13.65789", "visited": false},
+          {"id": "Surabi", "name": "Surabi", "cultural_position": "5.44812, 2.99999, 16.25634", "visited": false}
+        ]
+      },
+      "expected_context": {"nav_target": "Julang Ngapak", "no_coordinates_in_fields": ["user_action", "recommendation_reason"]},
+      "expected_dialogue": {"no_coordinates_in_fields": ["spoken_output", "subtitle_output", "recommendation_dialogue"], "no_technical_tokens": ["tool_get_runtime", "cultural_position", "nav_target", "precomputed", "rank", "visited"]},
+      "llm_judge_criteria": {
+        "technical_leak_safety": "spoken_output dan subtitle_output tidak boleh mengandung koordinat numerik (pola x.xxxxx), nama tool backend, atau token teknis. Nilai 1 jika ada leak, 5 jika bersih.",
+        "persona_alignment": "Arif harus berbicara sebagai pemandu budaya hangat dalam Bahasa Indonesia. Nilai 1-5."
+      },
+      "deterministic_checks": ["schema_valid", "no_internal_tokens_or_coordinates", "no_coordinates_in_interpretive_fields", "subtitle_max_15_words", "nav_target_matches_rank_1"]
+    },
+    {
+      "id": "sc13_dialogue_faithfulness_to_context",
+      "layer": "llm_faithfulness",
+      "description": "Menguji faithfulness Dialogue Agent terhadap ContextOutput. Kujang harus menjadi tujuan utama di spoken_output.",
+      "focus": ["dialogue_agent"],
+      "primary_eval": "faithfulness",
+      "llm_judge": true,
+      "judge_dimensions": ["faithfulness", "context_relevance", "navigation_clarity"],
+      "request": {
+        "timestamp": "2026-05-01T13:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "9.0, 1.0, 14.0",
+        "culturalSites": [
+          {"id": "Kujang", "name": "Kujang", "cultural_position": "8.99, 3, 13.65", "visited": false},
+          {"id": "Surabi", "name": "Surabi", "cultural_position": "5.448, 3, 16.256", "visited": false},
+          {"id": "Wayang Golek", "name": "Wayang Golek", "cultural_position": "20.0, 1.0, 20.0", "visited": false}
+        ]
+      },
+      "expected_context": {"nav_target": "Kujang", "recommendation_rank_1": "Kujang"},
+      "expected_dialogue": {"primary_option_mentioned": "Kujang", "no_technical_leak": true},
+      "llm_judge_criteria": {
+        "faithfulness": "spoken_output harus menyebut Kujang sebagai tujuan utama. Nilai 1 jika tidak menyebut, 5 jika jelas.",
+        "context_relevance": "spoken_output harus relevan dengan rekomendasi yang diberikan. Nilai 1-5.",
+        "navigation_clarity": "Player harus jelas tahu ke mana harus pergi. Nilai 1-5."
+      },
+      "deterministic_checks": ["schema_valid", "primary_option_mentioned", "options_match_context_order", "subtitle_max_15_words", "no_internal_tokens_or_coordinates"]
+    },
+    {
+      "id": "sc14_persona_warmth_consistency",
+      "layer": "llm_persona",
+      "description": "Skenario normal murni untuk evaluasi kualitas persona Arif - kehangatan dan Bahasa Indonesia natural.",
+      "focus": ["dialogue_agent"],
+      "primary_eval": "llm_judge",
+      "llm_judge": true,
+      "judge_dimensions": ["persona_alignment", "language_quality", "navigation_clarity"],
+      "request": {
+        "timestamp": "2026-05-01T10:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "8.0, 2.0, 10.0",
+        "culturalSites": [
+          {"id": "Julang Ngapak", "name": "Julang Ngapak", "cultural_position": "7.21, 2, 8.7", "visited": false},
+          {"id": "Kujang", "name": "Kujang", "cultural_position": "8.99, 3, 13.65", "visited": false},
+          {"id": "Surabi", "name": "Surabi", "cultural_position": "5.448, 3, 16.256", "visited": false}
+        ]
+      },
+      "expected_dialogue": {"primary_option_mentioned": "Julang Ngapak", "no_technical_leak": true, "language": "id"},
+      "llm_judge_criteria": {
+        "persona_alignment": "Arif harus berbicara hangat, ramah, antusias sebagai pemandu budaya. Bukan sistem navigasi dingin. Nilai 1-5.",
+        "language_quality": "Bahasa Indonesia harus natural, tidak kaku, tidak terlalu formal, tidak terlalu kasual. Nilai 1-5.",
+        "navigation_clarity": "Player harus tahu ke mana harus pergi dan kenapa. Nilai 1-5."
+      },
+      "deterministic_checks": ["schema_valid", "primary_option_mentioned", "options_match_context_order", "subtitle_max_15_words", "no_internal_tokens_or_coordinates"]
+    },
+    {
+      "id": "sc15_subtitle_compression_quality",
+      "layer": "llm_quality",
+      "description": "Menguji apakah subtitle_output adalah rangkuman bermakna, bukan truncation kasar.",
+      "focus": ["dialogue_agent"],
+      "primary_eval": "llm_judge",
+      "llm_judge": true,
+      "judge_dimensions": ["subtitle_quality", "ui_usefulness"],
+      "request": {
+        "timestamp": "2026-05-01T11:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "8.0, 2.0, 10.0",
+        "culturalSites": [
+          {"id": "Julang Ngapak", "name": "Julang Ngapak", "cultural_position": "7.21, 2, 8.7", "visited": false},
+          {"id": "Kujang", "name": "Kujang", "cultural_position": "8.99, 3, 13.65", "visited": false},
+          {"id": "Surabi", "name": "Surabi", "cultural_position": "5.448, 3, 16.256", "visited": false}
+        ]
+      },
+      "expected_dialogue": {"subtitle_max_words": 15, "subtitle_meaningful": true, "no_technical_leak": true},
+      "llm_judge_criteria": {
+        "subtitle_quality": "subtitle_output harus bermakna, merangkum inti ucapan Arif, tidak terpotong di tengah kalimat. Nilai 1 jika truncation kasar, 5 jika rangkuman utuh.",
+        "ui_usefulness": "subtitle_output harus berguna sebagai teks HUD VR - singkat, jelas, informatif. Nilai 1-5."
+      },
+      "deterministic_checks": ["schema_valid", "subtitle_max_15_words", "primary_option_mentioned", "no_internal_tokens_or_coordinates"]
+    },
+    {
+      "id": "sc16_near_end_exploration_tone",
+      "layer": "llm_persona",
+      "description": "Player hampir selesai - hanya 1 site tersisa dari 5. Tone Arif seharusnya apresiasif dan menyemangati.",
+      "focus": ["context_agent", "dialogue_agent"],
+      "primary_eval": "llm_judge",
+      "llm_judge": true,
+      "judge_dimensions": ["persona_alignment", "context_relevance", "language_quality"],
+      "request": {
+        "timestamp": "2026-05-01T16:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "10.0, 1.0, 12.0",
+        "culturalSites": [
+          {"id": "Julang Ngapak", "name": "Julang Ngapak", "cultural_position": "7.21, 2, 8.7", "visited": true},
+          {"id": "Kujang", "name": "Kujang", "cultural_position": "8.99, 3, 13.65", "visited": true},
+          {"id": "Surabi", "name": "Surabi", "cultural_position": "5.448, 3, 16.256", "visited": true},
+          {"id": "Angklung", "name": "Angklung", "cultural_position": "14.62413, 1.37554, 18.67057", "visited": true},
+          {"id": "Wayang Golek", "name": "Wayang Golek", "cultural_position": "20.0, 1.0, 20.0", "visited": false}
+        ]
+      },
+      "expected_context": {"nav_target": "Wayang Golek", "recommendation_count": 1, "situation_type": "single_recommendation", "dialogue_intent": "guide_to_single_primary"},
+      "llm_judge_criteria": {
+        "persona_alignment": "Arif harus menunjukkan apresiasi atas progress player (4 dari 5 site) dan menyemangati menyelesaikan kunjungan. Nilai 1-5.",
+        "context_relevance": "spoken_output harus relevan dengan kondisi 'hampir selesai', tidak generik. Nilai 1-5.",
+        "language_quality": "Bahasa Indonesia natural dan ekspresif. Nilai 1-5."
+      },
+      "deterministic_checks": ["schema_valid", "no_visited_sites_recommended", "nav_target_matches_rank_1", "primary_option_mentioned", "subtitle_max_15_words", "no_internal_tokens_or_coordinates"]
+    },
+    {
+      "id": "sc17_recommendation_options_ui_consistency",
+      "layer": "llm_quality",
+      "description": "Verifikasi recommendation_options match persis dengan recommendations context - urutan, nama, jumlah.",
+      "focus": ["dialogue_agent"],
+      "primary_eval": "llm_judge",
+      "llm_judge": true,
+      "judge_dimensions": ["ui_usefulness", "faithfulness"],
+      "request": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "8.0, 2.0, 10.0",
+        "culturalSites": [
+          {"id": "Julang Ngapak", "name": "Julang Ngapak", "cultural_position": "7.21, 2, 8.7", "visited": false},
+          {"id": "Kujang", "name": "Kujang", "cultural_position": "8.99, 3, 13.65", "visited": false},
+          {"id": "Surabi", "name": "Surabi", "cultural_position": "5.448, 3, 16.256", "visited": false}
+        ]
+      },
+      "expected_context": {"nav_target": "Julang Ngapak", "recommendation_rank_1": "Julang Ngapak", "recommendation_rank_2": "Kujang", "recommendation_rank_3": "Surabi"},
+      "expected_dialogue": {"recommendation_options": ["Julang Ngapak", "Kujang", "Surabi"], "options_order_strict": true},
+      "llm_judge_criteria": {
+        "ui_usefulness": "recommendation_options harus berisi nama yang bisa langsung jadi label tombol UI - jelas, tanpa kode internal. Nilai 1-5.",
+        "faithfulness": "recommendation_options harus persis sama dengan nama site di context recommendations. Nilai 1 jika tidak match, 5 jika match sempurna."
+      },
+      "deterministic_checks": ["schema_valid", "options_match_context_order", "option_count", "no_internal_tokens_or_coordinates", "subtitle_max_15_words"]
+    },
+    {
+      "id": "sc18_react_trajectory_tool_calls",
+      "layer": "llm_trajectory",
+      "description": "Evaluasi ReAct trajectory - apakah 3 bounded tools dipanggil dengan benar dan observasi dipakai di output.",
+      "focus": ["context_agent"],
+      "primary_eval": "trajectory",
+      "llm_judge": true,
+      "judge_dimensions": ["tool_call_validity", "reasoning_quality"],
+      "request": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "8.0, 2.0, 10.0",
+        "culturalSites": [
+          {"id": "Julang Ngapak", "name": "Julang Ngapak", "cultural_position": "7.21, 2, 8.7", "visited": false},
+          {"id": "Kujang", "name": "Kujang", "cultural_position": "8.99, 3, 13.65", "visited": false},
+          {"id": "Surabi", "name": "Surabi", "cultural_position": "5.448, 3, 16.256", "visited": false}
+        ]
+      },
+      "trajectory_checks": {
+        "required_tools": ["tool_get_runtime_user_status", "tool_get_runtime_cultural_sites", "tool_get_runtime_recommendations"],
+        "min_tool_calls": 3,
+        "check_tool_args_valid": true,
+        "check_observation_used_in_output": true
+      },
+      "llm_judge_criteria": {
+        "tool_call_validity": "Agent harus memanggil ketiga bounded tools dengan argumen valid. Nilai 1 jika ada yang tidak dipanggil atau argumen salah, 5 jika semua benar.",
+        "reasoning_quality": "Reasoning trace harus menunjukkan observasi dari tool benar-benar dipakai, bukan hanya formalitas. Nilai 1-5."
+      },
+      "deterministic_checks": ["schema_valid", "nav_target_matches_rank_1", "no_visited_sites_recommended", "recommendation_reason_present"]
+    },
+    {
+      "id": "sc19_pass_k_reliability",
+      "layer": "llm_reliability",
+      "description": "Skenario identik dijalankan k=5 kali untuk mengukur pass^k reliability (tau-bench method).",
+      "focus": ["context_agent", "dialogue_agent"],
+      "primary_eval": "reliability",
+      "llm_judge": true,
+      "judge_dimensions": ["consistency", "faithfulness", "persona_alignment"],
+      "repeat_k": 5,
+      "request": {
+        "timestamp": "2026-05-01T12:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "8.0, 2.0, 10.0",
+        "culturalSites": [
+          {"id": "Julang Ngapak", "name": "Julang Ngapak", "cultural_position": "7.21, 2, 8.7", "visited": false},
+          {"id": "Kujang", "name": "Kujang", "cultural_position": "8.99, 3, 13.65", "visited": false},
+          {"id": "Surabi", "name": "Surabi", "cultural_position": "5.448, 3, 16.256", "visited": false}
+        ]
+      },
+      "expected_context": {"nav_target": "Julang Ngapak", "recommendation_rank_1": "Julang Ngapak", "situation_type": "multiple_recommendations"},
+      "reliability_checks": {"pass_k": 5, "pass_criteria": ["context_schema_valid", "nav_target_matches_rank_1", "no_visited_sites_recommended"], "measure_variance": true, "measure_fields": ["user_action", "recommendation_reason", "spoken_output"]},
+      "llm_judge_criteria": {
+        "consistency": "Output dari 5 run harus konsisten pada field kritis (nav_target, situation_type, recommendation_options). Nilai 1-5.",
+        "faithfulness": "recommendation_reason di semua 5 run harus grounded, tidak ada nama site dikarang. Nilai 1-5.",
+        "persona_alignment": "spoken_output dari semua 5 run harus konsisten dalam tone dan persona Arif. Nilai 1-5."
+      },
+      "deterministic_checks": ["schema_valid", "nav_target_matches_rank_1", "no_visited_sites_recommended", "options_match_context_order", "subtitle_max_15_words", "no_internal_tokens_or_coordinates"]
+    },
+    {
+      "id": "sc20_ablation_no_recommendation_reason",
+      "layer": "llm_ablation",
+      "description": "Ablation study: Run A = full context, Run B = recommendation_reason dikosongkan. Delta skor membuktikan kontribusi Context Agent.",
+      "focus": ["dialogue_agent"],
+      "primary_eval": "ablation",
+      "llm_judge": true,
+      "judge_dimensions": ["context_relevance", "faithfulness", "navigation_clarity", "persona_alignment"],
+      "ablation_config": {"run_a": "full_context", "run_b": "stripped_recommendation_reason", "stripped_fields": ["recommendation_reason"], "measure_delta": true},
+      "request": {
+        "timestamp": "2026-05-01T13:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "playerPosition": "9.0, 1.0, 14.0",
+        "culturalSites": [
+          {"id": "Kujang", "name": "Kujang", "cultural_position": "8.99, 3, 13.65", "visited": false},
+          {"id": "Surabi", "name": "Surabi", "cultural_position": "5.448, 3, 16.256", "visited": false},
+          {"id": "Wayang Golek", "name": "Wayang Golek", "cultural_position": "20.0, 1.0, 20.0", "visited": false}
+        ]
+      },
+      "expected_context": {"nav_target": "Kujang", "recommendation_rank_1": "Kujang"},
+      "expected_dialogue": {"primary_option_mentioned": "Kujang", "no_technical_leak": true},
+      "llm_judge_criteria": {
+        "context_relevance": "Run A harus mendapat skor lebih tinggi dari Run B karena recommendation_reason memberi konteks lebih kaya. Nilai 1-5.",
+        "faithfulness": "Baik Run A maupun Run B harus menyebut Kujang. Nilai 1 jika tidak menyebut, 5 jika natural.",
+        "navigation_clarity": "Player harus tahu ke mana pergi dari kedua run. Nilai 1-5.",
+        "persona_alignment": "Arif harus tetap hangat di kedua run. Nilai 1-5."
+      },
+      "ablation_hypothesis": "Run A (full context) diharapkan menghasilkan skor context_relevance dan navigation_clarity lebih tinggi dari Run B. Delta positif membuktikan kontribusi recommendation_reason dari Context Agent.",
+      "deterministic_checks": ["schema_valid", "primary_option_mentioned", "options_match_context_order", "subtitle_max_15_words", "no_internal_tokens_or_coordinates"]
     }
-  },
-  {
-    "id": "tie_distance_uses_name_sort",
-    "description": "When distances are tied, current backend logic sorts by lowercase site name.",
-    "request": {
-      "timestamp": "2026-05-01T12:45:00Z",
-      "scene": "Heritage_Museum_Wing_D",
-      "playerPosition": "0, 0, 0",
-      "culturalSites": [
-        {
-          "id": "Zeta",
-          "name": "Zeta",
-          "cultural_position": "1, 0, 0",
-          "visited": false
-        },
-        {
-          "id": "Alpha",
-          "name": "Alpha",
-          "cultural_position": "-1, 0, 0",
-          "visited": false
-        },
-        {
-          "id": "Beta",
-          "name": "Beta",
-          "cultural_position": "0, 0, 2",
-          "visited": false
-        }
-      ]
-    },
-    "selectedOption": "Zeta"
-  },
-  {
-    "id": "compatibility_alias_cultural_objects",
-    "description": "Compatibility payload using culturalObject/coordinate/isObjectVisited should normalize into canonical culturalSites.",
-    "request": {
-      "timestamp": "2026-05-01T12:50:00Z",
-      "scene": "Heritage_Museum_Wing_E",
-      "playerPosition": "10, 0, 10",
-      "culturalObject": [
-        {
-          "name": "Wayang",
-          "coordinate": "11, 0, 10",
-          "isObjectVisited": false
-        },
-        {
-          "name": "Batik",
-          "coordinate": "14, 0, 10",
-          "isObjectVisited": false
-        },
-        {
-          "name": "Visited Mask",
-          "coordinate": "10.5, 0, 10",
-          "isObjectVisited": true
-        }
-      ]
-    },
-    "selectedOption": "Batik"
-  },
-  {
-    "id": "invalid_selected_option",
-    "description": "Invalid recommendation selection should be rejected by the orchestrator.",
-    "request": {
-      "timestamp": "2026-05-01T12:55:00Z",
-      "scene": "Heritage_Museum_Wing_F",
-      "playerPosition": "0, 0, 0",
-      "culturalSites": [
-        {
-          "id": "Kujang",
-          "name": "Kujang",
-          "cultural_position": "1, 0, 0",
-          "visited": false
-        }
-      ]
-    },
-    "selectedOption": "Not In Recommendations",
-    "expectSelectionError": true
-  }
-]
+  ]
+}

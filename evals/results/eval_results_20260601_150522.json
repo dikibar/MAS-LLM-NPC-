@@ -1,0 +1,121 @@
+{
+  "summary": {
+    "total_scenarios": 1,
+    "passed": 1,
+    "overall_pass_rate": 1.0,
+    "check_pass_rate": 1.0,
+    "judge_summary": {},
+    "ir_summary": {
+      "precision_at_3": 1.0,
+      "recall_at_3": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_3": 1.0
+    },
+    "faithfulness_avg": null,
+    "timestamp": "2026-06-01T15:05:21.912954",
+    "judge_model": "openai/gpt-4.1",
+    "judge_temperature": 0,
+    "cohen_kappa_note": "Use exported per-dimension scores for human/judge agreement analysis.",
+    "cohen_kappa_function_available": true
+  },
+  "scenario_results": [
+    {
+      "scenario_id": "sc14_persona_warmth_consistency",
+      "layer": "llm_persona",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:04:39.573976",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {
+        "persona_alignment": {
+          "score": 0,
+          "reasoning": "SKIPPED - OPENROUTER_API_KEY is not set",
+          "dimension": "persona_alignment"
+        },
+        "language_quality": {
+          "score": 0,
+          "reasoning": "SKIPPED - OPENROUTER_API_KEY is not set",
+          "dimension": "language_quality"
+        },
+        "navigation_clarity": {
+          "score": 0,
+          "reasoning": "SKIPPED - OPENROUTER_API_KEY is not set",
+          "dimension": "navigation_clarity"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T10:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "7.21, 2, 8.7"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 3,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, ada beberapa objek budaya yang menarik untuk dijelajahi. Julang Ngapak adalah tujuan utama yang saya rekomendasikan untuk saat ini. Selain itu, Kujang dan Surabi juga bisa Anda pilih jika ingin melihat yang lain.",
+        "subtitle_output": "Mari menuju Julang Ngapak.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya yang belum Anda kunjungi. Silakan pilih, saya siap memandu.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    }
+  ],
+  "pass_k": null,
+  "ablation": null
+}

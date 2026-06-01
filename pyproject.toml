@@ -9,4 +9,9 @@ dependencies = [
     "strands-agents[openai]>=1.36.0",
     "strands-agents-builder>=0.1.10",
     "strands-agents-tools>=0.5.0",
+    "openai>=2.33.0",
+    "scikit-learn>=1.8.0",
+    "matplotlib>=3.10.9",
+    "numpy>=2.4.6",
+    "scipy>=1.17.1",
 ]

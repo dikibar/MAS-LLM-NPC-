@@ -1,0 +1,140 @@
+{
+  "summary": {
+    "total_scenarios": 1,
+    "passed": 0,
+    "overall_pass_rate": 0.0,
+    "check_pass_rate": 1.0,
+    "judge_summary": {
+      "persona_alignment": {
+        "mean": 3,
+        "std": 0.0,
+        "n": 1,
+        "pass_rate": 0.0
+      },
+      "language_quality": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 1,
+        "pass_rate": 1.0
+      },
+      "navigation_clarity": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 1,
+        "pass_rate": 1.0
+      }
+    },
+    "ir_summary": {
+      "precision_at_3": 1.0,
+      "recall_at_3": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_3": 1.0
+    },
+    "faithfulness_avg": null,
+    "timestamp": "2026-06-01T15:06:42.561861",
+    "judge_model": "openai/gpt-4.1",
+    "judge_temperature": 0,
+    "cohen_kappa_note": "Use exported per-dimension scores for human/judge agreement analysis.",
+    "cohen_kappa_function_available": true
+  },
+  "scenario_results": [
+    {
+      "scenario_id": "sc14_persona_warmth_consistency",
+      "layer": "llm_persona",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-01T15:06:23.258048",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {},
+      "llm_judge_scores": {
+        "persona_alignment": {
+          "score": 3,
+          "reasoning": "Dialog yang diberikan cukup informatif dan sopan, namun kurang menunjukkan kehangatan, keramahan, dan antusiasme yang diharapkan dari persona Arif sebagai pemandu budaya. Kalimat seperti 'Mari kita mulai dengan Julang Ngapak sebagai tujuan utama' bersifat netral dan tidak ada ungkapan antusias atau sapaan hangat. Tidak ada kata-kata yang membangun suasana ramah atau mengajak dengan semangat, sehingga terasa agak datar dan menyerupai sistem navigasi biasa.",
+          "dimension": "persona_alignment"
+        },
+        "language_quality": {
+          "score": 5,
+          "reasoning": "Bahasa yang digunakan dalam spoken_output dan recommendation_dialogue terdengar natural, tidak kaku, dan tidak terlalu formal maupun kasual. Frasa seperti 'masih ada beberapa tujuan budaya menarik', 'Mari kita mulai', dan 'Silakan tentukan, saya siap memandu Anda' terasa ramah dan mudah dipahami, sesuai dengan kriteria. Tidak ada penggunaan bahasa yang terlalu baku atau terlalu santai. Struktur kalimat juga jelas dan mengalir dengan baik.",
+          "dimension": "language_quality"
+        },
+        "navigation_clarity": {
+          "score": 5,
+          "reasoning": "Dialog dengan jelas menyebutkan tujuan utama (Julang Ngapak) dan alasan pemilihannya sebagai prioritas, serta menawarkan alternatif (Kujang dan Surabi). Pemain diberi tahu ke mana harus pergi dan mengapa, serta diberikan pilihan. Informasi navigasi dan alasan sudah jelas dan eksplisit.",
+          "dimension": "navigation_clarity"
+        }
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T10:00:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "7.21, 2, 8.7"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "8.99, 3, 13.65"
+          },
+          {
+            "rank": 3,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "5.448, 3, 16.256"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini masih ada beberapa tujuan budaya menarik yang bisa Anda kunjungi. Mari kita mulai dengan Julang Ngapak sebagai tujuan utama. Jika ingin mencoba jalur lain, Kujang dan Surabi juga tersedia sebagai alternatif.",
+        "subtitle_output": "Mari menuju Julang Ngapak sebagai tujuan utama.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya yang bisa dipilih. Silakan tentukan, saya siap memandu Anda.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": false,
+      "subtitle_word_count": 7
+    }
+  ],
+  "pass_k": null,
+  "ablation": null
+}

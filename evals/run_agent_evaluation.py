@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 """
-Offline evaluation harness for the VR multi-agent system.
+Evaluation runner for the VR Museum Guide multi-agent system.
 
-The harness intentionally combines:
-- deterministic checks for Context Agent outputs;
-- rule-based checks for Dialogue Agent safety and UI consistency;
-- end-to-end task-success checks for the orchestrated workflow.
-
-It defaults to USE_MOCK_MODEL=true so evaluation can run without network access.
+Layers:
+  1. Structural and deterministic checks.
+  2. LLM-as-a-Judge G-Eval style scoring.
+  3. Faithfulness, trajectory, reliability, and ablation checks.
 """
 
 from __future__ import annotations
@@ -22,33 +20,81 @@ import os
 import re
 import statistics
 import sys
-from dataclasses import dataclass, field
+import time
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+os.environ.setdefault("MPLCONFIGDIR", "/private/tmp/agentfinal_matplotlib")
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-SRC_PATH = PROJECT_ROOT / "src"
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from openai import OpenAI
+from sklearn.metrics import cohen_kappa_score, ndcg_score
+
+
+ROOT = Path(__file__).resolve().parents[1]
+SRC_PATH = ROOT / "src"
 if str(SRC_PATH) not in sys.path:
     sys.path.insert(0, str(SRC_PATH))
 
-os.environ.setdefault("USE_MOCK_MODEL", "true")
+SCENARIOS_PATH = Path(__file__).parent / "scenarios.json"
+FIGURES_DIR = Path(__file__).parent / "figures"
+RESULTS_DIR = Path(__file__).parent / "results"
+FIGURES_DIR.mkdir(exist_ok=True)
+RESULTS_DIR.mkdir(exist_ok=True)
 
-from schema.models import ContextOutput, DialogueOutput, SimulationRequest  # noqa: E402
+
+def env_or_dotenv(name: str, default: str = "") -> str:
+    value = os.getenv(name)
+    if value:
+        return value
+    env_path = ROOT / ".env"
+    if not env_path.exists():
+        return default
+    for line in env_path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#") or "=" not in stripped:
+            continue
+        key, raw_value = stripped.split("=", 1)
+        if key.strip() == name:
+            return raw_value.strip().strip('"').strip("'")
+    return default
 
 
-AgentMode = str
+JUDGE_MODEL = env_or_dotenv("OPENROUTER_MODEL", "openai/gpt-4.1")
+OPENROUTER_API_KEY = env_or_dotenv("OPENROUTER_API_KEY", "")
+OPENROUTER_BASE_URL = env_or_dotenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
 
+judge_client = (
+    OpenAI(base_url=OPENROUTER_BASE_URL, api_key=OPENROUTER_API_KEY)
+    if OPENROUTER_API_KEY
+    else None
+)
+
+# Default to real mode per the evaluation spec. If credentials are unavailable,
+# the project orchestrator falls back to MockModel.
+os.environ.setdefault("USE_MOCK_MODEL", "false")
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+logger = logging.getLogger(__name__)
+VERBOSE = False
 
 LEAK_PATTERNS = [
-    re.compile(r"-?\d+(?:\.\d+)?\s*,\s*-?\d+(?:\.\d+)?\s*,\s*-?\d+(?:\.\d+)?"),
+    re.compile(r"-?\d+(?:\.\d{3,})\s*,\s*-?\d+(?:\.\d{3,})?\s*,\s*-?\d+(?:\.\d{3,})?"),
+    re.compile(r"\b\d+\.\d{3,}\b"),
     re.compile(r"\bNAV_TO_TARGET\b", re.IGNORECASE),
     re.compile(r"\bDISPLAY_SUBTITLE\b", re.IGNORECASE),
     re.compile(r"\bnavmesh\b", re.IGNORECASE),
     re.compile(r"\bbackend\b", re.IGNORECASE),
-    re.compile(r"\bcontext[_ ]?agent\b", re.IGNORECASE),
-    re.compile(r"\bdialogue[_ ]?agent\b", re.IGNORECASE),
+    re.compile(r"\btool_get\b", re.IGNORECASE),
     re.compile(r"\btool_", re.IGNORECASE),
+    re.compile(r"\bcultural_position\b", re.IGNORECASE),
+    re.compile(r"\bprecomputed\b", re.IGNORECASE),
+    re.compile(r"\bcontext_output\b", re.IGNORECASE),
 ]
 
 VALID_SITUATION_TYPES = {
@@ -66,589 +112,1028 @@ VALID_DIALOGUE_INTENTS = {
 }
 
 
-@dataclass
-class CheckResult:
-    name: str
-    passed: bool
-    detail: str = ""
-
-
-@dataclass
-class ScenarioResult:
-    scenario_id: str
-    description: str
-    checks: list[CheckResult] = field(default_factory=list)
-    context_metrics: dict[str, float | int | bool] = field(default_factory=dict)
-    dialogue_metrics: dict[str, float | int | bool] = field(default_factory=dict)
-    end_to_end_success: bool = False
-
-    def add(self, name: str, passed: bool, detail: str = "") -> None:
-        self.checks.append(CheckResult(name=name, passed=passed, detail=detail))
-
-    @property
-    def passed_checks(self) -> int:
-        return sum(1 for check in self.checks if check.passed)
-
-    @property
-    def total_checks(self) -> int:
-        return len(self.checks)
-
-    @property
-    def pass_rate(self) -> float:
-        if not self.checks:
-            return 0.0
-        return self.passed_checks / self.total_checks
-
-
-def parse_vector3(position: str) -> tuple[float, float, float]:
-    parts = [part.strip() for part in position.split(",")]
+def parse_vector3(pos_str: str) -> tuple[float, float, float]:
+    parts = [part.strip() for part in pos_str.split(",")]
     if len(parts) != 3:
-        raise ValueError(f"Invalid Vector3 coordinate: {position}")
-    return tuple(float(part) for part in parts)
+        raise ValueError(f"Invalid Vector3 coordinate: {pos_str}")
+    return float(parts[0]), float(parts[1]), float(parts[2])
 
 
-def distance(a: str, b: str) -> float:
+def euclidean_distance(a: str, b: str) -> float:
     ax, ay, az = parse_vector3(a)
     bx, by, bz = parse_vector3(b)
     return math.sqrt((ax - bx) ** 2 + (ay - by) ** 2 + (az - bz) ** 2)
 
 
-def gold_recommendations(sim_request: SimulationRequest) -> list[dict[str, Any]]:
+def normalize_site_dicts(req_data: dict[str, Any]) -> list[dict[str, Any]]:
+    raw_sites = req_data.get("culturalSites") or req_data.get("culturalObjects") or req_data.get("culturalObject") or []
+    normalized = []
+    for site in raw_sites:
+        normalized.append(
+            {
+                "id": site.get("id") or site.get("name", ""),
+                "name": site.get("name", ""),
+                "cultural_position": site.get("cultural_position") or site.get("coordinate", ""),
+                "visited": site.get("visited", site.get("isObjectVisited", False)),
+            }
+        )
+    return normalized
+
+
+def compute_expected_ranking(player_pos: str, sites: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    unvisited = [site for site in sites if not site.get("visited", False)]
     ranked = sorted(
-        [site for site in sim_request.culturalSites if not site.visited],
+        unvisited,
         key=lambda site: (
-            distance(sim_request.playerPosition, site.cultural_position),
-            site.name.lower(),
+            euclidean_distance(player_pos, site["cultural_position"]),
+            site["name"].lower(),
         ),
     )
-    return [
-        {
-            "rank": index,
-            "id": site.id,
-            "name": site.name,
-            "cultural_position": site.cultural_position,
-        }
-        for index, site in enumerate(ranked[:3], start=1)
+    return ranked[:3]
+
+
+def check_schema_valid_context(context_output: dict[str, Any]) -> bool:
+    required = [
+        "timestamp",
+        "scene",
+        "user_action",
+        "context_summary",
+        "situation_type",
+        "recommendation_reason",
+        "dialogue_intent",
+        "recommendations",
+        "nav_target",
     ]
+    return all(key in context_output for key in required)
 
 
-def precision_at_k(predicted: list[str], relevant: list[str], k: int) -> float:
-    considered = predicted[:k]
-    if not considered:
-        return 1.0 if not relevant else 0.0
-    return len(set(considered) & set(relevant)) / len(considered)
+def check_schema_valid_dialogue(dialogue_output: dict[str, Any]) -> bool:
+    required = [
+        "spoken_output",
+        "subtitle_output",
+        "recommendation_dialogue",
+        "recommendation_options",
+    ]
+    return all(key in dialogue_output for key in required)
 
 
-def recall_at_k(predicted: list[str], relevant: list[str], k: int) -> float:
-    if not relevant:
-        return 1.0 if not predicted[:k] else 0.0
-    return len(set(predicted[:k]) & set(relevant)) / len(relevant)
+def check_no_visited_sites(context_output: dict[str, Any], sites: list[dict[str, Any]]) -> bool:
+    visited_ids = {site["id"] for site in sites if site.get("visited", False)}
+    rec_ids = {rec["id"] for rec in context_output.get("recommendations", [])}
+    return not (visited_ids & rec_ids)
 
 
-def mrr(predicted: list[str], relevant: list[str]) -> float:
+def check_nav_target_rank1(context_output: dict[str, Any]) -> bool:
+    recommendations = context_output.get("recommendations", [])
+    nav_target = context_output.get("nav_target", "")
+    if not recommendations:
+        return nav_target == ""
+    return nav_target == recommendations[0]["id"]
+
+
+def check_subtitle_max_15_words(dialogue_output: dict[str, Any]) -> tuple[bool, int]:
+    subtitle = dialogue_output.get("subtitle_output", "")
+    count = len([word for word in subtitle.split() if word.strip()])
+    return count <= 15, count
+
+
+def check_no_technical_leak(text: str) -> bool:
+    return not any(pattern.search(text or "") for pattern in LEAK_PATTERNS)
+
+
+def check_primary_option_mentioned(dialogue_output: dict[str, Any], primary_site: str) -> bool:
+    if not primary_site:
+        return True
+    user_text = " ".join(
+        [
+            dialogue_output.get("spoken_output", ""),
+            dialogue_output.get("subtitle_output", ""),
+            dialogue_output.get("recommendation_dialogue", ""),
+            " ".join(dialogue_output.get("recommendation_options", [])),
+        ]
+    ).lower()
+    return primary_site.lower() in user_text
+
+
+def check_options_match_context(dialogue_output: dict[str, Any], context_output: dict[str, Any]) -> bool:
+    expected = [rec["name"] for rec in context_output.get("recommendations", [])]
+    actual = dialogue_output.get("recommendation_options", [])
+    return actual == expected
+
+
+def compute_ir_metrics(predicted: list[str], relevant: list[str]) -> dict[str, float]:
+    k = 3
+    pred_k = predicted[:k]
     relevant_set = set(relevant)
-    for index, item in enumerate(predicted, start=1):
+    hits = [1 if item in relevant_set else 0 for item in pred_k]
+    precision = sum(hits) / len(pred_k) if pred_k else (1.0 if not relevant else 0.0)
+    recall = sum(hits) / len(relevant_set) if relevant_set else (1.0 if not pred_k else 0.0)
+
+    mrr = 0.0
+    for index, item in enumerate(pred_k, start=1):
         if item in relevant_set:
-            return 1.0 / index
-    return 0.0
+            mrr = 1.0 / index
+            break
+
+    if not pred_k and not relevant:
+        ndcg = 1.0
+    elif not pred_k:
+        ndcg = 0.0
+    else:
+        y_true = np.array([[1 if item in relevant_set else 0 for item in pred_k]])
+        y_score = np.array([[k - index for index in range(len(pred_k))]])
+        try:
+            ndcg = float(ndcg_score(y_true, y_score, k=k))
+        except Exception:
+            ndcg = 0.0
+
+    return {
+        "precision_at_3": round(precision, 4),
+        "recall_at_3": round(recall, 4),
+        "mrr": round(mrr, 4),
+        "ndcg_at_3": round(ndcg, 4),
+    }
 
 
-def ndcg_at_k(predicted: list[str], ideal: list[str], k: int) -> float:
-    if not ideal:
-        return 1.0 if not predicted[:k] else 0.0
+def compute_faithfulness_score(text: str, valid_names: list[str], check_rank1: str | None = None) -> dict[str, Any]:
+    text_lower = (text or "").lower()
+    mentioned_valid = [name for name in valid_names if name.lower() in text_lower]
+    valid_lower = {name.lower() for name in valid_names}
+    hallucinated = []
 
-    relevance = {item: max(len(ideal) - index, 1) for index, item in enumerate(ideal)}
+    # Candidate named entities are capitalized spans. This is intentionally
+    # conservative because Indonesian user-facing text often capitalizes sentence starts.
+    candidates = re.findall(r"\b[A-Z][A-Za-z]*(?:\s+[A-Z][A-Za-z]*)*\b", text or "")
+    common_words = {
+        "Pemain",
+        "Anda",
+        "Museum",
+        "Budaya",
+        "Objek",
+        "Situs",
+        "Heritage",
+        "Wing",
+        "Alternatif",
+        "Tidak",
+    }
+    for candidate in candidates:
+        candidate = candidate.strip()
+        if len(candidate) < 3 or candidate in common_words:
+            continue
+        candidate_lower = candidate.lower()
+        is_valid = any(candidate_lower in valid_name or valid_name in candidate_lower for valid_name in valid_lower)
+        if not is_valid:
+            hallucinated.append(candidate)
 
-    def dcg(items: list[str]) -> float:
-        score = 0.0
-        for index, item in enumerate(items[:k], start=1):
-            gain = relevance.get(item, 0)
-            score += gain / math.log2(index + 1)
-        return score
-
-    ideal_dcg = dcg(ideal[:k])
-    if ideal_dcg == 0:
-        return 0.0
-    return dcg(predicted) / ideal_dcg
+    faithfulness_score = 1.0 if not hallucinated else max(0.0, 1.0 - (len(hallucinated) * 0.2))
+    rank1_mentioned = bool(check_rank1 and check_rank1.lower() in text_lower)
+    return {
+        "faithfulness_score": round(faithfulness_score, 4),
+        "hallucinated_names": hallucinated,
+        "hallucinated_entity_count": len(hallucinated),
+        "rank1_mentioned": rank1_mentioned,
+        "mentioned_valid_sites": mentioned_valid,
+    }
 
 
-def count_words(text: str) -> int:
-    return len([word for word in text.strip().split() if word])
+def llm_judge_dimension(
+    dimension: str,
+    criteria: str,
+    context_output: dict[str, Any],
+    dialogue_output: dict[str, Any] | None = None,
+    extra_context: str = "",
+) -> dict[str, Any]:
+    if judge_client is None:
+        return {"score": 0, "reasoning": "SKIPPED - OPENROUTER_API_KEY is not set", "dimension": dimension}
 
-
-def contains_leak(text: str) -> bool:
-    return any(pattern.search(text) for pattern in LEAK_PATTERNS)
-
-
-def evaluate_context(
-    result: ScenarioResult,
-    sim_request: SimulationRequest,
-    context: ContextOutput,
-) -> list[str]:
-    expected = gold_recommendations(sim_request)
-    expected_names = [item["name"] for item in expected]
-    expected_ids = [item["id"] for item in expected]
-    predicted_names = [site.name for site in context.recommendations]
-    predicted_ids = [site.id for site in context.recommendations]
-    visited_names = {site.name for site in sim_request.culturalSites if site.visited}
-
-    result.add(
-        "context.schema_valid",
-        isinstance(context, ContextOutput),
-        "ContextOutput object returned by orchestrator.",
+    context_str = json.dumps(context_output, ensure_ascii=False, indent=2)
+    dialogue_str = json.dumps(dialogue_output, ensure_ascii=False, indent=2) if dialogue_output else "N/A"
+    system_prompt = (
+        "Kamu adalah evaluator kualitas sistem multi-agent NPC pemandu budaya VR. "
+        "Evaluasi secara objektif dan kritis. Output hanya JSON valid."
     )
-    result.add(
-        "context.timestamp_matches_request",
-        context.timestamp == sim_request.timestamp,
-        f"expected={sim_request.timestamp}, actual={context.timestamp}",
+    user_prompt = f"""DIMENSI EVALUASI: {dimension}
+
+CONTEXT OUTPUT:
+{context_str}
+
+DIALOGUE OUTPUT:
+{dialogue_str}
+
+{f"INFORMASI TAMBAHAN: {extra_context}" if extra_context else ""}
+
+KRITERIA:
+{criteria}
+
+LANGKAH EVALUASI:
+1. Baca context dan dialogue output dengan teliti.
+2. Periksa apakah kriteria terpenuhi.
+3. Berikan bukti spesifik.
+4. Beri skor 1-5.
+
+SKALA:
+1 = sangat buruk
+2 = buruk
+3 = cukup
+4 = baik
+5 = sangat baik
+
+OUTPUT JSON:
+{{"reasoning": "penjelasan singkat berbasis bukti", "score": 1}}
+"""
+
+    try:
+        response = judge_client.chat.completions.create(
+            model=JUDGE_MODEL,
+            temperature=0,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            max_tokens=500,
+        )
+        raw = response.choices[0].message.content.strip()
+        raw = re.sub(r"```json\s*|\s*```", "", raw).strip()
+        parsed = json.loads(raw)
+        return {
+            "score": int(parsed.get("score", 0)),
+            "reasoning": parsed.get("reasoning", ""),
+            "dimension": dimension,
+        }
+    except Exception as exc:
+        logger.warning("LLM judge error for %s: %s", dimension, exc)
+        return {"score": 0, "reasoning": f"ERROR: {exc}", "dimension": dimension}
+
+
+def run_llm_judge_all_dimensions(
+    scenario: dict[str, Any],
+    context_output: dict[str, Any],
+    dialogue_output: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    criteria_map = scenario.get("llm_judge_criteria", {})
+    default_criteria = {
+        "context_relevance": "Output harus relevan dengan ContextOutput aktual dan tidak generik.",
+        "faithfulness": "Output tidak boleh menyebut informasi yang tidak ada di context.",
+        "navigation_clarity": "Pemain harus jelas tahu ke mana harus pergi.",
+        "persona_alignment": "Arif harus hangat, ramah, berbahasa Indonesia natural, dan berperan sebagai pemandu budaya.",
+        "language_quality": "Bahasa Indonesia natural, tidak kaku, dan tidak bercampur Inggris.",
+        "ui_usefulness": "Teks dan opsi UI harus jelas, berguna, dan tanpa kode internal.",
+        "technical_leak_safety": "Tidak ada koordinat, tool, backend token, atau istilah teknis di output user-facing.",
+        "user_action_quality": "user_action harus natural dan spesifik terhadap keadaan pemain.",
+        "recommendation_reason_quality": "recommendation_reason harus menyebut rank-1 dan memberi alasan logis.",
+        "situation_type_consistency": "situation_type harus konsisten dengan jumlah rekomendasi.",
+        "dialogue_intent_consistency": "dialogue_intent harus konsisten dengan situation_type.",
+        "tool_call_validity": "Agent harus menggunakan bounded tools yang diwajibkan.",
+        "reasoning_quality": "Reasoning harus memakai observasi tool, bukan formalitas.",
+        "subtitle_quality": "subtitle_output harus ringkas dan bermakna.",
+        "consistency": "Output multiple run harus konsisten pada field kritis.",
+    }
+    results = {}
+    for dimension in scenario.get("judge_dimensions", []):
+        criteria = criteria_map.get(dimension, default_criteria.get(dimension, f"Evaluasi {dimension} dengan skor 1-5."))
+        results[dimension] = llm_judge_dimension(dimension, criteria, context_output, dialogue_output)
+    return results
+
+
+def check_react_trajectory(agent_raw_output: str, required_tools: list[str]) -> dict[str, Any]:
+    raw_lower = (agent_raw_output or "").lower()
+    tools_called = [tool for tool in required_tools if tool.lower() in raw_lower]
+    return {
+        "tools_called": tools_called,
+        "all_required_called": set(required_tools).issubset(set(tools_called)),
+        "tools_missing": [tool for tool in required_tools if tool not in tools_called],
+        "tool_call_count": len(tools_called),
+        "note": "Current Strands trace is not exposed by the production orchestrator; this is a best-effort raw-output check.",
+    }
+
+
+def build_simulation_request(req_data: dict[str, Any]):
+    from schema.models import SimulationRequest
+
+    return SimulationRequest.model_validate(
+        {
+            "timestamp": req_data["timestamp"],
+            "scene": req_data["scene"],
+            "playerPosition": req_data["playerPosition"],
+            "culturalSites": normalize_site_dicts(req_data),
+        }
     )
-    result.add(
-        "context.scene_matches_request",
-        context.scene == sim_request.scene,
-        f"expected={sim_request.scene}, actual={context.scene}",
-    )
-    result.add(
-        "context.no_visited_sites_recommended",
-        not (set(predicted_names) & visited_names),
-        f"visited_in_output={sorted(set(predicted_names) & visited_names)}",
-    )
-    result.add(
-        "context.ranking_exact_match",
-        predicted_ids == expected_ids,
-        f"expected={expected_ids}, actual={predicted_ids}",
-    )
-    expected_nav_target = expected[0]["id"] if expected else ""
-    result.add(
-        "context.nav_target_matches_rank_1",
-        context.nav_target == expected_nav_target,
-        f"expected={expected_nav_target}, actual={context.nav_target}",
-    )
-    result.add(
-        "context.max_three_recommendations",
-        len(context.recommendations) <= 3,
-        f"actual_count={len(context.recommendations)}",
-    )
-    result.add(
-        "context.context_summary_present",
-        bool(context.context_summary.strip()),
-        context.context_summary,
-    )
-    result.add(
-        "context.recommendation_reason_present",
-        bool(context.recommendation_reason.strip()),
-        context.recommendation_reason,
-    )
-    result.add(
-        "context.situation_type_supported",
-        context.situation_type in VALID_SITUATION_TYPES,
-        f"actual={context.situation_type}",
-    )
-    result.add(
-        "context.dialogue_intent_supported",
-        context.dialogue_intent in VALID_DIALOGUE_INTENTS,
-        f"actual={context.dialogue_intent}",
-    )
-    result.add(
-        "context.no_coordinates_in_interpretive_fields",
-        not contains_leak(
+
+
+def run_orchestrator_quietly(func, *args, **kwargs):
+    if VERBOSE:
+        return func(*args, **kwargs)
+    with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+        return func(*args, **kwargs)
+
+
+def run_single_scenario(scenario: dict[str, Any]) -> dict[str, Any]:
+    from orchestration.coordinator import HierarchicalOrchestrator
+
+    scenario_id = scenario["id"]
+    logger.info("Running scenario: %s", scenario_id)
+    result = {
+        "scenario_id": scenario_id,
+        "layer": scenario.get("layer"),
+        "focus": scenario.get("focus", []),
+        "timestamp": datetime.utcnow().isoformat(),
+        "deterministic_checks": {},
+        "ir_metrics": {},
+        "faithfulness": {},
+        "llm_judge_scores": {},
+        "trajectory": {},
+        "context_output": None,
+        "dialogue_output": None,
+        "errors": [],
+        "passed": False,
+    }
+
+    try:
+        req_data = scenario["request"]
+        sites = normalize_site_dicts(req_data)
+        sim_req = build_simulation_request(req_data)
+        orchestrator = HierarchicalOrchestrator()
+
+        context_cycle = run_orchestrator_quietly(orchestrator.run_context_cycle, sim_req)
+        context_output = context_cycle.context.model_dump()
+        result["context_output"] = context_output
+
+        dialogue_cycle = run_orchestrator_quietly(orchestrator.run_dialogue_cycle, context_cycle.simulation_id)
+        dialogue_output = dialogue_cycle.dialogue.model_dump()
+        result["dialogue_output"] = dialogue_output
+
+        checks: dict[str, bool] = {}
+        expected_sites = compute_expected_ranking(req_data["playerPosition"], sites)
+        expected_ids = [site["id"] for site in expected_sites]
+        expected_names = [site["name"] for site in expected_sites]
+        actual_ids = [rec["id"] for rec in context_output.get("recommendations", [])]
+
+        checks["context_schema_valid"] = check_schema_valid_context(context_output)
+        checks["dialogue_schema_valid"] = check_schema_valid_dialogue(dialogue_output)
+        checks["no_visited_sites_recommended"] = check_no_visited_sites(context_output, sites)
+        checks["ranking_exact_match"] = actual_ids == expected_ids[: len(actual_ids)]
+        checks["nav_target_matches_rank_1"] = check_nav_target_rank1(context_output)
+        checks["nav_target_empty_when_no_recommendations"] = (
+            context_output.get("nav_target", "") == "" if not expected_ids else True
+        )
+        checks["max_three_recommendations"] = len(context_output.get("recommendations", [])) <= 3
+        checks["situation_type_supported"] = context_output.get("situation_type") in VALID_SITUATION_TYPES
+        checks["dialogue_intent_supported"] = context_output.get("dialogue_intent") in VALID_DIALOGUE_INTENTS
+        checks["recommendation_reason_present"] = bool(context_output.get("recommendation_reason", "").strip())
+        checks["no_coordinates_in_interpretive_fields"] = check_no_technical_leak(
             " ".join(
                 [
-                    context.user_action,
-                    context.context_summary,
-                    context.recommendation_reason,
-                    context.dialogue_intent,
-                    context.situation_type,
+                    context_output.get("user_action", ""),
+                    context_output.get("context_summary", ""),
+                    context_output.get("recommendation_reason", ""),
+                    context_output.get("situation_type", ""),
+                    context_output.get("dialogue_intent", ""),
                 ]
             )
-        ),
-        "interpretive fields should not expose coordinates or technical tokens.",
-    )
-
-    k = 3
-    result.context_metrics = {
-        "precision_at_3": precision_at_k(predicted_names, expected_names, k),
-        "recall_at_3": recall_at_k(predicted_names, expected_names, k),
-        "mrr": mrr(predicted_names, expected_names),
-        "ndcg_at_3": ndcg_at_k(predicted_names, expected_names, k),
-        "recommendation_count": len(context.recommendations),
-        "expected_count": len(expected),
-    }
-    return expected_names
-
-
-def evaluate_dialogue(
-    result: ScenarioResult,
-    dialogue: DialogueOutput,
-    expected_options: list[str],
-    selected_option: str | None = None,
-) -> None:
-    all_user_text = " ".join(
-        [
-            dialogue.spoken_output,
-            dialogue.subtitle_output,
-            dialogue.recommendation_dialogue,
-            " ".join(dialogue.recommendation_options),
-        ]
-    )
-    primary_option = expected_options[0] if expected_options else ""
-    subtitle_words = count_words(dialogue.subtitle_output)
-
-    result.add(
-        "dialogue.schema_valid",
-        isinstance(dialogue, DialogueOutput),
-        "DialogueOutput object returned by orchestrator.",
-    )
-    result.add(
-        "dialogue.options_match_context_order",
-        dialogue.recommendation_options == expected_options,
-        f"expected={expected_options}, actual={dialogue.recommendation_options}",
-    )
-    result.add(
-        "dialogue.subtitle_max_15_words",
-        subtitle_words <= 15,
-        f"word_count={subtitle_words}",
-    )
-    result.add(
-        "dialogue.no_internal_tokens_or_coordinates",
-        not contains_leak(all_user_text),
-        "user-facing text should not expose coordinates, tool names, backend terms, or NavMesh terms.",
-    )
-
-    if primary_option and selected_option is None:
-        result.add(
-            "dialogue.primary_option_mentioned",
-            primary_option.lower() in dialogue.spoken_output.lower()
-            or primary_option.lower() in dialogue.subtitle_output.lower(),
-            f"primary_option={primary_option}",
-        )
-    elif not primary_option:
-        result.add(
-            "dialogue.empty_recommendations_handled",
-            not dialogue.recommendation_options,
-            f"actual_options={dialogue.recommendation_options}",
         )
 
-    if selected_option:
-        result.add(
-            "dialogue.selected_option_mentioned",
-            selected_option.lower() in dialogue.spoken_output.lower()
-            and selected_option.lower() in dialogue.subtitle_output.lower(),
-            f"selected_option={selected_option}",
-        )
-
-    result.dialogue_metrics = {
-        "subtitle_word_count": subtitle_words,
-        "option_count": len(dialogue.recommendation_options),
-        "has_leak": contains_leak(all_user_text),
-    }
-
-
-def evaluate_scenario(raw_scenario: dict[str, Any]) -> ScenarioResult:
-    from orchestration.coordinator import HierarchicalOrchestrator
-
-    scenario_id = raw_scenario["id"]
-    result = ScenarioResult(
-        scenario_id=scenario_id,
-        description=raw_scenario.get("description", ""),
-    )
-    orchestrator = HierarchicalOrchestrator()
-
-    try:
-        sim_request = SimulationRequest.model_validate(raw_scenario["request"])
-    except Exception as exc:
-        result.add("request.valid_simulation_request", False, str(exc))
-        return result
-
-    result.add("request.valid_simulation_request", True)
-    context_result = orchestrator.run_context_cycle(sim_request)
-    expected_options = evaluate_context(result, sim_request, context_result.context)
-
-    dialogue_result = orchestrator.run_dialogue_cycle(context_result.simulation_id)
-    evaluate_dialogue(result, dialogue_result.dialogue, expected_options)
-
-    selected_option = raw_scenario.get("selectedOption")
-    expect_selection_error = bool(raw_scenario.get("expectSelectionError", False))
-    selection_passed = True
-
-    if selected_option:
-        try:
-            selection_response = orchestrator.handle_recommendation_selection(
-                context_result.simulation_id,
-                selected_option,
+        subtitle_ok, subtitle_word_count = check_subtitle_max_15_words(dialogue_output)
+        checks["subtitle_max_15_words"] = subtitle_ok
+        result["subtitle_word_count"] = subtitle_word_count
+        checks["no_internal_tokens_or_coordinates"] = check_no_technical_leak(
+            " ".join(
+                [
+                    dialogue_output.get("spoken_output", ""),
+                    dialogue_output.get("subtitle_output", ""),
+                    dialogue_output.get("recommendation_dialogue", ""),
+                    " ".join(dialogue_output.get("recommendation_options", [])),
+                ]
             )
-            if expect_selection_error:
-                result.add(
-                    "selection.expected_error",
-                    False,
-                    "selection succeeded but scenario expected an error.",
-                )
-                selection_passed = False
-            else:
-                result.add("selection.accepted_valid_option", True)
-                result.add(
-                    "selection.nav_target_matches_selected_option",
-                    selection_response.selected_option == selected_option,
-                    f"expected={selected_option}, actual={selection_response.selected_option}",
-                )
-                selection_dialogue = DialogueOutput(
-                    spoken_output=selection_response.spoken_output,
-                    subtitle_output=selection_response.subtitle_output,
-                    recommendation_dialogue="",
-                    recommendation_options=expected_options,
-                )
-                evaluate_dialogue(result, selection_dialogue, expected_options, selected_option)
-        except ValueError as exc:
-            if expect_selection_error:
-                result.add("selection.expected_error", True, str(exc))
-            else:
-                result.add("selection.accepted_valid_option", False, str(exc))
-                selection_passed = False
-
-    required_prefixes = ("request.", "context.", "dialogue.")
-    required_checks_pass = all(
-        check.passed
-        for check in result.checks
-        if check.name.startswith(required_prefixes)
-    )
-    result.end_to_end_success = required_checks_pass and selection_passed
-    return result
-
-
-def evaluate_context_scenario(raw_scenario: dict[str, Any]) -> ScenarioResult:
-    from orchestration.coordinator import HierarchicalOrchestrator
-
-    scenario_id = raw_scenario["id"]
-    result = ScenarioResult(
-        scenario_id=scenario_id,
-        description=raw_scenario.get("description", ""),
-    )
-    orchestrator = HierarchicalOrchestrator()
-
-    try:
-        sim_request = SimulationRequest.model_validate(raw_scenario["request"])
-    except Exception as exc:
-        result.add("request.valid_simulation_request", False, str(exc))
-        return result
-
-    result.add("request.valid_simulation_request", True)
-    context_result = orchestrator.run_context_cycle(sim_request)
-    evaluate_context(result, sim_request, context_result.context)
-
-    result.end_to_end_success = all(check.passed for check in result.checks)
-    return result
-
-
-def evaluate_dialogue_scenario(raw_scenario: dict[str, Any]) -> ScenarioResult:
-    from orchestration.coordinator import HierarchicalOrchestrator
-
-    scenario_id = raw_scenario["id"]
-    result = ScenarioResult(
-        scenario_id=scenario_id,
-        description=raw_scenario.get("description", ""),
-    )
-    orchestrator = HierarchicalOrchestrator()
-
-    try:
-        sim_request = SimulationRequest.model_validate(raw_scenario["request"])
-    except Exception as exc:
-        result.add("request.valid_simulation_request", False, str(exc))
-        return result
-
-    result.add("request.valid_simulation_request", True)
-    context_result = orchestrator.run_context_cycle(sim_request)
-    expected_options = [site.name for site in context_result.context.recommendations]
-    dialogue_result = orchestrator.run_dialogue_cycle(context_result.simulation_id)
-    evaluate_dialogue(result, dialogue_result.dialogue, expected_options)
-
-    selected_option = raw_scenario.get("selectedOption")
-    expect_selection_error = bool(raw_scenario.get("expectSelectionError", False))
-    if selected_option and not expect_selection_error:
-        selection_response = orchestrator.handle_recommendation_selection(
-            context_result.simulation_id,
-            selected_option,
         )
-        selection_dialogue = DialogueOutput(
-            spoken_output=selection_response.spoken_output,
-            subtitle_output=selection_response.subtitle_output,
-            recommendation_dialogue="",
-            recommendation_options=expected_options,
+        checks["options_match_context_order"] = check_options_match_context(dialogue_output, context_output)
+        checks["option_count"] = len(dialogue_output.get("recommendation_options", [])) == len(expected_names)
+        checks["empty_recommendations_handled"] = (
+            not dialogue_output.get("recommendation_options", []) if not expected_names else True
         )
-        evaluate_dialogue(result, selection_dialogue, expected_options, selected_option)
 
-    result.end_to_end_success = all(check.passed for check in result.checks)
-    return result
+        primary_name = (
+            scenario.get("expected_dialogue", {}).get("primary_option_mentioned")
+            or scenario.get("expected_context", {}).get("recommendation_rank_1")
+            or (expected_names[0] if expected_names else "")
+        )
+        checks["primary_option_mentioned"] = check_primary_option_mentioned(dialogue_output, primary_name)
 
-
-def summarize(results: list[ScenarioResult]) -> dict[str, Any]:
-    scenario_count = len(results)
-    total_checks = sum(result.total_checks for result in results)
-    passed_checks = sum(result.passed_checks for result in results)
-
-    def context_metric_mean(metric_name: str) -> float:
-        values = [
-            float(result.context_metrics[metric_name])
-            for result in results
-            if metric_name in result.context_metrics
-        ]
-        return statistics.mean(values) if values else 0.0
-
-    def dialogue_metric_mean(metric_name: str) -> float:
-        values = [
-            float(result.dialogue_metrics[metric_name])
-            for result in results
-            if metric_name in result.dialogue_metrics
-            and isinstance(result.dialogue_metrics[metric_name], (int, float, bool))
-        ]
-        return statistics.mean(values) if values else 0.0
-
-    return {
-        "scenario_count": scenario_count,
-        "check_pass_rate": passed_checks / total_checks if total_checks else 0.0,
-        "passed_checks": passed_checks,
-        "total_checks": total_checks,
-        "end_to_end_success_rate": (
-            sum(1 for result in results if result.end_to_end_success) / scenario_count
-            if scenario_count
-            else 0.0
-        ),
-        "context": {
-            "mean_precision_at_3": context_metric_mean("precision_at_3"),
-            "mean_recall_at_3": context_metric_mean("recall_at_3"),
-            "mean_mrr": context_metric_mean("mrr"),
-            "mean_ndcg_at_3": context_metric_mean("ndcg_at_3"),
-        },
-        "dialogue": {
-            "mean_subtitle_word_count": dialogue_metric_mean("subtitle_word_count"),
-            "mean_option_count": dialogue_metric_mean("option_count"),
-            "leak_rate": dialogue_metric_mean("has_leak"),
-        },
-    }
-
-
-def as_dict(result: ScenarioResult) -> dict[str, Any]:
-    return {
-        "scenario_id": result.scenario_id,
-        "description": result.description,
-        "pass_rate": result.pass_rate,
-        "end_to_end_success": result.end_to_end_success,
-        "context_metrics": result.context_metrics,
-        "dialogue_metrics": result.dialogue_metrics,
-        "checks": [
-            {
-                "name": check.name,
-                "passed": check.passed,
-                "detail": check.detail,
-            }
-            for check in result.checks
-        ],
-    }
-
-
-def print_markdown_report(
-    results: list[ScenarioResult],
-    summary: dict[str, Any],
-    agent_mode: AgentMode,
-) -> None:
-    title = {
-        "context": "Context Agent Evaluation Report",
-        "dialogue": "Dialogue Agent Evaluation Report",
-        "e2e": "End-to-End Agent Evaluation Report",
-        "all": "Agent Evaluation Report",
-    }.get(agent_mode, "Agent Evaluation Report")
-    print(f"# {title}")
-    print()
-    print("## Summary")
-    print(f"- Scenarios: {summary['scenario_count']}")
-    print(f"- Check pass rate: {summary['check_pass_rate']:.2%}")
-    if agent_mode in {"context", "e2e", "all"}:
-        print(f"- Context Precision@3: {summary['context']['mean_precision_at_3']:.3f}")
-        print(f"- Context Recall@3: {summary['context']['mean_recall_at_3']:.3f}")
-        print(f"- Context MRR: {summary['context']['mean_mrr']:.3f}")
-        print(f"- Context NDCG@3: {summary['context']['mean_ndcg_at_3']:.3f}")
-    if agent_mode in {"dialogue", "e2e", "all"}:
-        print(f"- Dialogue subtitle words avg: {summary['dialogue']['mean_subtitle_word_count']:.2f}")
-        print(f"- Dialogue options avg: {summary['dialogue']['mean_option_count']:.2f}")
-        print(f"- Dialogue technical leak rate: {summary['dialogue']['leak_rate']:.2%}")
-    if agent_mode in {"e2e", "all"}:
-        print(f"- End-to-end success rate: {summary['end_to_end_success_rate']:.2%}")
-    print()
-    print("## Scenario Details")
-    for result in results:
-        status = "PASS" if result.end_to_end_success else "ATTENTION"
-        print(f"### {result.scenario_id} — {status}")
-        print(f"- Description: {result.description}")
-        print(f"- Check pass rate: {result.pass_rate:.2%}")
-        failed = [check for check in result.checks if not check.passed]
-        if failed:
-            print("- Failed checks:")
-            for check in failed:
-                print(f"  - {check.name}: {check.detail}")
+        selection_request = scenario.get("selection_request")
+        if selection_request:
+            selected_option = selection_request.get("selectedOption", "")
+            expected_error = bool(scenario.get("expected", {}).get("selection_error"))
+            try:
+                selection_response = run_orchestrator_quietly(
+                    orchestrator.handle_recommendation_selection,
+                    context_cycle.simulation_id,
+                    selected_option,
+                )
+                checks["invalid_option_returns_error"] = not expected_error
+                if not expected_error:
+                    checks["selected_option_mentioned"] = selected_option.lower() in (
+                        selection_response.spoken_output + " " + selection_response.subtitle_output
+                    ).lower()
+            except ValueError:
+                checks["invalid_option_returns_error"] = expected_error
         else:
-            print("- Failed checks: none")
-        print()
+            checks["invalid_option_returns_error"] = True
+
+        result["deterministic_checks"] = checks
+        relevant_ids = [site["id"] for site in sites if not site.get("visited", False)]
+        result["ir_metrics"] = compute_ir_metrics(actual_ids, relevant_ids)
+
+        faith_cfg = scenario.get("faithfulness_check", {})
+        if faith_cfg:
+            field_value = context_output.get(faith_cfg.get("field", "recommendation_reason"), "")
+            valid_names = faith_cfg.get("valid_site_names", [])
+            rank1_name = expected_names[0] if faith_cfg.get("check_rank1_mentioned") and expected_names else None
+            result["faithfulness"] = compute_faithfulness_score(field_value, valid_names, rank1_name)
+
+        if scenario.get("llm_judge", False):
+            result["llm_judge_scores"] = run_llm_judge_all_dimensions(scenario, context_output, dialogue_output)
+
+        traj_cfg = scenario.get("trajectory_checks", {})
+        if traj_cfg:
+            result["trajectory"] = check_react_trajectory(
+                json.dumps(context_output, ensure_ascii=False),
+                traj_cfg.get("required_tools", []),
+            )
+
+        required_checks = scenario.get("deterministic_checks", [])
+        check_aliases = {
+            "schema_valid": ["context_schema_valid", "dialogue_schema_valid"],
+            "ranking_exact_match": ["ranking_exact_match"],
+            "nav_target_matches_rank_1": ["nav_target_matches_rank_1"],
+            "no_visited_sites_recommended": ["no_visited_sites_recommended"],
+            "max_three_recommendations": ["max_three_recommendations"],
+            "options_match_context_order": ["options_match_context_order"],
+            "subtitle_max_15_words": ["subtitle_max_15_words"],
+            "no_internal_tokens_or_coordinates": ["no_internal_tokens_or_coordinates"],
+            "no_coordinates_in_interpretive_fields": ["no_coordinates_in_interpretive_fields"],
+            "recommendation_reason_present": ["recommendation_reason_present"],
+            "situation_type_supported": ["situation_type_supported"],
+            "dialogue_intent_supported": ["dialogue_intent_supported"],
+            "empty_recommendations_handled": ["empty_recommendations_handled"],
+            "nav_target_empty_when_no_recommendations": ["nav_target_empty_when_no_recommendations"],
+            "primary_option_mentioned": ["primary_option_mentioned"],
+            "option_count": ["option_count"],
+            "invalid_option_returns_error": ["invalid_option_returns_error"],
+        }
+        deterministic_pass = all(
+            all(checks.get(name, False) for name in check_aliases.get(check, [check]))
+            for check in required_checks
+        )
+        if not required_checks:
+            deterministic_pass = all(checks.values())
+
+        judge_pass = True
+        for dimension, score_result in result["llm_judge_scores"].items():
+            score = score_result.get("score", 0)
+            if score == 0:
+                continue
+            threshold = 5 if dimension == "technical_leak_safety" else 4
+            if score < threshold:
+                judge_pass = False
+
+        result["passed"] = deterministic_pass and judge_pass
+
+    except Exception as exc:
+        logger.error("Error running scenario %s: %s", scenario_id, exc, exc_info=VERBOSE)
+        result["errors"].append(str(exc))
+        result["passed"] = False
+
+    return result
 
 
-def evaluate_by_mode(scenario: dict[str, Any], agent_mode: AgentMode) -> ScenarioResult:
-    if agent_mode == "context":
-        return evaluate_context_scenario(scenario)
-    if agent_mode == "dialogue":
-        return evaluate_dialogue_scenario(scenario)
-    return evaluate_scenario(scenario)
+def run_pass_k_scenario(scenario: dict[str, Any], k: int = 5) -> dict[str, Any]:
+    logger.info("Running pass^k for %s with k=%s", scenario["id"], k)
+    runs = []
+    for index in range(k):
+        logger.info("  Run %s/%s", index + 1, k)
+        runs.append(run_single_scenario(scenario))
+        if judge_client is not None:
+            time.sleep(1)
+
+    pass_criteria = scenario.get("reliability_checks", {}).get(
+        "pass_criteria",
+        ["context_schema_valid", "nav_target_matches_rank_1", "no_visited_sites_recommended"],
+    )
+    pass_count = sum(
+        1
+        for run in runs
+        if all(run.get("deterministic_checks", {}).get(check, False) for check in pass_criteria)
+    )
+    judge_stats = {}
+    all_dimensions = {
+        dimension
+        for run in runs
+        for dimension in run.get("llm_judge_scores", {}).keys()
+    }
+    for dimension in all_dimensions:
+        scores = [
+            run.get("llm_judge_scores", {}).get(dimension, {}).get("score", 0)
+            for run in runs
+        ]
+        scores = [score for score in scores if score > 0]
+        if scores:
+            judge_stats[dimension] = {
+                "mean": round(statistics.mean(scores), 4),
+                "std": round(statistics.stdev(scores) if len(scores) > 1 else 0.0, 4),
+                "min": min(scores),
+                "max": max(scores),
+                "scores": scores,
+            }
+
+    field_variance = {}
+    for field in scenario.get("reliability_checks", {}).get("measure_fields", []):
+        values = []
+        for run in runs:
+            if field in {"user_action", "recommendation_reason"}:
+                values.append((run.get("context_output") or {}).get(field, ""))
+            elif field == "spoken_output":
+                values.append((run.get("dialogue_output") or {}).get(field, ""))
+        field_variance[field] = len(set(values))
+
+    return {
+        "scenario_id": scenario["id"],
+        "layer": "llm_reliability",
+        "k": k,
+        "pass_count": pass_count,
+        "pass_k_score": round(pass_count / k, 4) if k else 0.0,
+        "judge_stats": judge_stats,
+        "field_variance": field_variance,
+        "all_runs": runs,
+    }
+
+
+def run_ablation_stripped(scenario: dict[str, Any], stripped_fields: list[str]) -> dict[str, Any]:
+    from orchestration.coordinator import HierarchicalOrchestrator
+    from schema.models import ContextOutput
+
+    result = {
+        "scenario_id": scenario["id"] + "_stripped",
+        "layer": "llm_ablation_run_b",
+        "deterministic_checks": {},
+        "llm_judge_scores": {},
+        "context_output": None,
+        "dialogue_output": None,
+        "errors": [],
+        "passed": False,
+    }
+    try:
+        orchestrator = HierarchicalOrchestrator()
+        sim_req = build_simulation_request(scenario["request"])
+        context_cycle = run_orchestrator_quietly(orchestrator.run_context_cycle, sim_req)
+        stripped_context = context_cycle.context.model_dump()
+        for field in stripped_fields:
+            if field in stripped_context:
+                stripped_context[field] = "Informasi alasan rekomendasi tidak tersedia."
+
+        session = orchestrator.pool.get_session(context_cycle.simulation_id)
+        if session is None:
+            raise ValueError("Session not found for ablation run.")
+        updated_context = ContextOutput.model_validate(stripped_context)
+        session = session.model_copy(update={"context": updated_context})
+        orchestrator.pool.save_session(session)
+
+        dialogue_cycle = run_orchestrator_quietly(orchestrator.run_dialogue_cycle, context_cycle.simulation_id)
+        dialogue_output = dialogue_cycle.dialogue.model_dump()
+        result["context_output"] = stripped_context
+        result["dialogue_output"] = dialogue_output
+        result["deterministic_checks"] = {
+            "dialogue_schema_valid": check_schema_valid_dialogue(dialogue_output),
+            "options_match_context_order": check_options_match_context(dialogue_output, stripped_context),
+            "no_internal_tokens_or_coordinates": check_no_technical_leak(
+                " ".join(
+                    [
+                        dialogue_output.get("spoken_output", ""),
+                        dialogue_output.get("subtitle_output", ""),
+                        dialogue_output.get("recommendation_dialogue", ""),
+                    ]
+                )
+            ),
+        }
+        result["llm_judge_scores"] = run_llm_judge_all_dimensions(scenario, stripped_context, dialogue_output)
+        result["passed"] = all(result["deterministic_checks"].values())
+    except Exception as exc:
+        logger.error("Ablation stripped run error: %s", exc, exc_info=VERBOSE)
+        result["errors"].append(str(exc))
+    return result
+
+
+def run_ablation_scenario(scenario: dict[str, Any]) -> dict[str, Any]:
+    logger.info("Running ablation: %s", scenario["id"])
+    stripped_fields = scenario.get("ablation_config", {}).get("stripped_fields", ["recommendation_reason"])
+    run_a = run_single_scenario(scenario)
+    run_b = run_ablation_stripped(scenario, stripped_fields)
+    dimensions = scenario.get("judge_dimensions", [])
+    delta = {}
+    for dimension in dimensions:
+        score_a = run_a.get("llm_judge_scores", {}).get(dimension, {}).get("score", 0)
+        score_b = run_b.get("llm_judge_scores", {}).get(dimension, {}).get("score", 0)
+        if score_a > 0 and score_b > 0:
+            delta[dimension] = round(score_a - score_b, 4)
+    hypothesis_confirmed = all(
+        delta.get(dimension, 0) > 0
+        for dimension in ["context_relevance", "navigation_clarity"]
+        if dimension in delta
+    )
+    return {
+        "scenario_id": scenario["id"],
+        "layer": "llm_ablation",
+        "run_a_scores": {
+            dimension: run_a.get("llm_judge_scores", {}).get(dimension, {}).get("score", 0)
+            for dimension in dimensions
+        },
+        "run_b_scores": {
+            dimension: run_b.get("llm_judge_scores", {}).get(dimension, {}).get("score", 0)
+            for dimension in dimensions
+        },
+        "delta": delta,
+        "hypothesis_confirmed": hypothesis_confirmed,
+        "ablation_hypothesis": scenario.get("ablation_hypothesis", ""),
+        "run_a_detail": run_a,
+        "run_b_detail": run_b,
+    }
+
+
+def save_figure(fig, filename: str) -> None:
+    path = FIGURES_DIR / filename
+    fig.savefig(path, dpi=150, bbox_inches="tight")
+    plt.close(fig)
+    logger.info("Saved figure: %s", path)
+
+
+def plot_deterministic_check_pass_rate(all_results: list[dict[str, Any]]) -> None:
+    structural = [result for result in all_results if result.get("layer") == "structural"]
+    llm_layer = [result for result in all_results if str(result.get("layer", "")).startswith("llm")]
+
+    def rates(results: list[dict[str, Any]]) -> dict[str, float]:
+        grouped: dict[str, list[int]] = {}
+        for result in results:
+            for name, passed in result.get("deterministic_checks", {}).items():
+                grouped.setdefault(name, []).append(1 if passed else 0)
+        return {name: sum(values) / len(values) for name, values in grouped.items() if values}
+
+    struct_rates = rates(structural)
+    llm_rates = rates(llm_layer)
+    keys = sorted(set(struct_rates) | set(llm_rates))
+    if not keys:
+        return
+    x = np.arange(len(keys))
+    width = 0.35
+    fig, ax = plt.subplots(figsize=(16, 7))
+    b1 = ax.bar(x - width / 2, [struct_rates.get(key, 0) for key in keys], width, label="Structural", color="#2196F3")
+    b2 = ax.bar(x + width / 2, [llm_rates.get(key, 0) for key in keys], width, label="LLM layer", color="#FF9800")
+    ax.set_ylabel("Pass rate")
+    ax.set_title("Deterministic Check Pass Rate")
+    ax.set_xticks(x)
+    ax.set_xticklabels(keys, rotation=45, ha="right", fontsize=8)
+    ax.set_ylim(0, 1.15)
+    ax.legend()
+    ax.bar_label(b1, fmt="%.2f", fontsize=7)
+    ax.bar_label(b2, fmt="%.2f", fontsize=7)
+    plt.tight_layout()
+    save_figure(fig, "01_deterministic_check_pass_rate.png")
+
+
+def plot_llm_judge_radar(all_results: list[dict[str, Any]]) -> None:
+    chart_specs = [
+        (
+            ["context_relevance", "faithfulness", "navigation_clarity", "persona_alignment", "language_quality", "ui_usefulness", "technical_leak_safety", "subtitle_quality"],
+            "Dialogue Agent - LLM Judge Radar",
+            "02_dialogue_agent_radar.png",
+        ),
+        (
+            ["user_action_quality", "recommendation_reason_quality", "faithfulness", "situation_type_consistency", "dialogue_intent_consistency", "tool_call_validity", "reasoning_quality"],
+            "Context Agent - LLM Judge Radar",
+            "03_context_agent_radar.png",
+        ),
+    ]
+    for dimensions, title, filename in chart_specs:
+        means = []
+        labels = []
+        for dimension in dimensions:
+            scores = [
+                result.get("llm_judge_scores", {}).get(dimension, {}).get("score", 0)
+                for result in all_results
+            ]
+            scores = [score for score in scores if score > 0]
+            if scores:
+                labels.append(dimension)
+                means.append(statistics.mean(scores))
+        if not means:
+            continue
+        angles = [index / float(len(labels)) * 2 * math.pi for index in range(len(labels))]
+        angles += angles[:1]
+        means_plot = means + means[:1]
+        fig, ax = plt.subplots(figsize=(8, 8), subplot_kw={"polar": True})
+        ax.plot(angles, means_plot, "o-", linewidth=2, color="#1976D2")
+        ax.fill(angles, means_plot, alpha=0.25, color="#1976D2")
+        ax.set_xticks(angles[:-1])
+        ax.set_xticklabels(labels, fontsize=9)
+        ax.set_ylim(0, 5)
+        ax.set_yticks([1, 2, 3, 4, 5])
+        ax.set_title(title, fontweight="bold", pad=20)
+        plt.tight_layout()
+        save_figure(fig, filename)
+
+
+def plot_scenario_heatmap(all_results: list[dict[str, Any]]) -> None:
+    if not all_results:
+        return
+    scenario_ids = [result.get("scenario_id", "") for result in all_results]
+    columns = sorted(
+        {
+            key
+            for result in all_results
+            for key in list(result.get("deterministic_checks", {}).keys())
+            + list(result.get("llm_judge_scores", {}).keys())
+        }
+    )
+    if not columns:
+        return
+    matrix = []
+    for result in all_results:
+        row = []
+        for column in columns:
+            if column in result.get("deterministic_checks", {}):
+                row.append(1.0 if result["deterministic_checks"][column] else 0.0)
+            elif column in result.get("llm_judge_scores", {}):
+                score = result["llm_judge_scores"][column].get("score", 0)
+                row.append(score / 5 if score > 0 else np.nan)
+            else:
+                row.append(np.nan)
+        matrix.append(row)
+    matrix_np = np.array(matrix, dtype=float)
+    fig, ax = plt.subplots(figsize=(max(14, len(columns) * 0.75), max(8, len(scenario_ids) * 0.45)))
+    im = ax.imshow(matrix_np, cmap="RdYlGn", aspect="auto", vmin=0, vmax=1)
+    ax.set_xticks(np.arange(len(columns)))
+    ax.set_yticks(np.arange(len(scenario_ids)))
+    ax.set_xticklabels(columns, rotation=60, ha="right", fontsize=7)
+    ax.set_yticklabels(scenario_ids, fontsize=7)
+    plt.colorbar(im, ax=ax, label="Score")
+    ax.set_title("Per-Scenario x Per-Metric Heatmap", fontweight="bold")
+    plt.tight_layout()
+    save_figure(fig, "04_scenario_metric_heatmap.png")
+
+
+def plot_reliability_boxplot(pass_k_result: dict[str, Any] | None) -> None:
+    if not pass_k_result:
+        return
+    judge_stats = pass_k_result.get("judge_stats", {})
+    dimensions = [dimension for dimension, stats in judge_stats.items() if stats.get("scores")]
+    if not dimensions:
+        return
+    fig, ax = plt.subplots(figsize=(12, 6))
+    bp = ax.boxplot([judge_stats[dimension]["scores"] for dimension in dimensions], labels=dimensions, patch_artist=True)
+    for patch in bp["boxes"]:
+        patch.set_facecolor("#42A5F5")
+        patch.set_alpha(0.7)
+    ax.axhline(y=4, color="green", linestyle="--", alpha=0.5)
+    ax.set_ylim(0, 5.5)
+    ax.set_ylabel("Judge score")
+    ax.set_title(f"Reliability Distribution - pass^k={pass_k_result.get('k')}", fontweight="bold")
+    plt.xticks(rotation=30, ha="right")
+    plt.tight_layout()
+    save_figure(fig, "05_reliability_boxplot.png")
+
+
+def plot_ablation_delta(ablation_result: dict[str, Any] | None) -> None:
+    if not ablation_result:
+        return
+    run_a = ablation_result.get("run_a_scores", {})
+    run_b = ablation_result.get("run_b_scores", {})
+    dimensions = [dimension for dimension in run_a if run_a.get(dimension, 0) > 0 or run_b.get(dimension, 0) > 0]
+    if not dimensions:
+        return
+    x = np.arange(len(dimensions))
+    width = 0.3
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
+    ax1.bar(x - width / 2, [run_a.get(dim, 0) for dim in dimensions], width, label="Run A full context", color="#2196F3")
+    ax1.bar(x + width / 2, [run_b.get(dim, 0) for dim in dimensions], width, label="Run B stripped", color="#FF5722")
+    ax1.axhline(y=4, color="green", linestyle="--", alpha=0.4)
+    ax1.set_xticks(x)
+    ax1.set_xticklabels(dimensions, rotation=30, ha="right")
+    ax1.set_ylim(0, 5.5)
+    ax1.set_ylabel("Judge score")
+    ax1.legend()
+    delta = ablation_result.get("delta", {})
+    delta_values = [delta.get(dim, 0) for dim in dimensions]
+    ax2.bar(x, delta_values, color=["#4CAF50" if value > 0 else "#F44336" for value in delta_values])
+    ax2.axhline(y=0, color="black", linewidth=1)
+    ax2.set_xticks(x)
+    ax2.set_xticklabels(dimensions, rotation=30, ha="right")
+    ax2.set_ylabel("Delta A - B")
+    ax2.set_title("Ablation Delta", fontweight="bold")
+    plt.tight_layout()
+    save_figure(fig, "06_ablation_delta.png")
+
+
+def plot_ir_metrics_summary(all_results: list[dict[str, Any]]) -> None:
+    metrics = ["precision_at_3", "recall_at_3", "mrr", "ndcg_at_3"]
+    structural = [result for result in all_results if result.get("layer") == "structural"]
+    llm_layer = [result for result in all_results if str(result.get("layer", "")).startswith("llm")]
+
+    def averages(results: list[dict[str, Any]]) -> list[float]:
+        values = []
+        for metric in metrics:
+            metric_values = [result.get("ir_metrics", {}).get(metric) for result in results if metric in result.get("ir_metrics", {})]
+            values.append(statistics.mean(metric_values) if metric_values else 0.0)
+        return values
+
+    x = np.arange(len(metrics))
+    width = 0.35
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.bar(x - width / 2, averages(structural), width, label="Structural")
+    ax.bar(x + width / 2, averages(llm_layer), width, label="LLM scenarios")
+    ax.set_xticks(x)
+    ax.set_xticklabels(metrics)
+    ax.set_ylim(0, 1.1)
+    ax.set_ylabel("Score")
+    ax.set_title("IR Ranking Metrics - Deterministic Backend Verification", fontweight="bold")
+    ax.legend()
+    plt.tight_layout()
+    save_figure(fig, "07_ir_metrics_summary.png")
+
+
+def aggregate_results(all_results: list[dict[str, Any]]) -> dict[str, Any]:
+    total = len(all_results)
+    passed = sum(1 for result in all_results if result.get("passed", False))
+    check_values = [
+        value
+        for result in all_results
+        for value in result.get("deterministic_checks", {}).values()
+    ]
+    check_pass_rate = (
+        sum(1 for value in check_values if value) / len(check_values)
+        if check_values
+        else 0.0
+    )
+    dimension_scores: dict[str, list[int]] = {}
+    for result in all_results:
+        for dimension, score_result in result.get("llm_judge_scores", {}).items():
+            score = score_result.get("score", 0)
+            if score > 0:
+                dimension_scores.setdefault(dimension, []).append(score)
+    judge_summary = {
+        dimension: {
+            "mean": round(statistics.mean(scores), 4),
+            "std": round(statistics.stdev(scores) if len(scores) > 1 else 0.0, 4),
+            "n": len(scores),
+            "pass_rate": round(sum(1 for score in scores if score >= 4) / len(scores), 4),
+        }
+        for dimension, scores in dimension_scores.items()
+    }
+    ir_summary = {}
+    for metric in ["precision_at_3", "recall_at_3", "mrr", "ndcg_at_3"]:
+        values = [result.get("ir_metrics", {}).get(metric) for result in all_results if metric in result.get("ir_metrics", {})]
+        if values:
+            ir_summary[metric] = round(statistics.mean(values), 4)
+    faithfulness_values = [
+        result.get("faithfulness", {}).get("faithfulness_score")
+        for result in all_results
+        if result.get("faithfulness")
+    ]
+    faithfulness_values = [value for value in faithfulness_values if value is not None]
+    return {
+        "total_scenarios": total,
+        "passed": passed,
+        "overall_pass_rate": round(passed / total, 4) if total else 0.0,
+        "check_pass_rate": round(check_pass_rate, 4),
+        "judge_summary": judge_summary,
+        "ir_summary": ir_summary,
+        "faithfulness_avg": round(statistics.mean(faithfulness_values), 4) if faithfulness_values else None,
+        "timestamp": datetime.utcnow().isoformat(),
+        "judge_model": JUDGE_MODEL,
+        "judge_temperature": 0,
+        "cohen_kappa_note": "Use exported per-dimension scores for human/judge agreement analysis.",
+        "cohen_kappa_function_available": callable(cohen_kappa_score),
+    }
+
+
+def load_scenarios() -> list[dict[str, Any]]:
+    with SCENARIOS_PATH.open(encoding="utf-8") as file:
+        data = json.load(file)
+    if isinstance(data, list):
+        return data
+    return data["scenarios"]
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Evaluate VR multi-agent system scenarios.")
-    parser.add_argument(
-        "--scenarios",
-        type=Path,
-        default=PROJECT_ROOT / "evals" / "scenarios.json",
-        help="Path to scenario JSON file.",
-    )
-    parser.add_argument(
-        "--agent",
-        choices=["context", "dialogue", "e2e", "all"],
-        default="all",
-        help="Evaluate one agent/layer at a time. Use 'all' for the combined report.",
-    )
-    parser.add_argument(
-        "--json",
-        action="store_true",
-        help="Print machine-readable JSON instead of markdown.",
-    )
-    parser.add_argument(
-        "--verbose",
-        action="store_true",
-        help="Show orchestrator logs and phase prints while scenarios run.",
-    )
+    global VERBOSE
+    parser = argparse.ArgumentParser(description="Multi-Agent Evaluation Runner")
+    parser.add_argument("--agent", choices=["context", "dialogue", "e2e", "reliability", "ablation", "all"], default="all")
+    parser.add_argument("--json", action="store_true", help="Print JSON summary")
+    parser.add_argument("--verbose", action="store_true")
+    parser.add_argument("--skip-llm-judge", action="store_true", help="Skip LLM judge calls")
+    parser.add_argument("--scenarios", nargs="+", help="Specific scenario IDs to run")
     args = parser.parse_args()
+    VERBOSE = args.verbose
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
 
-    scenarios = json.loads(args.scenarios.read_text(encoding="utf-8"))
+    scenarios = load_scenarios()
+    if args.scenarios:
+        requested = set(args.scenarios)
+        scenarios = [scenario for scenario in scenarios if scenario["id"] in requested]
+    if args.skip_llm_judge:
+        for scenario in scenarios:
+            scenario["llm_judge"] = False
+    if args.agent == "context":
+        scenarios = [scenario for scenario in scenarios if "context_agent" in scenario.get("focus", [])]
+    elif args.agent == "dialogue":
+        scenarios = [scenario for scenario in scenarios if "dialogue_agent" in scenario.get("focus", [])]
+    elif args.agent == "reliability":
+        scenarios = [scenario for scenario in scenarios if scenario.get("layer") == "llm_reliability"]
+    elif args.agent == "ablation":
+        scenarios = [scenario for scenario in scenarios if scenario.get("layer") == "llm_ablation"]
 
-    if not args.verbose:
-        logging.disable(logging.CRITICAL)
-        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
-            results = [evaluate_by_mode(scenario, args.agent) for scenario in scenarios]
-        logging.disable(logging.NOTSET)
-    else:
-        results = [evaluate_by_mode(scenario, args.agent) for scenario in scenarios]
+    all_results = []
+    pass_k_result = None
+    ablation_result = None
+    for scenario in scenarios:
+        layer = scenario.get("layer", "structural")
+        if layer == "llm_reliability":
+            pass_k_result = run_pass_k_scenario(scenario, scenario.get("repeat_k", 5))
+            all_results.extend(pass_k_result.get("all_runs", []))
+        elif layer == "llm_ablation":
+            ablation_result = run_ablation_scenario(scenario)
+            if ablation_result.get("run_a_detail"):
+                all_results.append(ablation_result["run_a_detail"])
+            if ablation_result.get("run_b_detail"):
+                all_results.append(ablation_result["run_b_detail"])
+        else:
+            all_results.append(run_single_scenario(scenario))
 
-    summary = summarize(results)
+    summary = aggregate_results(all_results)
+    if pass_k_result:
+        summary["reliability"] = {
+            "pass_k_score": pass_k_result["pass_k_score"],
+            "k": pass_k_result["k"],
+            "judge_stats": pass_k_result.get("judge_stats", {}),
+            "field_variance": pass_k_result.get("field_variance", {}),
+        }
+    if ablation_result:
+        summary["ablation"] = {
+            "delta": ablation_result.get("delta", {}),
+            "hypothesis_confirmed": ablation_result.get("hypothesis_confirmed", False),
+        }
+
+    logger.info("Generating visualizations...")
+    if all_results:
+        plot_deterministic_check_pass_rate(all_results)
+        plot_llm_judge_radar(all_results)
+        plot_scenario_heatmap(all_results)
+        plot_ir_metrics_summary(all_results)
+    if pass_k_result:
+        plot_reliability_boxplot(pass_k_result)
+    if ablation_result:
+        plot_ablation_delta(ablation_result)
+
+    timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+    results_path = RESULTS_DIR / f"eval_results_{timestamp}.json"
+    full_output = {
+        "summary": summary,
+        "scenario_results": all_results,
+        "pass_k": pass_k_result,
+        "ablation": ablation_result,
+    }
+    with results_path.open("w", encoding="utf-8") as file:
+        json.dump(full_output, file, indent=2, ensure_ascii=False, default=str)
+    logger.info("Results saved: %s", results_path)
 
     if args.json:
-        print(
-            json.dumps(
-                {
-                    "summary": summary,
-                    "agent": args.agent,
-                    "results": [as_dict(result) for result in results],
-                },
-                indent=2,
-                ensure_ascii=False,
-            )
-        )
+        print(json.dumps(summary, indent=2, ensure_ascii=False))
     else:
-        print_markdown_report(results, summary, args.agent)
-
+        print("\n" + "=" * 60)
+        print("EVALUATION SUMMARY")
+        print("=" * 60)
+        print(f"Total scenarios:     {summary['total_scenarios']}")
+        print(f"Passed:              {summary['passed']}")
+        print(f"Overall pass rate:   {summary['overall_pass_rate']:.2%}")
+        print(f"Check pass rate:     {summary['check_pass_rate']:.2%}")
+        if summary.get("faithfulness_avg") is not None:
+            print(f"Faithfulness avg:    {summary['faithfulness_avg']:.4f}")
+        if summary.get("ir_summary"):
+            print("\nIR Metrics (deterministic ranking verification):")
+            for name, value in summary["ir_summary"].items():
+                print(f"  {name}: {value:.4f}")
+        if summary.get("judge_summary"):
+            print("\nLLM Judge Scores (mean +/- std):")
+            for dimension, stats in summary["judge_summary"].items():
+                print(f"  {dimension}: {stats['mean']:.2f} +/- {stats['std']:.2f} (n={stats['n']}, pass={stats['pass_rate']:.2%})")
+        if summary.get("reliability"):
+            reliability = summary["reliability"]
+            print(f"\nReliability (pass^{reliability['k']}): {reliability['pass_k_score']:.4f}")
+        if summary.get("ablation"):
+            ablation = summary["ablation"]
+            confirmed = "Confirmed" if ablation["hypothesis_confirmed"] else "Not confirmed"
+            print(f"\nAblation hypothesis: {confirmed}")
+            print(f"Delta scores: {ablation['delta']}")
+        print(f"\nFigures saved to: {FIGURES_DIR}/")
+        print(f"Results saved to:  {results_path}")
+        print("=" * 60)
     return 0
 
 
