@@ -130,6 +130,116 @@ def _rank_unvisited_sites(player_position: str, payload: CulturalSitesPayload) -
     ]
 
 
+def _default_context_interpretation(
+    environment_snapshot: EnvironmentSnapshot,
+    ranked_recommendations: list[SiteRecommendation],
+) -> dict[str, str]:
+    if not ranked_recommendations:
+        return {
+            "user_action": "Pemain berada di area tanpa tujuan budaya baru yang belum dikunjungi.",
+            "context_summary": (
+                f"Pemain berada di {environment_snapshot.scene}, tetapi semua objek budaya "
+                "pada snapshot saat ini sudah dikunjungi atau tidak ada kandidat baru."
+            ),
+            "situation_type": "all_sites_visited",
+            "recommendation_reason": "Tidak ada rekomendasi baru karena tidak ditemukan objek budaya dengan status belum dikunjungi.",
+            "dialogue_intent": "no_new_destination",
+        }
+
+    primary_site = ranked_recommendations[0]
+    recommendation_count = len(ranked_recommendations)
+
+    if recommendation_count == 1:
+        return {
+            "user_action": "Pemain berada dekat satu tujuan budaya yang belum dikunjungi.",
+            "context_summary": (
+                f"Pemain berada di {environment_snapshot.scene} dengan satu objek budaya "
+                f"belum dikunjungi yang siap diarahkan, yaitu {primary_site.name}."
+            ),
+            "situation_type": "single_recommendation",
+            "recommendation_reason": (
+                f"{primary_site.name} diprioritaskan karena menjadi satu-satunya objek budaya "
+                "yang belum dikunjungi pada snapshot saat ini."
+            ),
+            "dialogue_intent": "guide_to_single_primary",
+        }
+
+    alternative_names = ", ".join(site.name for site in ranked_recommendations[1:])
+    return {
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": (
+            f"Pemain berada di {environment_snapshot.scene} dengan {recommendation_count} "
+            f"objek budaya belum dikunjungi yang dapat direkomendasikan."
+        ),
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": (
+            f"{primary_site.name} diprioritaskan sebagai tujuan utama karena menjadi kandidat "
+            f"terdekat yang belum dikunjungi. Alternatif yang tersedia: {alternative_names}."
+        ),
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+    }
+
+
+def _context_text_value(parsed: dict, field_name: str, fallback_value: str) -> str:
+    value = parsed.get(field_name)
+    if isinstance(value, str) and value.strip():
+        return value.strip()
+    return fallback_value
+
+
+def _merge_context_interpretation(
+    parsed: dict,
+    environment_snapshot: EnvironmentSnapshot,
+    ranked_recommendations: list[SiteRecommendation],
+) -> dict[str, str]:
+    defaults = _default_context_interpretation(environment_snapshot, ranked_recommendations)
+    recommendation_names = {site.name for site in ranked_recommendations}
+    parsed_recommendation_names = {
+        item.get("name")
+        for item in parsed.get("recommendations", [])
+        if isinstance(item, dict) and isinstance(item.get("name"), str)
+    }
+    parsed_reason = _context_text_value(parsed, "recommendation_reason", "")
+    parsed_situation_type = _context_text_value(parsed, "situation_type", "")
+    parsed_dialogue_intent = _context_text_value(parsed, "dialogue_intent", "")
+
+    if ranked_recommendations:
+        primary_name = ranked_recommendations[0].name
+        ungrounded_names_in_reason = [
+            name
+            for name in parsed_recommendation_names
+            if name not in recommendation_names and name in parsed_reason
+        ]
+        reason_mentions_primary = primary_name in parsed_reason
+        recommendation_reason = (
+            parsed_reason
+            if parsed_reason and reason_mentions_primary and not ungrounded_names_in_reason
+            else defaults["recommendation_reason"]
+        )
+    else:
+        recommendation_reason = (
+            parsed_reason
+            if parsed_reason and "tidak ada" in parsed_reason.lower()
+            else defaults["recommendation_reason"]
+        )
+
+    return {
+        "user_action": _context_text_value(parsed, "user_action", defaults["user_action"]),
+        "context_summary": defaults["context_summary"],
+        "situation_type": (
+            parsed_situation_type
+            if parsed_situation_type == defaults["situation_type"]
+            else defaults["situation_type"]
+        ),
+        "recommendation_reason": recommendation_reason,
+        "dialogue_intent": (
+            parsed_dialogue_intent
+            if parsed_dialogue_intent == defaults["dialogue_intent"]
+            else defaults["dialogue_intent"]
+        ),
+    }
+
+
 def _build_context_output(
     raw: str,
     environment_snapshot: EnvironmentSnapshot,
@@ -143,14 +253,24 @@ def _build_context_output(
         parsed = {}
 
     if isinstance(parsed, dict) and parsed.get("status") in {"NO_DELTA", "ALL_VISITED"}:
-        user_action = parsed["status"]
+        parsed["user_action"] = parsed["status"]
     else:
-        user_action = parsed.get("user_action", "Menunggu interaksi pemain") if isinstance(parsed, dict) else "Menunggu interaksi pemain"
+        parsed = parsed if isinstance(parsed, dict) else {}
+
+    interpretation = _merge_context_interpretation(
+        parsed,
+        environment_snapshot,
+        ranked_recommendations,
+    )
 
     return ContextOutput(
         timestamp=environment_snapshot.timestamp,
         scene=environment_snapshot.scene,
-        user_action=user_action,
+        user_action=interpretation["user_action"],
+        context_summary=interpretation["context_summary"],
+        situation_type=interpretation["situation_type"],
+        recommendation_reason=interpretation["recommendation_reason"],
+        dialogue_intent=interpretation["dialogue_intent"],
         recommendations=ranked_recommendations,
         nav_target=ranked_recommendations[0].id if ranked_recommendations else "",
     )
@@ -326,10 +446,20 @@ class HierarchicalOrchestrator:
         context_raw = str(self.context_agent(context_instruction)).strip()
         try:
             context_output = _parse_context(context_raw)
+            interpretation = _merge_context_interpretation(
+                context_output.model_dump(),
+                environment_snapshot,
+                ranked_recommendations,
+            )
             return context_output.model_copy(
                 update={
                     "timestamp": environment_snapshot.timestamp,
                     "scene": environment_snapshot.scene,
+                    "user_action": interpretation["user_action"],
+                    "context_summary": interpretation["context_summary"],
+                    "situation_type": interpretation["situation_type"],
+                    "recommendation_reason": interpretation["recommendation_reason"],
+                    "dialogue_intent": interpretation["dialogue_intent"],
                     "recommendations": ranked_recommendations,
                     "nav_target": ranked_recommendations[0].id if ranked_recommendations else "",
                 }
@@ -393,6 +523,14 @@ class HierarchicalOrchestrator:
         context_json = session.context.model_dump_json(indent=2)
         try:
             dialogue_output = self._run_dialogue_agent(context_json)
+            if session.context.recommendations:
+                primary_name = session.context.recommendations[0].name.lower()
+                primary_mentioned = (
+                    primary_name in dialogue_output.spoken_output.lower()
+                    or primary_name in dialogue_output.subtitle_output.lower()
+                )
+                if not primary_mentioned:
+                    raise ValueError("Dialogue output did not mention the primary recommendation.")
         except Exception:
             logging.getLogger("Coordinator").warning(
                 "Dialogue Agent fallback activated for simulation_id=%s",

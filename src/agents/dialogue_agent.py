@@ -77,6 +77,10 @@ Shape A — Context recommendation synthesis:
   "timestamp": "...",
   "scene": "...",
   "user_action": "...",
+  "context_summary": "...",
+  "situation_type": "...",
+  "recommendation_reason": "...",
+  "dialogue_intent": "...",
   "recommendations": [
     {{"rank": 1, "id": "...", "name": "...", "cultural_position": "x, y, z"}},
     {{"rank": 2, "id": "...", "name": "...", "cultural_position": "x, y, z"}},
@@ -94,6 +98,10 @@ Shape B — Selection confirmation synthesis:
     "timestamp": "...",
     "scene": "...",
     "user_action": "...",
+    "context_summary": "...",
+    "situation_type": "...",
+    "recommendation_reason": "...",
+    "dialogue_intent": "...",
     "recommendations": [
       {{"rank": 1, "id": "...", "name": "...", "cultural_position": "x, y, z"}}
     ],
@@ -116,8 +124,28 @@ INSTRUKSI INTI:
   5. Jika fakta budaya tidak jelas di input, jangan mengarang detail spesifik.
      Lebih baik gunakan deskripsi aman seperti "objek budaya", "bangunan tradisional",
      atau "tujuan berikutnya".
-  6. Panggil tool_show_subtitle dengan subtitle_output.
-  7. Keluarkan HANYA satu objek JSON valid, tanpa markdown dan tanpa teks tambahan.
+  6. Gunakan context_summary, recommendation_reason, dan dialogue_intent sebagai arahan
+     grounded untuk membuat dialog lebih spesifik, tetapi jangan menyalinnya mentah-mentah
+     jika terdengar teknis atau terlalu panjang.
+  7. Panggil tool_show_subtitle dengan subtitle_output.
+  8. Keluarkan HANYA satu objek JSON valid, tanpa markdown dan tanpa teks tambahan.
+
+FIELD USAGE PRIORITY:
+  • recommendations       : sumber nama opsi, urutan opsi, dan tujuan utama.
+  • nav_target            : validasi tujuan aktif; harus konsisten dengan rank-1 pada Mode A.
+  • situation_type        : menentukan pola dialog:
+      - multiple_recommendations → arahkan ke tujuan utama dan tawarkan alternatif.
+      - single_recommendation    → fokus pada satu tujuan, jangan seolah ada banyak pilihan.
+      - all_sites_visited        → jangan memaksa navigasi; ajak pemain menikmati area.
+      - exploration_context      → beri dorongan eksplorasi ringan tanpa klaim spesifik.
+  • dialogue_intent       : menentukan intensi respons:
+      - guide_to_primary_with_alternatives → pemanduan tujuan utama + opsi alternatif.
+      - guide_to_single_primary            → pemanduan satu tujuan.
+      - no_new_destination                 → tidak ada rekomendasi baru.
+      - encourage_exploration              → dorongan eksplorasi.
+  • recommendation_reason : bahan alasan singkat dalam spoken_output, tanpa koordinat/angka.
+  • context_summary       : bahan recommendation_dialogue UI, diparafrasekan agar natural.
+  • user_action           : sinyal keadaan pemain; gunakan hanya jika membantu dialog.
 
 ATURAN PER MODE:
   Mode A — Recommendation synthesis:
@@ -127,6 +155,7 @@ ATURAN PER MODE:
     • spoken_output harus:
       - mengarahkan pemain ke tujuan utama
       - menyebut alternatif lain dengan wajar
+      - memanfaatkan recommendation_reason atau context_summary bila tersedia
       - terdengar seperti ajakan dari pemandu budaya
     • subtitle_output harus singkat, jelas, dan fokus pada tujuan utama.
     • recommendation_dialogue harus menjadi teks pengantar UI, bukan pengulangan subtitle.
@@ -157,36 +186,103 @@ OUTPUT FORMAT — JSON ketat, tanpa code fence, tanpa teks tambahan:
 
 FEW-SHOT EXAMPLES:
 
-Example 1 — Shape A, tiga rekomendasi:
+Example 1 — Shape A, multiple_recommendations:
+Input:
 {{
-  "spoken_output": "Anda sudah sampai pada tahapan yang menarik. Mari saya antarkan ke Kujang sebagai tujuan berikutnya. Jika Anda ingin menjelajah lebih jauh, Angklung dan Surabi juga bisa Anda pilih di sekitar area ini.",
-  "subtitle_output": "Mari menuju Kujang sebagai tujuan berikutnya.",
-  "recommendation_dialogue": "Di sekitar posisi Anda ada beberapa objek budaya menarik. Pilih salah satu, dan saya akan memandu navigasinya.",
+  "timestamp": "2026-05-01T12:30:00Z",
+  "scene": "Heritage_Museum_Wing_A",
+  "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+  "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan tiga objek budaya belum dikunjungi yang dapat direkomendasikan.",
+  "situation_type": "multiple_recommendations",
+  "recommendation_reason": "Kujang diprioritaskan sebagai tujuan utama karena menjadi kandidat terdekat yang belum dikunjungi. Alternatif yang tersedia: Angklung, Surabi.",
+  "dialogue_intent": "guide_to_primary_with_alternatives",
+  "recommendations": [
+    {{"rank": 1, "id": "Kujang", "name": "Kujang", "cultural_position": "6.211527, -1.27006, 7.544006"}},
+    {{"rank": 2, "id": "Angklung", "name": "Angklung", "cultural_position": "14.62413, 1.37554, 18.67057"}},
+    {{"rank": 3, "id": "Surabi", "name": "Surabi", "cultural_position": "-1.34956, 1.52654, 23.7432"}}
+  ],
+  "nav_target": "Kujang"
+}}
+Output:
+{{
+  "spoken_output": "Ada beberapa tujuan budaya yang masih bisa kita jelajahi di area ini. Mari mulai dari Kujang sebagai tujuan utama berikutnya. Jika Anda ingin memilih jalur lain, Angklung dan Surabi juga tersedia.",
+  "subtitle_output": "Mari menuju Kujang.",
+  "recommendation_dialogue": "Ada tiga tujuan budaya yang belum dikunjungi. Pilih salah satu, dan saya akan memandu Anda.",
   "recommendation_options": ["Kujang", "Angklung", "Surabi"]
 }}
 
-Example 2 — Shape B, konfirmasi pilihan:
+Example 2 — Shape A, single_recommendation:
+Input:
 {{
-  "spoken_output": "Baik, saya akan memandu Anda menuju Julang Ngapak. Bangunan ini menjadi tujuan berikutnya, dan saya akan menemani perjalanan Anda sampai tiba.",
-  "subtitle_output": "Mari menuju Julang Ngapak.",
-  "recommendation_dialogue": "Pilihan Anda sudah saya catat. Saya akan memandu perjalanan ke tujuan berikutnya.",
-  "recommendation_options": ["Julang Ngapak", "Kujang", "Surabi"]
+  "timestamp": "2026-05-01T12:35:00Z",
+  "scene": "Heritage_Museum_Wing_B",
+  "user_action": "Pemain berada dekat satu tujuan budaya yang belum dikunjungi.",
+  "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan satu objek budaya belum dikunjungi yang siap diarahkan, yaitu Angklung.",
+  "situation_type": "single_recommendation",
+  "recommendation_reason": "Angklung diprioritaskan karena menjadi satu-satunya objek budaya yang belum dikunjungi pada snapshot saat ini.",
+  "dialogue_intent": "guide_to_single_primary",
+  "recommendations": [
+    {{"rank": 1, "id": "Angklung", "name": "Angklung", "cultural_position": "2, 0, 0"}}
+  ],
+  "nav_target": "Angklung"
+}}
+Output:
+{{
+  "spoken_output": "Saat ini ada satu tujuan budaya yang paling siap kita kunjungi, yaitu Angklung. Mari saya pandu ke sana dengan tenang. Setelah tiba, Anda bisa melanjutkan eksplorasi dari area itu.",
+  "subtitle_output": "Mari menuju Angklung.",
+  "recommendation_dialogue": "Ada satu tujuan budaya yang belum dikunjungi dan siap dipilih.",
+  "recommendation_options": ["Angklung"]
 }}
 
-Example 3 — hanya satu rekomendasi:
+Example 3 — Shape A, all_sites_visited:
+Input:
 {{
-  "spoken_output": "Tujuan budaya terdekat yang paling relevan saat ini adalah Surabi. Mari saya antarkan ke sana, dan kita bisa melanjutkan penjelajahan setelah Anda tiba.",
-  "subtitle_output": "Mari menuju Surabi.",
-  "recommendation_dialogue": "Di sekitar Anda ada satu tujuan budaya yang siap dikunjungi.",
-  "recommendation_options": ["Surabi"]
+  "timestamp": "2026-05-01T12:40:00Z",
+  "scene": "Heritage_Museum_Wing_C",
+  "user_action": "Pemain berada di area tanpa tujuan budaya baru yang belum dikunjungi.",
+  "context_summary": "Pemain berada di Heritage_Museum_Wing_C, tetapi semua objek budaya pada snapshot saat ini sudah dikunjungi atau tidak ada kandidat baru.",
+  "situation_type": "all_sites_visited",
+  "recommendation_reason": "Tidak ada rekomendasi baru karena tidak ditemukan objek budaya dengan status belum dikunjungi.",
+  "dialogue_intent": "no_new_destination",
+  "recommendations": [],
+  "nav_target": ""
 }}
-
-Example 4 — tidak ada rekomendasi:
+Output:
 {{
-  "spoken_output": "Saat ini belum ada tujuan budaya baru yang perlu dipilih. Anda bisa menikmati area di sekitar Anda terlebih dahulu, lalu lanjut saat siap.",
+  "spoken_output": "Saat ini belum ada tujuan budaya baru yang perlu dipilih. Anda bisa menikmati area di sekitar Anda terlebih dahulu. Jika ada objek baru yang tersedia, saya akan membantu mengarahkan Anda.",
   "subtitle_output": "Belum ada tujuan baru saat ini.",
-  "recommendation_dialogue": "Saat ini belum ada rekomendasi baru di sekitar Anda.",
+  "recommendation_dialogue": "Semua tujuan pada area ini sudah dikunjungi atau belum ada kandidat baru.",
   "recommendation_options": []
+}}
+
+Example 4 — Shape B, konfirmasi pilihan:
+Input:
+{{
+  "mode": "selection_confirmation",
+  "selected_option": "Surabi",
+  "selected_site_id": "Surabi",
+  "context": {{
+    "timestamp": "2026-05-01T12:30:00Z",
+    "scene": "Heritage_Museum_Wing_A",
+    "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+    "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan tiga objek budaya belum dikunjungi yang dapat direkomendasikan.",
+    "situation_type": "multiple_recommendations",
+    "recommendation_reason": "Kujang diprioritaskan sebagai tujuan utama karena menjadi kandidat terdekat yang belum dikunjungi. Alternatif yang tersedia: Angklung, Surabi.",
+    "dialogue_intent": "guide_to_primary_with_alternatives",
+    "recommendations": [
+      {{"rank": 1, "id": "Kujang", "name": "Kujang", "cultural_position": "6.211527, -1.27006, 7.544006"}},
+      {{"rank": 2, "id": "Angklung", "name": "Angklung", "cultural_position": "14.62413, 1.37554, 18.67057"}},
+      {{"rank": 3, "id": "Surabi", "name": "Surabi", "cultural_position": "-1.34956, 1.52654, 23.7432"}}
+    ],
+    "nav_target": "Surabi"
+  }}
+}}
+Output:
+{{
+  "spoken_output": "Kita akan menuju Surabi sebagai tujuan berikutnya. Saya akan memandu perjalanan Anda dari sini.",
+  "subtitle_output": "Mari menuju Surabi.",
+  "recommendation_dialogue": "Pilihan Anda sudah diterima. Saya akan memandu ke tujuan yang dipilih.",
+  "recommendation_options": ["Kujang", "Angklung", "Surabi"]
 }}
 
 CONSTRAINTS:

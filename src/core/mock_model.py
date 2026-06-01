@@ -13,7 +13,17 @@ T = TypeVar("T", bound=BaseModel)
 MOCK_CONTEXT_RESPONSE = json.dumps({
     "timestamp": "12:30:00",
     "scene": "Heritage_Museum_Wing_A",
-    "user_action": "Examining_Artifact_ID_7",
+    "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+    "context_summary": (
+        "Pemain berada di Heritage_Museum_Wing_A dengan tiga objek budaya belum dikunjungi "
+        "yang dapat direkomendasikan."
+    ),
+    "situation_type": "multiple_recommendations",
+    "recommendation_reason": (
+        "Kujang diprioritaskan sebagai tujuan utama karena menjadi kandidat terdekat "
+        "yang belum dikunjungi. Alternatif yang tersedia: Angklung, Surabi."
+    ),
+    "dialogue_intent": "guide_to_primary_with_alternatives",
     "recommendations": [
         {"rank": 1, "id": "Kujang", "name": "Kujang", "cultural_position": "6.211527, -1.27006, 7.544006"},
         {"rank": 2, "id": "Angklung", "name": "Angklung", "cultural_position": "14.62413, 1.37554, 18.67057"},
@@ -83,6 +93,70 @@ def _build_selection_dialogue_response(payload_text: str) -> str | None:
     }, ensure_ascii=False)
 
 
+def _build_context_dialogue_response(payload_text: str) -> str | None:
+    try:
+        parsed = json.loads(payload_text)
+    except Exception:
+        return None
+
+    if not isinstance(parsed, dict) or "recommendations" not in parsed:
+        return None
+
+    recommendations = parsed.get("recommendations", [])
+    if not isinstance(recommendations, list) or not recommendations:
+        return json.dumps({
+            "spoken_output": (
+                "Saat ini belum ada tujuan budaya baru yang perlu dipilih. "
+                "Anda bisa menikmati area di sekitar Anda terlebih dahulu, lalu lanjut saat siap."
+            ),
+            "subtitle_output": "Belum ada tujuan baru saat ini.",
+            "recommendation_dialogue": "Saat ini belum ada rekomendasi baru di sekitar Anda.",
+            "recommendation_options": [],
+        }, ensure_ascii=False)
+
+    options = [
+        item.get("name", "")
+        for item in recommendations
+        if isinstance(item, dict) and item.get("name")
+    ][:3]
+    if not options:
+        return None
+
+    primary_name = options[0]
+    alternatives = options[1:]
+    recommendation_reason = str(parsed.get("recommendation_reason", "")).strip()
+    context_summary = str(parsed.get("context_summary", "")).strip()
+    situation_type = str(parsed.get("situation_type", "")).strip()
+
+    if situation_type == "single_recommendation" or not alternatives:
+        spoken_output = (
+            f"Saat ini tujuan budaya yang paling siap kita kunjungi adalah {primary_name}. "
+            f"{recommendation_reason or 'Tujuan ini menjadi prioritas pada kondisi saat ini.'} "
+            "Mari saya pandu ke sana."
+        )
+        recommendation_dialogue = (
+            "Ada satu tujuan budaya yang belum dikunjungi dan siap dipilih."
+        )
+    elif alternatives:
+        alternatives_text = ", ".join(alternatives)
+        spoken_output = (
+            f"Ada beberapa tujuan budaya yang masih bisa kita jelajahi. "
+            f"Mari mulai dari {primary_name} sebagai tujuan utama berikutnya. "
+            f"Jika ingin memilih jalur lain, Anda juga dapat memilih {alternatives_text}."
+        )
+        recommendation_dialogue = (
+            context_summary
+            or "Ada beberapa tujuan budaya yang belum dikunjungi. Pilih salah satu, dan saya akan memandu Anda."
+        )
+
+    return json.dumps({
+        "spoken_output": spoken_output,
+        "subtitle_output": f"Mari menuju {primary_name}.",
+        "recommendation_dialogue": recommendation_dialogue,
+        "recommendation_options": options,
+    }, ensure_ascii=False)
+
+
 class MockModel(Model):
     """
     Mock model provider for local testing without real LLM API calls.
@@ -122,7 +196,11 @@ class MockModel(Model):
         if "context" in self.model_id:
             response_text = MOCK_CONTEXT_RESPONSE
         elif "dialogue" in self.model_id:
-            response_text = _build_selection_dialogue_response(payload_text) or MOCK_DIALOGUE_RESPONSE
+            response_text = (
+                _build_selection_dialogue_response(payload_text)
+                or _build_context_dialogue_response(payload_text)
+                or MOCK_DIALOGUE_RESPONSE
+            )
         else:
             response_text = json.dumps({"status": "mock_response"})
 

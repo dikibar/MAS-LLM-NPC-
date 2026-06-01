@@ -204,8 +204,28 @@ class ContextOutput(BaseModel):
     timestamp: str
     scene: str
     user_action: str
+    context_summary: str                       # LLM-readable summary of the current runtime situation
+    situation_type: str                        # e.g. multiple_recommendations, single_recommendation, all_sites_visited
+    recommendation_reason: str                 # Grounded reason why the primary site is recommended
+    dialogue_intent: str                       # Guidance intent for the Dialogue Agent
     recommendations: List[SiteRecommendation]  # ordered by rank ascending
     nav_target: str                            # ID of rank-1 site
+
+    @field_validator(
+        "timestamp",
+        "scene",
+        "user_action",
+        "context_summary",
+        "situation_type",
+        "recommendation_reason",
+        "dialogue_intent",
+    )
+    @classmethod
+    def validate_required_context_text(cls, value: str) -> str:
+        cleaned = value.strip()
+        if not cleaned:
+            raise ValueError("Field must not be empty.")
+        return cleaned
 
 
 # ---------------------------------------------------------------------------

@@ -51,6 +51,20 @@ LEAK_PATTERNS = [
     re.compile(r"\btool_", re.IGNORECASE),
 ]
 
+VALID_SITUATION_TYPES = {
+    "multiple_recommendations",
+    "single_recommendation",
+    "all_sites_visited",
+    "exploration_context",
+}
+
+VALID_DIALOGUE_INTENTS = {
+    "guide_to_primary_with_alternatives",
+    "guide_to_single_primary",
+    "no_new_destination",
+    "encourage_exploration",
+}
+
 
 @dataclass
 class CheckResult:
@@ -214,6 +228,41 @@ def evaluate_context(
         len(context.recommendations) <= 3,
         f"actual_count={len(context.recommendations)}",
     )
+    result.add(
+        "context.context_summary_present",
+        bool(context.context_summary.strip()),
+        context.context_summary,
+    )
+    result.add(
+        "context.recommendation_reason_present",
+        bool(context.recommendation_reason.strip()),
+        context.recommendation_reason,
+    )
+    result.add(
+        "context.situation_type_supported",
+        context.situation_type in VALID_SITUATION_TYPES,
+        f"actual={context.situation_type}",
+    )
+    result.add(
+        "context.dialogue_intent_supported",
+        context.dialogue_intent in VALID_DIALOGUE_INTENTS,
+        f"actual={context.dialogue_intent}",
+    )
+    result.add(
+        "context.no_coordinates_in_interpretive_fields",
+        not contains_leak(
+            " ".join(
+                [
+                    context.user_action,
+                    context.context_summary,
+                    context.recommendation_reason,
+                    context.dialogue_intent,
+                    context.situation_type,
+                ]
+            )
+        ),
+        "interpretive fields should not expose coordinates or technical tokens.",
+    )
 
     k = 3
     result.context_metrics = {
@@ -265,14 +314,14 @@ def evaluate_dialogue(
         "user-facing text should not expose coordinates, tool names, backend terms, or NavMesh terms.",
     )
 
-    if primary_option:
+    if primary_option and selected_option is None:
         result.add(
             "dialogue.primary_option_mentioned",
             primary_option.lower() in dialogue.spoken_output.lower()
             or primary_option.lower() in dialogue.subtitle_output.lower(),
             f"primary_option={primary_option}",
         )
-    else:
+    elif not primary_option:
         result.add(
             "dialogue.empty_recommendations_handled",
             not dialogue.recommendation_options,
