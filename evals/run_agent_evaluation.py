@@ -33,13 +33,15 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from openai import OpenAI
-from sklearn.metrics import cohen_kappa_score, ndcg_score
+from sklearn.metrics import cohen_kappa_score, ndcg_score, roc_auc_score
 
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC_PATH = ROOT / "src"
 if str(SRC_PATH) not in sys.path:
     sys.path.insert(0, str(SRC_PATH))
+
+from core.config import settings
 
 SCENARIOS_PATH = Path(__file__).parent / "scenarios.json"
 FIGURES_DIR = Path(__file__).parent / "figures"
@@ -206,7 +208,6 @@ def check_primary_option_mentioned(dialogue_output: dict[str, Any], primary_site
         return True
     user_text = " ".join(
         [
-            dialogue_output.get("spoken_output", ""),
             dialogue_output.get("subtitle_output", ""),
             dialogue_output.get("recommendation_dialogue", ""),
             " ".join(dialogue_output.get("recommendation_options", [])),
@@ -263,7 +264,10 @@ def compute_faithfulness_score(text: str, valid_names: list[str], check_rank1: s
 
     # Candidate named entities are capitalized spans. This is intentionally
     # conservative because Indonesian user-facing text often capitalizes sentence starts.
-    candidates = re.findall(r"\b[A-Z][A-Za-z]*(?:\s+[A-Z][A-Za-z]*)*\b", text or "")
+    candidate_matches = re.finditer(
+        r"\b[A-Z][A-Za-z]*(?:\s+[A-Z][A-Za-z]*)*\b",
+        text or "",
+    )
     common_words = {
         "Pemain",
         "Anda",
@@ -275,14 +279,22 @@ def compute_faithfulness_score(text: str, valid_names: list[str], check_rank1: s
         "Wing",
         "Alternatif",
         "Tidak",
+        "Semua",
+        "Satu",
+        "Dua",
+        "Tiga",
     }
-    for candidate in candidates:
-        candidate = candidate.strip()
+    for match in candidate_matches:
+        candidate = match.group(0).strip()
         if len(candidate) < 3 or candidate in common_words:
+            continue
+        prefix = (text or "")[: match.start()].rstrip()
+        is_sentence_initial = not prefix or prefix.endswith((".", "!", "?", ":", ";"))
+        if is_sentence_initial and " " not in candidate:
             continue
         candidate_lower = candidate.lower()
         is_valid = any(candidate_lower in valid_name or valid_name in candidate_lower for valid_name in valid_lower)
-        if not is_valid:
+        if not is_valid and candidate not in hallucinated:
             hallucinated.append(candidate)
 
     faithfulness_score = 1.0 if not hallucinated else max(0.0, 1.0 - (len(hallucinated) * 0.2))
@@ -294,6 +306,178 @@ def compute_faithfulness_score(text: str, valid_names: list[str], check_rank1: s
         "rank1_mentioned": rank1_mentioned,
         "mentioned_valid_sites": mentioned_valid,
     }
+
+
+CONTEXT_UQ_CORRECTNESS_CHECKS = (
+    "context_schema_valid",
+    "no_visited_sites_recommended",
+    "ranking_exact_match",
+    "nav_target_matches_rank_1",
+    "nav_target_empty_when_no_recommendations",
+    "max_three_recommendations",
+    "situation_type_supported",
+    "dialogue_intent_supported",
+    "recommendation_reason_present",
+    "no_coordinates_in_interpretive_fields",
+)
+
+DIALOGUE_UQ_CORRECTNESS_CHECKS = (
+    "dialogue_schema_valid",
+    "subtitle_max_15_words",
+    "no_internal_tokens_or_coordinates",
+    "options_match_context_order",
+    "option_count",
+    "empty_recommendations_handled",
+    "primary_option_mentioned",
+    "invalid_option_returns_error",
+)
+
+
+def _all_checks_pass(result: dict[str, Any], check_names: tuple[str, ...]) -> bool:
+    checks = result.get("deterministic_checks", {})
+    return all(checks.get(name, False) for name in check_names)
+
+
+def compute_selective_uq_metrics(
+    all_results: list[dict[str, Any]],
+    uq_key: str,
+    correctness_checks: tuple[str, ...],
+) -> dict[str, Any]:
+    """Evaluate whether higher UDeg identifies outputs that should be rejected."""
+    rows = []
+    for result in all_results:
+        uq_report = result.get(uq_key, {})
+        uncertainty = uq_report.get("udeg")
+        if uncertainty is None:
+            continue
+        rows.append(
+            {
+                "scenario_id": result.get("scenario_id", ""),
+                "uncertainty": float(uncertainty),
+                "correct": _all_checks_pass(result, correctness_checks),
+            }
+        )
+
+    if not rows:
+        return {
+            "sample_count": 0,
+            "status": "unavailable",
+            "note": "No UDeg values were available.",
+        }
+
+    rows.sort(key=lambda row: row["uncertainty"])
+    correctness = [1 if row["correct"] else 0 for row in rows]
+    uncertainties = [row["uncertainty"] for row in rows]
+    sample_count = len(rows)
+    error_count = sample_count - sum(correctness)
+
+    curve = []
+    for rejected_count in range(sample_count):
+        kept = rows[: sample_count - rejected_count]
+        accuracy = sum(1 for row in kept if row["correct"]) / len(kept)
+        curve.append(
+            {
+                "rejection_rate": round(rejected_count / sample_count, 4),
+                "coverage": round(len(kept) / sample_count, 4),
+                "accuracy": round(accuracy, 4),
+            }
+        )
+    curve.append(
+        {
+            "rejection_rate": 1.0,
+            "coverage": 0.0,
+            "accuracy": curve[-1]["accuracy"],
+        }
+    )
+
+    auarc = 0.0
+    for left, right in zip(curve, curve[1:]):
+        width = right["rejection_rate"] - left["rejection_rate"]
+        auarc += width * (left["accuracy"] + right["accuracy"]) / 2
+
+    correct_uncertainties = [
+        uncertainty
+        for uncertainty, correct in zip(uncertainties, correctness)
+        if correct
+    ]
+    incorrect_uncertainties = [
+        uncertainty
+        for uncertainty, correct in zip(uncertainties, correctness)
+        if not correct
+    ]
+    measurable = bool(correct_uncertainties and incorrect_uncertainties)
+    error_auroc = (
+        float(roc_auc_score([1 - value for value in correctness], uncertainties))
+        if measurable
+        else None
+    )
+
+    return {
+        "sample_count": sample_count,
+        "correct_count": sum(correctness),
+        "error_count": error_count,
+        "accuracy_at_zero_rejection": round(sum(correctness) / sample_count, 4),
+        "auarc": round(auarc, 4),
+        "error_detection_auroc": round(error_auroc, 4) if error_auroc is not None else None,
+        "mean_udeg_correct": (
+            round(statistics.mean(correct_uncertainties), 4)
+            if correct_uncertainties
+            else None
+        ),
+        "mean_udeg_incorrect": (
+            round(statistics.mean(incorrect_uncertainties), 4)
+            if incorrect_uncertainties
+            else None
+        ),
+        "status": "measurable" if measurable else "no_error_variation",
+        "note": (
+            "UQ discrimination is measurable because both correct and incorrect outputs exist."
+            if measurable
+            else "All outputs have the same correctness label; AUARC describes selective accuracy, "
+            "but error-discrimination ability cannot be established from this run."
+        ),
+        "accuracy_rejection_curve": curve,
+    }
+
+
+def _scenario_group(scenario_id: str) -> str:
+    match = re.match(r"sc\d+_(.+?)_\d+$", scenario_id or "")
+    return match.group(1) if match else "other"
+
+
+def compute_uq_group_summary(all_results: list[dict[str, Any]]) -> dict[str, Any]:
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for result in all_results:
+        grouped.setdefault(_scenario_group(result.get("scenario_id", "")), []).append(result)
+
+    summary = {}
+    for group_name, results in grouped.items():
+        context_udeg = [
+            result.get("context_uq", {}).get("udeg")
+            for result in results
+            if result.get("context_uq", {}).get("udeg") is not None
+        ]
+        dialogue_udeg = [
+            result.get("dialogue_uq", {}).get("udeg")
+            for result in results
+            if result.get("dialogue_uq", {}).get("udeg") is not None
+        ]
+        grounding = [
+            result.get("dialogue_uq", {}).get("selected_grounding")
+            for result in results
+            if result.get("dialogue_uq", {}).get("selected_grounding") is not None
+        ]
+        summary[group_name] = {
+            "scenario_count": len(results),
+            "pass_rate": round(
+                sum(1 for result in results if result.get("passed", False)) / len(results),
+                4,
+            ),
+            "context_udeg_mean": round(statistics.mean(context_udeg), 4) if context_udeg else None,
+            "dialogue_udeg_mean": round(statistics.mean(dialogue_udeg), 4) if dialogue_udeg else None,
+            "dialogue_grounding_mean": round(statistics.mean(grounding), 4) if grounding else None,
+        }
+    return summary
 
 
 def llm_judge_dimension(
@@ -343,14 +527,17 @@ OUTPUT JSON:
 """
 
     try:
+        completion_params = settings.llm_model_params_for(500)
+        if "temperature" in completion_params:
+            completion_params["temperature"] = 0
+
         response = judge_client.chat.completions.create(
             model=JUDGE_MODEL,
-            temperature=0,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
             ],
-            max_tokens=500,
+            **completion_params,
         )
         raw = response.choices[0].message.content.strip()
         raw = re.sub(r"```json\s*|\s*```", "", raw).strip()
@@ -427,8 +614,16 @@ def run_orchestrator_quietly(func, *args, **kwargs):
         return func(*args, **kwargs)
 
 
+def copy_uq_report(report: dict[str, Any] | None) -> dict[str, Any]:
+    """Return a JSON-safe snapshot of the latest agent UQ report."""
+    if not report:
+        return {}
+    return json.loads(json.dumps(report, ensure_ascii=False))
+
+
 def run_single_scenario(scenario: dict[str, Any]) -> dict[str, Any]:
     from orchestration.coordinator import HierarchicalOrchestrator
+    from agents import get_context_agent, get_dialogue_agent
 
     scenario_id = scenario["id"]
     logger.info("Running scenario: %s", scenario_id)
@@ -444,6 +639,9 @@ def run_single_scenario(scenario: dict[str, Any]) -> dict[str, Any]:
         "trajectory": {},
         "context_output": None,
         "dialogue_output": None,
+        "context_uq": {},
+        "dialogue_uq": {},
+        "selection_dialogue_uq": {},
         "errors": [],
         "passed": False,
     }
@@ -457,10 +655,12 @@ def run_single_scenario(scenario: dict[str, Any]) -> dict[str, Any]:
         context_cycle = run_orchestrator_quietly(orchestrator.run_context_cycle, sim_req)
         context_output = context_cycle.context.model_dump()
         result["context_output"] = context_output
+        result["context_uq"] = copy_uq_report(get_context_agent().last_uq_report)
 
         dialogue_cycle = run_orchestrator_quietly(orchestrator.run_dialogue_cycle, context_cycle.simulation_id)
         dialogue_output = dialogue_cycle.dialogue.model_dump()
         result["dialogue_output"] = dialogue_output
+        result["dialogue_uq"] = copy_uq_report(get_dialogue_agent().last_uq_report)
 
         checks: dict[str, bool] = {}
         expected_sites = compute_expected_ranking(req_data["playerPosition"], sites)
@@ -498,7 +698,6 @@ def run_single_scenario(scenario: dict[str, Any]) -> dict[str, Any]:
         checks["no_internal_tokens_or_coordinates"] = check_no_technical_leak(
             " ".join(
                 [
-                    dialogue_output.get("spoken_output", ""),
                     dialogue_output.get("subtitle_output", ""),
                     dialogue_output.get("recommendation_dialogue", ""),
                     " ".join(dialogue_output.get("recommendation_options", [])),
@@ -528,11 +727,12 @@ def run_single_scenario(scenario: dict[str, Any]) -> dict[str, Any]:
                     context_cycle.simulation_id,
                     selected_option,
                 )
+                result["selection_dialogue_uq"] = copy_uq_report(get_dialogue_agent().last_uq_report)
                 checks["invalid_option_returns_error"] = not expected_error
                 if not expected_error:
-                    checks["selected_option_mentioned"] = selected_option.lower() in (
-                        selection_response.spoken_output + " " + selection_response.subtitle_output
-                    ).lower()
+                    checks["selected_option_mentioned"] = (
+                        selected_option.lower() in selection_response.subtitle_output.lower()
+                    )
             except ValueError:
                 checks["invalid_option_returns_error"] = expected_error
         else:
@@ -669,6 +869,7 @@ def run_pass_k_scenario(scenario: dict[str, Any], k: int = 5) -> dict[str, Any]:
 def run_ablation_stripped(scenario: dict[str, Any], stripped_fields: list[str]) -> dict[str, Any]:
     from orchestration.coordinator import HierarchicalOrchestrator
     from schema.models import ContextOutput
+    from agents import get_context_agent, get_dialogue_agent
 
     result = {
         "scenario_id": scenario["id"] + "_stripped",
@@ -677,6 +878,8 @@ def run_ablation_stripped(scenario: dict[str, Any], stripped_fields: list[str]) 
         "llm_judge_scores": {},
         "context_output": None,
         "dialogue_output": None,
+        "context_uq": {},
+        "dialogue_uq": {},
         "errors": [],
         "passed": False,
     }
@@ -685,6 +888,7 @@ def run_ablation_stripped(scenario: dict[str, Any], stripped_fields: list[str]) 
         sim_req = build_simulation_request(scenario["request"])
         context_cycle = run_orchestrator_quietly(orchestrator.run_context_cycle, sim_req)
         stripped_context = context_cycle.context.model_dump()
+        result["context_uq"] = copy_uq_report(get_context_agent().last_uq_report)
         for field in stripped_fields:
             if field in stripped_context:
                 stripped_context[field] = "Informasi alasan rekomendasi tidak tersedia."
@@ -700,6 +904,7 @@ def run_ablation_stripped(scenario: dict[str, Any], stripped_fields: list[str]) 
         dialogue_output = dialogue_cycle.dialogue.model_dump()
         result["context_output"] = stripped_context
         result["dialogue_output"] = dialogue_output
+        result["dialogue_uq"] = copy_uq_report(get_dialogue_agent().last_uq_report)
         result["deterministic_checks"] = {
             "dialogue_schema_valid": check_schema_valid_dialogue(dialogue_output),
             "options_match_context_order": check_options_match_context(dialogue_output, stripped_context),
@@ -957,6 +1162,42 @@ def plot_ir_metrics_summary(all_results: list[dict[str, Any]]) -> None:
     save_figure(fig, "07_ir_metrics_summary.png")
 
 
+def plot_uq_accuracy_rejection(summary: dict[str, Any]) -> None:
+    validation = summary.get("uncertainty_validation", {})
+    chart_specs = [
+        ("context_agent", "Context Agent", "#1976D2"),
+        ("dialogue_agent", "Dialogue Agent", "#D84315"),
+    ]
+    fig, ax = plt.subplots(figsize=(10, 6))
+    plotted = False
+    for key, label, color in chart_specs:
+        curve = validation.get(key, {}).get("accuracy_rejection_curve", [])
+        if not curve:
+            continue
+        ax.plot(
+            [point["rejection_rate"] for point in curve],
+            [point["accuracy"] for point in curve],
+            marker="o",
+            linewidth=2,
+            markersize=3,
+            label=f"{label} (AUARC={validation[key].get('auarc', 0):.3f})",
+            color=color,
+        )
+        plotted = True
+    if not plotted:
+        plt.close(fig)
+        return
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1.05)
+    ax.set_xlabel("Rejection rate (highest UDeg rejected first)")
+    ax.set_ylabel("Accuracy on retained scenarios")
+    ax.set_title("UQ Selective Accuracy-Rejection Curve", fontweight="bold")
+    ax.grid(alpha=0.25)
+    ax.legend()
+    plt.tight_layout()
+    save_figure(fig, "08_uq_accuracy_rejection_curve.png")
+
+
 def aggregate_results(all_results: list[dict[str, Any]]) -> dict[str, Any]:
     total = len(all_results)
     passed = sum(1 for result in all_results if result.get("passed", False))
@@ -996,6 +1237,18 @@ def aggregate_results(all_results: list[dict[str, Any]]) -> dict[str, Any]:
         if result.get("faithfulness")
     ]
     faithfulness_values = [value for value in faithfulness_values if value is not None]
+    uncertainty_validation = {
+        "context_agent": compute_selective_uq_metrics(
+            all_results,
+            "context_uq",
+            CONTEXT_UQ_CORRECTNESS_CHECKS,
+        ),
+        "dialogue_agent": compute_selective_uq_metrics(
+            all_results,
+            "dialogue_uq",
+            DIALOGUE_UQ_CORRECTNESS_CHECKS,
+        ),
+    }
     return {
         "total_scenarios": total,
         "passed": passed,
@@ -1004,6 +1257,8 @@ def aggregate_results(all_results: list[dict[str, Any]]) -> dict[str, Any]:
         "judge_summary": judge_summary,
         "ir_summary": ir_summary,
         "faithfulness_avg": round(statistics.mean(faithfulness_values), 4) if faithfulness_values else None,
+        "uncertainty_validation": uncertainty_validation,
+        "uq_group_summary": compute_uq_group_summary(all_results),
         "timestamp": datetime.utcnow().isoformat(),
         "judge_model": JUDGE_MODEL,
         "judge_temperature": 0,
@@ -1086,6 +1341,7 @@ def main() -> int:
         plot_llm_judge_radar(all_results)
         plot_scenario_heatmap(all_results)
         plot_ir_metrics_summary(all_results)
+        plot_uq_accuracy_rejection(summary)
     if pass_k_result:
         plot_reliability_boxplot(pass_k_result)
     if ablation_result:
@@ -1123,6 +1379,15 @@ def main() -> int:
             print("\nLLM Judge Scores (mean +/- std):")
             for dimension, stats in summary["judge_summary"].items():
                 print(f"  {dimension}: {stats['mean']:.2f} +/- {stats['std']:.2f} (n={stats['n']}, pass={stats['pass_rate']:.2%})")
+        if summary.get("uncertainty_validation"):
+            print("\nUQ Selective Validation:")
+            for agent_name, metrics in summary["uncertainty_validation"].items():
+                auroc = metrics.get("error_detection_auroc")
+                auroc_text = f"{auroc:.4f}" if auroc is not None else "N/A (no error variation)"
+                print(
+                    f"  {agent_name}: AUARC={metrics.get('auarc', 0):.4f}, "
+                    f"error AUROC={auroc_text}, errors={metrics.get('error_count', 0)}"
+                )
         if summary.get("reliability"):
             reliability = summary["reliability"]
             print(f"\nReliability (pass^{reliability['k']}): {reliability['pass_k_score']:.4f}")

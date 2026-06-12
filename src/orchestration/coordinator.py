@@ -54,7 +54,7 @@ class InMemoryMessagePool:
     def publish_dialogue(self, output: DialogueOutput):
         self.state.latest_dialogue = output
         self.state.history.append(
-            AgentMessage(role="dialogue", content=output.spoken_output)
+            AgentMessage(role="dialogue", content=output.recommendation_dialogue)
         )
         self.logger.info(f"Dialogue Published: {output.subtitle_output}")
 
@@ -373,9 +373,9 @@ class HierarchicalOrchestrator:
                 )
         else:
             logging.getLogger("Coordinator").info(
-                "Using OpenRouter model '%s' via %s.",
-                settings.OPENROUTER_MODEL,
-                settings.OPENROUTER_BASE_URL,
+                "Using external LLM model '%s' via %s.",
+                settings.llm_model,
+                settings.llm_base_url,
             )
 
     def _run_dialogue_agent(self, context_json: str) -> DialogueOutput:
@@ -526,11 +526,11 @@ class HierarchicalOrchestrator:
             if session.context.recommendations:
                 primary_name = session.context.recommendations[0].name.lower()
                 primary_mentioned = (
-                    primary_name in dialogue_output.spoken_output.lower()
+                    primary_name in dialogue_output.recommendation_dialogue.lower()
                     or primary_name in dialogue_output.subtitle_output.lower()
                 )
                 if not primary_mentioned:
-                    raise ValueError("Dialogue output did not mention the primary recommendation.")
+                    raise ValueError("HUD output did not mention the primary recommendation.")
         except Exception:
             logging.getLogger("Coordinator").warning(
                 "Dialogue Agent fallback activated for simulation_id=%s",
@@ -558,9 +558,8 @@ class HierarchicalOrchestrator:
         print(dialogue_output.model_dump_json(indent=2))
 
         print("\n" + "-" * 54)
-        print(f"NPC SAYS  : {dialogue_output.spoken_output}")
+        print(f"HUD TEXT  : {dialogue_output.recommendation_dialogue}")
         print(f"SUBTITLE  : {dialogue_output.subtitle_output}")
-        print(f"UI TEXT   : {dialogue_output.recommendation_dialogue}")
         print(f"UI OPTIONS: {dialogue_output.recommendation_options}")
         print("-" * 54)
 
@@ -606,8 +605,8 @@ class HierarchicalOrchestrator:
         )
         try:
             selection_dialogue = self._run_dialogue_agent(selection_payload)
-            if selected_site.name.lower() not in selection_dialogue.spoken_output.lower():
-                raise ValueError("Selection dialogue did not mention the selected site.")
+            if selected_site.name.lower() not in selection_dialogue.subtitle_output.lower():
+                raise ValueError("Selection subtitle did not mention the selected site.")
         except Exception:
             logging.getLogger("Coordinator").warning(
                 "Dialogue Agent selection fallback activated for simulation_id=%s",

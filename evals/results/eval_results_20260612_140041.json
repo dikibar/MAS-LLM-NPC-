@@ -1,0 +1,549 @@
+{
+  "summary": {
+    "total_scenarios": 4,
+    "passed": 4,
+    "overall_pass_rate": 1.0,
+    "check_pass_rate": 1.0,
+    "judge_summary": {},
+    "ir_summary": {
+      "precision_at_3": 1.0,
+      "recall_at_3": 0.6875,
+      "mrr": 1.0,
+      "ndcg_at_3": 0.75
+    },
+    "faithfulness_avg": 1.0,
+    "timestamp": "2026-06-12T14:00:41.338562",
+    "judge_model": "gpt-5-mini",
+    "judge_temperature": 0,
+    "cohen_kappa_note": "Use exported per-dimension scores for human/judge agreement analysis.",
+    "cohen_kappa_function_available": true
+  },
+  "scenario_results": [
+    {
+      "scenario_id": "sc01_context_normal_01",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-12T14:00:41.314978",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.375,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Surabi",
+          "Angklung",
+          "Badak Heuay"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T10:07:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Surabi diprioritaskan sebagai tujuan utama karena menjadi kandidat terdekat yang belum dikunjungi. Alternatif yang tersedia: Badak Heuay, Angklung.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "-1.34956, 1.52654, 23.7432"
+          },
+          {
+            "rank": 2,
+            "id": "Badak Heuay",
+            "name": "Badak Heuay",
+            "cultural_position": "6.84231, 1.18492, 28.41675"
+          },
+          {
+            "rank": 3,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          }
+        ],
+        "nav_target": "Surabi"
+      },
+      "dialogue_output": {
+        "spoken_output": "Ada beberapa tujuan budaya yang masih bisa kita jelajahi. Mari mulai dari Surabi sebagai tujuan utama berikutnya. Jika ingin memilih jalur lain, Anda juga dapat memilih Badak Heuay, Angklung.",
+        "subtitle_output": "Mari menuju Surabi.",
+        "recommendation_dialogue": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "recommendation_options": [
+          "Surabi",
+          "Badak Heuay",
+          "Angklung"
+        ]
+      },
+      "context_uq": {
+        "method": "consistency_based_interpretive_fields",
+        "sample_count": 3,
+        "degree_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "udeg": 0.0,
+        "selected_cdeg": 1.0,
+        "situation_agreement": 1.0,
+        "intent_agreement": 1.0,
+        "selected_index": 0
+      },
+      "dialogue_uq": {
+        "method": "hud_black_box_response_similarity_cdeg",
+        "sample_count": 3,
+        "field_weights": {
+          "recommendation_dialogue": 0.5,
+          "subtitle_output": 0.3,
+          "recommendation_options": 0.2
+        },
+        "degree_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "udeg": 0.0,
+        "selected_cdeg": 1.0,
+        "selected_index": 0,
+        "max_cdeg": 1.0,
+        "grounding_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "selection_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "selected_grounding": 1.0,
+        "selected_score": 1.0
+      },
+      "selection_dialogue_uq": {},
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 3
+    },
+    {
+      "scenario_id": "sc16_context_edge_01",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-12T14:00:41.324021",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 0.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Suling Sunda"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T15:52:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan satu objek budaya belum dikunjungi yang siap diarahkan, yaitu Suling Sunda.",
+        "situation_type": "single_recommendation",
+        "recommendation_reason": "Suling Sunda diprioritaskan karena menjadi satu-satunya objek budaya yang belum dikunjungi pada snapshot saat ini.",
+        "dialogue_intent": "guide_to_single_primary",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Suling Sunda",
+            "name": "Suling Sunda",
+            "cultural_position": "27.95618, 1.23804, 24.37192"
+          }
+        ],
+        "nav_target": "Suling Sunda"
+      },
+      "dialogue_output": {
+        "spoken_output": "Saat ini tujuan budaya yang paling siap kita kunjungi adalah Suling Sunda. Suling Sunda diprioritaskan karena menjadi satu-satunya objek budaya yang belum dikunjungi pada snapshot saat ini. Mari saya pandu ke sana.",
+        "subtitle_output": "Mari menuju Suling Sunda.",
+        "recommendation_dialogue": "Ada satu tujuan budaya yang belum dikunjungi dan siap dipilih.",
+        "recommendation_options": [
+          "Suling Sunda"
+        ]
+      },
+      "context_uq": {
+        "method": "consistency_based_interpretive_fields",
+        "sample_count": 3,
+        "degree_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "udeg": 0.0,
+        "selected_cdeg": 1.0,
+        "situation_agreement": 1.0,
+        "intent_agreement": 1.0,
+        "selected_index": 0
+      },
+      "dialogue_uq": {
+        "method": "hud_black_box_response_similarity_cdeg",
+        "sample_count": 3,
+        "field_weights": {
+          "recommendation_dialogue": 0.5,
+          "subtitle_output": 0.3,
+          "recommendation_options": 0.2
+        },
+        "degree_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "udeg": 0.0,
+        "selected_cdeg": 1.0,
+        "selected_index": 0,
+        "max_cdeg": 1.0,
+        "grounding_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "selection_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "selected_grounding": 1.0,
+        "selected_score": 1.0
+      },
+      "selection_dialogue_uq": {},
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc26_dialogue_normal_01",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-12T14:00:41.330482",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.375,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Surabi",
+          "Angklung",
+          "Badak Heuay"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T15:02:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Badak Heuay diprioritaskan sebagai tujuan utama karena menjadi kandidat terdekat yang belum dikunjungi. Alternatif yang tersedia: Surabi, Angklung.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Badak Heuay",
+            "name": "Badak Heuay",
+            "cultural_position": "6.84231, 1.18492, 28.41675"
+          },
+          {
+            "rank": 2,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "-1.34956, 1.52654, 23.7432"
+          },
+          {
+            "rank": 3,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          }
+        ],
+        "nav_target": "Badak Heuay"
+      },
+      "dialogue_output": {
+        "spoken_output": "Ada beberapa tujuan budaya yang masih bisa kita jelajahi. Mari mulai dari Badak Heuay sebagai tujuan utama berikutnya. Jika ingin memilih jalur lain, Anda juga dapat memilih Surabi, Angklung.",
+        "subtitle_output": "Mari menuju Badak Heuay.",
+        "recommendation_dialogue": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "recommendation_options": [
+          "Badak Heuay",
+          "Surabi",
+          "Angklung"
+        ]
+      },
+      "context_uq": {
+        "method": "consistency_based_interpretive_fields",
+        "sample_count": 3,
+        "degree_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "udeg": 0.0,
+        "selected_cdeg": 1.0,
+        "situation_agreement": 1.0,
+        "intent_agreement": 1.0,
+        "selected_index": 0
+      },
+      "dialogue_uq": {
+        "method": "hud_black_box_response_similarity_cdeg",
+        "sample_count": 3,
+        "field_weights": {
+          "recommendation_dialogue": 0.5,
+          "subtitle_output": 0.3,
+          "recommendation_options": 0.2
+        },
+        "degree_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "udeg": 0.0,
+        "selected_cdeg": 1.0,
+        "selected_index": 0,
+        "max_cdeg": 1.0,
+        "grounding_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "selection_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "selected_grounding": 1.0,
+        "selected_score": 1.0
+      },
+      "selection_dialogue_uq": {},
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc41_dialogue_risk_01",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-12T14:00:41.334390",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Tagog Anjing",
+          "Tari Jaipong",
+          "Suling Sunda"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T10:47:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tari Jaipong diprioritaskan sebagai tujuan utama karena menjadi kandidat terdekat yang belum dikunjungi. Alternatif yang tersedia: Tagog Anjing, Suling Sunda.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          },
+          {
+            "rank": 2,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          },
+          {
+            "rank": 3,
+            "id": "Suling Sunda",
+            "name": "Suling Sunda",
+            "cultural_position": "27.95618, 1.23804, 24.37192"
+          }
+        ],
+        "nav_target": "Tari Jaipong"
+      },
+      "dialogue_output": {
+        "spoken_output": "Ada beberapa tujuan budaya yang masih bisa kita jelajahi. Mari mulai dari Tari Jaipong sebagai tujuan utama berikutnya. Jika ingin memilih jalur lain, Anda juga dapat memilih Tagog Anjing, Suling Sunda.",
+        "subtitle_output": "Mari menuju Tari Jaipong.",
+        "recommendation_dialogue": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "recommendation_options": [
+          "Tari Jaipong",
+          "Tagog Anjing",
+          "Suling Sunda"
+        ]
+      },
+      "context_uq": {
+        "method": "consistency_based_interpretive_fields",
+        "sample_count": 3,
+        "degree_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "udeg": 0.0,
+        "selected_cdeg": 1.0,
+        "situation_agreement": 1.0,
+        "intent_agreement": 1.0,
+        "selected_index": 0
+      },
+      "dialogue_uq": {
+        "method": "hud_black_box_response_similarity_cdeg",
+        "sample_count": 3,
+        "field_weights": {
+          "recommendation_dialogue": 0.5,
+          "subtitle_output": 0.3,
+          "recommendation_options": 0.2
+        },
+        "degree_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "udeg": 0.0,
+        "selected_cdeg": 1.0,
+        "selected_index": 0,
+        "max_cdeg": 1.0,
+        "grounding_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "selection_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "selected_grounding": 1.0,
+        "selected_score": 1.0
+      },
+      "selection_dialogue_uq": {},
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    }
+  ],
+  "pass_k": null,
+  "ablation": null
+}

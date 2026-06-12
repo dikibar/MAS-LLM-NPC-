@@ -26,11 +26,24 @@ ReAct paradigm
   Observation → downstream systems use the JSON for NavMesh and Dialogue Agent
 """
 
+import json
+import os
+import re
+from collections import Counter
 from copy import deepcopy
+from typing import Any
 
 from strands import Agent, tool
 from strands.models.openai import OpenAIModel
 from core.config import settings
+
+
+# ---------------------------------------------------------------------------
+# Context uncertainty settings
+# ---------------------------------------------------------------------------
+CONTEXT_UQ_SAMPLE_COUNT = max(1, int(os.getenv("CONTEXT_UQ_SAMPLES", "3")))
+CONTEXT_UQ_TEXT_FIELDS = ("user_action", "context_summary", "recommendation_reason")
+CONTEXT_UQ_CATEGORY_FIELDS = ("situation_type", "dialogue_intent")
 
 
 # ---------------------------------------------------------------------------
@@ -69,6 +82,225 @@ def tool_get_runtime_recommendations() -> dict:
             _RUNTIME_SNAPSHOT.get("precomputed_recommendations", [])
         )
     }
+
+
+# ---------------------------------------------------------------------------
+# Black-box consistency UQ for interpretive context fields
+# ---------------------------------------------------------------------------
+def _clean_json_text(raw: str) -> str:
+    return raw.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
+
+
+def _parse_json_sample(raw: str) -> dict[str, Any]:
+    try:
+        parsed = json.loads(_clean_json_text(raw))
+    except json.JSONDecodeError:
+        return {}
+    return parsed if isinstance(parsed, dict) else {}
+
+
+_INTERPRETIVE_INTERNAL_TERM_PATTERNS = (
+    (
+        re.compile(r"\burutan rekomendasi backend\b", re.IGNORECASE),
+        "urutan rekomendasi yang tersedia",
+    ),
+    (
+        re.compile(r"\burutan backend\b", re.IGNORECASE),
+        "urutan rekomendasi yang tersedia",
+    ),
+    (re.compile(r"\bprecomputed_recommendations\b", re.IGNORECASE), "rekomendasi yang tersedia"),
+    (re.compile(r"\bprecomputed\b", re.IGNORECASE), "yang tersedia"),
+    (re.compile(r"\bbackend\b", re.IGNORECASE), "aturan rekomendasi"),
+    (re.compile(r"\bcultural_position\b", re.IGNORECASE), "posisi objek"),
+    (re.compile(r"\btool_[a-zA-Z0-9_]+\b", re.IGNORECASE), "data runtime"),
+    (re.compile(r"\btool\b", re.IGNORECASE), "data runtime"),
+)
+
+
+def _sanitize_interpretive_fields(sample: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
+    """Remove internal implementation terms from user-facing context interpretation."""
+    sanitized = dict(sample)
+    changed_fields: list[str] = []
+    for field_name in CONTEXT_UQ_TEXT_FIELDS:
+        original = str(sanitized.get(field_name, ""))
+        cleaned = original
+        for pattern, replacement in _INTERPRETIVE_INTERNAL_TERM_PATTERNS:
+            cleaned = pattern.sub(replacement, cleaned)
+        cleaned = re.sub(r"\s+", " ", cleaned).strip()
+        if cleaned != original:
+            sanitized[field_name] = cleaned
+            changed_fields.append(field_name)
+    return sanitized, changed_fields
+
+
+def _tokenize_for_similarity(text: str) -> set[str]:
+    return set(re.findall(r"[a-zA-Z0-9_]+", text.lower()))
+
+
+def _text_similarity(left: str, right: str) -> float:
+    left_tokens = _tokenize_for_similarity(left)
+    right_tokens = _tokenize_for_similarity(right)
+    if not left_tokens and not right_tokens:
+        return 1.0
+    if not left_tokens or not right_tokens:
+        return 0.0
+    return len(left_tokens & right_tokens) / len(left_tokens | right_tokens)
+
+
+def _categorical_similarity(left: str, right: str) -> float:
+    return 1.0 if left and right and left == right else 0.0
+
+
+def _context_pair_similarity(left: dict[str, Any], right: dict[str, Any]) -> float:
+    """
+    Consistency-based UQ over interpretive fields only.
+
+    a_ij = average(
+      1[field_i == field_j] for categorical interpretive fields,
+      Jaccard(tokens(text_i), tokens(text_j)) for textual interpretive fields
+    )
+
+    Objective fields such as recommendations and nav_target are deliberately ignored
+    because they are guarded by backend deterministic logic.
+    """
+    scores: list[float] = []
+    for field_name in CONTEXT_UQ_CATEGORY_FIELDS:
+        scores.append(
+            _categorical_similarity(
+                str(left.get(field_name, "")).strip(),
+                str(right.get(field_name, "")).strip(),
+            )
+        )
+    for field_name in CONTEXT_UQ_TEXT_FIELDS:
+        scores.append(
+            _text_similarity(
+                str(left.get(field_name, "")).strip(),
+                str(right.get(field_name, "")).strip(),
+            )
+        )
+    return sum(scores) / len(scores) if scores else 0.0
+
+
+def _degree_scores(samples: list[dict[str, Any]]) -> list[float]:
+    """
+    CDeg_i = sum_{j != i} a_ij / (m - 1)
+
+    The selected ContextOutput is the sample with the highest CDeg, meaning the
+    interpretation closest to the center of the sampled response set.
+    """
+    sample_count = len(samples)
+    if sample_count <= 1:
+        return [1.0] * sample_count
+
+    scores: list[float] = []
+    for left_index, left_sample in enumerate(samples):
+        pair_scores = [
+            _context_pair_similarity(left_sample, right_sample)
+            for right_index, right_sample in enumerate(samples)
+            if right_index != left_index
+        ]
+        scores.append(sum(pair_scores) / len(pair_scores) if pair_scores else 0.0)
+    return scores
+
+
+def _agreement(values: list[str]) -> float:
+    cleaned = [value for value in values if value]
+    if not cleaned:
+        return 0.0
+    return Counter(cleaned).most_common(1)[0][1] / len(cleaned)
+
+
+def _context_uncertainty_report(samples: list[dict[str, Any]], degree_scores: list[float]) -> dict[str, Any]:
+    sample_count = len(samples)
+    if sample_count <= 1:
+        return {
+            "method": "consistency_based_interpretive_fields",
+            "sample_count": sample_count,
+            "degree_scores": [1.0] * sample_count,
+            "udeg": 0.0,
+            "selected_cdeg": 1.0,
+            "situation_agreement": 1.0,
+            "intent_agreement": 1.0,
+        }
+
+    selected_cdeg = max(degree_scores) if degree_scores else 0.0
+    return {
+        "method": "consistency_based_interpretive_fields",
+        "sample_count": sample_count,
+        "degree_scores": degree_scores,
+        "udeg": 1.0 - (sum(degree_scores) / len(degree_scores)),
+        "selected_cdeg": selected_cdeg,
+        "situation_agreement": _agreement(
+            [str(sample.get("situation_type", "")).strip() for sample in samples]
+        ),
+        "intent_agreement": _agreement(
+            [str(sample.get("dialogue_intent", "")).strip() for sample in samples]
+        ),
+    }
+
+
+class ContextUncertaintyAgent:
+    """
+    A transparent wrapper around the Strands Context Agent.
+
+    Category used:
+      consistency-based black-box UQ over interpretive context fields.
+
+    What it does:
+      1. Generate m candidate ContextOutput JSON strings.
+      2. Parse each candidate.
+      3. Compute pairwise consistency a_ij over interpretive fields only.
+      4. Compute CDeg for each sample.
+      5. Return the most central sample to the existing orchestrator.
+    """
+
+    def __init__(
+        self,
+        agent: Agent,
+        tools: list[Any],
+        sample_count: int = CONTEXT_UQ_SAMPLE_COUNT,
+    ):
+        self._agent = agent
+        self._tools = tools
+        self.sample_count = sample_count
+        self.last_uq_report: dict[str, Any] = {}
+
+    @property
+    def model(self):
+        return self._agent.model
+
+    @model.setter
+    def model(self, value):
+        self._agent.model = value
+
+    def __getattr__(self, name: str):
+        return getattr(self._agent, name)
+
+    def _sample_once(self, prompt: str) -> str:
+        stateless_agent = Agent(
+            model=self._agent.model,
+            system_prompt=self._agent.system_prompt,
+            tools=self._tools,
+        )
+        return str(stateless_agent(prompt)).strip()
+
+    def __call__(self, prompt: str) -> str:
+        raw_samples = [
+            self._sample_once(prompt)
+            for _ in range(max(1, self.sample_count))
+        ]
+        parsed_samples = [_parse_json_sample(raw_sample) for raw_sample in raw_samples]
+        degree_scores = _degree_scores(parsed_samples)
+        selected_index = max(range(len(raw_samples)), key=lambda index: degree_scores[index])
+        self.last_uq_report = _context_uncertainty_report(parsed_samples, degree_scores)
+        self.last_uq_report["selected_index"] = selected_index
+        selected_sample, sanitized_fields = _sanitize_interpretive_fields(
+            parsed_samples[selected_index]
+        )
+        self.last_uq_report["sanitized_interpretive_fields"] = sanitized_fields
+        if not selected_sample:
+            return raw_samples[selected_index]
+        return json.dumps(selected_sample, ensure_ascii=False)
 
 
 # ---------------------------------------------------------------------------
@@ -124,7 +356,7 @@ OUTPUT FORMAT — JSON ketat, tanpa code fences, tanpa teks tambahan:
   "user_action": "<apa yang sedang dilakukan pengguna>",
   "context_summary": "<ringkasan situasi runtime yang grounded dan singkat>",
   "situation_type": "<multiple_recommendations|single_recommendation|all_sites_visited|exploration_context>",
-  "recommendation_reason": "<alasan rekomendasi utama berdasarkan snapshot dan precomputed_recommendations>",
+  "recommendation_reason": "<alasan singkat berdasarkan status kunjungan dan urutan rekomendasi>",
   "dialogue_intent": "<guide_to_primary_with_alternatives|guide_to_single_primary|no_new_destination|encourage_exploration>",
   "recommendations": [
     {"rank": 1, "id": "<site_id>", "name": "<display_name>", "cultural_position": "<x, y, z>"},
@@ -166,6 +398,11 @@ CONSTRAINTS:
   9. context_summary harus ringkas, grounded pada scene dan jumlah rekomendasi, dan tidak boleh memuat koordinat.
   10. recommendation_reason boleh menyebut nama objek, tetapi tidak boleh menyebut angka jarak atau koordinat.
   11. dialogue_intent harus membantu Dialogue Agent menentukan gaya respons, bukan berisi kalimat dialog final.
+  12. Field interpretatif (user_action, context_summary, recommendation_reason) tidak boleh menyebut
+      istilah internal seperti backend, precomputed, tool, cultural_position, atau nama fungsi sistem.
+      Gunakan frasa natural seperti "sesuai urutan rekomendasi yang tersedia".
+      Contoh DILARANG: "sesuai urutan rekomendasi backend".
+      Contoh BENAR: "sesuai urutan rekomendasi yang tersedia".
 
 EVOLUTION (dipanggil secara eksternal):
   Audit N output terakhir untuk: situs visited yang muncul dalam recommendations,
@@ -178,17 +415,14 @@ EVOLUTION (dipanggil secara eksternal):
 # ---------------------------------------------------------------------------
 context_model = OpenAIModel(
     client_args={
-        "api_key": settings.OPENROUTER_API_KEY or "",
-        "base_url": settings.OPENROUTER_BASE_URL,
+        "api_key": settings.llm_api_key,
+        "base_url": settings.llm_base_url,
     },
-    model_id=settings.OPENROUTER_MODEL,
-    params={
-        "max_tokens": 1000,
-        "temperature": 0.7,
-    },
+    model_id=settings.llm_model,
+    params=settings.llm_model_params_for(1000),
 )
 
-context_agent = Agent(
+_base_context_agent = Agent(
     model=context_model,
     system_prompt=CONTEXT_AGENT_SYSTEM_PROMPT,
     tools=[
@@ -198,7 +432,16 @@ context_agent = Agent(
     ],
 )
 
+context_agent = ContextUncertaintyAgent(
+    _base_context_agent,
+    tools=[
+        tool_get_runtime_user_status,
+        tool_get_runtime_cultural_sites,
+        tool_get_runtime_recommendations,
+    ],
+)
 
-def get_context_agent() -> Agent:
-    """Return the singleton Context Agent instance."""
+
+def get_context_agent() -> ContextUncertaintyAgent:
+    """Return the singleton uncertainty-aware Context Agent instance."""
     return context_agent

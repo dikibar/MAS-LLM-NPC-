@@ -1,0 +1,4428 @@
+{
+  "summary": {
+    "total_scenarios": 50,
+    "passed": 49,
+    "overall_pass_rate": 0.98,
+    "check_pass_rate": 0.9989,
+    "judge_summary": {},
+    "ir_summary": {
+      "precision_at_3": 1.0,
+      "recall_at_3": 0.6252,
+      "mrr": 0.96,
+      "ndcg_at_3": 0.94
+    },
+    "faithfulness_avg": 1.0,
+    "timestamp": "2026-06-02T13:32:29.676885",
+    "judge_model": "openai/gpt-4.1",
+    "judge_temperature": 0,
+    "cohen_kappa_note": "Use exported per-dimension scores for human/judge agreement analysis.",
+    "cohen_kappa_function_available": true
+  },
+  "scenario_results": [
+    {
+      "scenario_id": "sc01_context_normal_01",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:10:25.445556",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.375,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Surabi",
+          "Angklung",
+          "Badak Heuay"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T10:07:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada pada area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Surabi diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Badak Heuay, Angklung.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "-1.34956, 1.52654, 23.7432"
+          },
+          {
+            "rank": 2,
+            "id": "Badak Heuay",
+            "name": "Badak Heuay",
+            "cultural_position": "6.84231, 1.18492, 28.41675"
+          },
+          {
+            "rank": 3,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          }
+        ],
+        "nav_target": "Surabi"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, kita masih punya beberapa tujuan budaya menarik untuk dikunjungi. Mari mulai perjalanan ke Surabi sebagai pilihan utama. Jika ingin menjelajahi yang lain, Badak Heuay dan Angklung juga bisa menjadi alternatif.",
+        "subtitle_output": "Mari menuju Surabi sebagai tujuan utama.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya yang bisa dipilih. Silakan tentukan, saya siap memandu.",
+        "recommendation_options": [
+          "Surabi",
+          "Badak Heuay",
+          "Angklung"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc02_context_normal_02",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:10:53.671872",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Julang Ngapak",
+          "Tagog Anjing",
+          "Tari Jaipong"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T11:14:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain sedang berada di area museum dengan beberapa situs budaya yang belum dikunjungi tersedia.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tari Jaipong diprioritaskan sebagai tujuan utama karena menjadi kandidat utama yang belum pernah dikunjungi. Alternatif yang tersedia: Julang Ngapak, Tagog Anjing.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          },
+          {
+            "rank": 2,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          },
+          {
+            "rank": 3,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          }
+        ],
+        "nav_target": "Tari Jaipong"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, masih ada beberapa objek budaya menarik yang bisa kita kunjungi. Saya sarankan kita mulai dari Tari Jaipong sebagai tujuan utama. Jika Anda ingin melihat yang lain, Julang Ngapak dan Tagog Anjing juga bisa dipilih.",
+        "subtitle_output": "Mari menuju Tari Jaipong.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang siap dikunjungi. Silakan pilih salah satu untuk dijelajahi.",
+        "recommendation_options": [
+          "Tari Jaipong",
+          "Julang Ngapak",
+          "Tagog Anjing"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc03_context_normal_03",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:11:19.545514",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Julang Ngapak",
+          "Kujang"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T12:21:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain sedang berada di area museum dengan beberapa tujuan budaya yang direkomendasikan dan belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Angklung diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Julang Ngapak, Kujang.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 2,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          },
+          {
+            "rank": 3,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          }
+        ],
+        "nav_target": "Angklung"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, kita masih punya beberapa tujuan budaya menarik untuk dikunjungi. Mari kita mulai dengan Angklung sebagai tujuan utama. Jika Anda ingin melihat yang lain, Julang Ngapak dan Kujang juga bisa dipilih. Silakan tentukan pilihan, saya siap membimbing Anda.",
+        "subtitle_output": "Mari kita menuju Angklung terlebih dahulu.",
+        "recommendation_dialogue": "Masih ada tiga tujuan budaya belum dikunjungi. Pilih salah satu untuk dijelajahi.",
+        "recommendation_options": [
+          "Angklung",
+          "Julang Ngapak",
+          "Kujang"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc04_context_normal_04",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:11:43.754376",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Kujang",
+          "Tagog Anjing"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T13:28:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tagog Anjing diprioritaskan sebagai tujuan utama yang belum dikunjungi. Alternatif yang tersedia: Kujang, Angklung.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          },
+          {
+            "rank": 3,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          }
+        ],
+        "nav_target": "Tagog Anjing"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini masih ada beberapa objek budaya menarik yang bisa kita kunjungi. Saya sarankan kita mulai dengan Tagog Anjing sebagai tujuan utama. Jika Anda ingin melihat yang lain, Kujang dan Angklung juga bisa dipilih.",
+        "subtitle_output": "Mari menuju Tagog Anjing.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang bisa dipilih. Silakan tentukan, saya siap memandu.",
+        "recommendation_options": [
+          "Tagog Anjing",
+          "Kujang",
+          "Angklung"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc05_context_normal_05",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:12:13.076751",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Julang Ngapak",
+          "Suling Sunda"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T14:35:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Suling Sunda diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Julang Ngapak, Angklung.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Suling Sunda",
+            "name": "Suling Sunda",
+            "cultural_position": "27.95618, 1.23804, 24.37192"
+          },
+          {
+            "rank": 2,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          },
+          {
+            "rank": 3,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          }
+        ],
+        "nav_target": "Suling Sunda"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini masih ada beberapa objek budaya menarik yang bisa kita kunjungi. Suling Sunda menjadi tujuan utama berikutnya untuk dieksplorasi. Jika Anda ingin, Julang Ngapak dan Angklung juga tersedia sebagai pilihan lain.",
+        "subtitle_output": "Mari menuju Suling Sunda.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang belum dikunjungi. Silakan pilih, saya siap memandu.",
+        "recommendation_options": [
+          "Suling Sunda",
+          "Julang Ngapak",
+          "Angklung"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc06_context_normal_06",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:13:01.336760",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Surabi",
+          "Angklung",
+          "Kujang"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T15:42:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Surabi diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Angklung, Kujang.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "-1.34956, 1.52654, 23.7432"
+          },
+          {
+            "rank": 2,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 3,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          }
+        ],
+        "nav_target": "Surabi"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, ada beberapa objek budaya menarik yang bisa Anda jelajahi. Surabi menjadi tujuan utama yang saya sarankan untuk saat ini. Jika Anda ingin melihat pilihan lain, Angklung dan Kujang juga tersedia sebagai alternatif.",
+        "subtitle_output": "Mari kita kunjungi Surabi terlebih dahulu.",
+        "recommendation_dialogue": "Tersedia tiga tujuan budaya yang belum dikunjungi. Pilih salah satu, dan saya siap memandu.",
+        "recommendation_options": [
+          "Surabi",
+          "Angklung",
+          "Kujang"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc07_context_normal_07",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:13:36.022151",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Julang Ngapak",
+          "Tari Jaipong"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T16:49:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tari Jaipong diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Angklung, Julang Ngapak.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          },
+          {
+            "rank": 2,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 3,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          }
+        ],
+        "nav_target": "Tari Jaipong"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini masih ada beberapa tujuan budaya menarik yang bisa Anda pilih. Mari kita mulai dari Tari Jaipong sebagai tujuan utama. Jika Anda ingin mencoba jalur lain, Angklung dan Julang Ngapak juga bisa dijelajahi.",
+        "subtitle_output": "Mari menuju Tari Jaipong.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya yang belum dikunjungi. Silakan pilih, saya siap memandu.",
+        "recommendation_options": [
+          "Tari Jaipong",
+          "Angklung",
+          "Julang Ngapak"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc08_context_normal_08",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:13:56.325168",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Julang Ngapak",
+          "Kujang"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T17:56:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Angklung diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Julang Ngapak.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          },
+          {
+            "rank": 3,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          }
+        ],
+        "nav_target": "Angklung"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, masih ada beberapa objek budaya menarik yang bisa kita kunjungi. Saya sarankan kita mulai dengan Angklung sebagai tujuan utama. Jika Anda ingin, Kujang dan Julang Ngapak juga bisa dipilih sebagai alternatif.",
+        "subtitle_output": "Mari menuju Angklung sebagai tujuan utama.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang siap dijelajahi. Silakan pilih yang ingin Anda kunjungi dulu.",
+        "recommendation_options": [
+          "Angklung",
+          "Kujang",
+          "Julang Ngapak"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc09_context_normal_09",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:14:20.415177",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Julang Ngapak",
+          "Kujang",
+          "Tagog Anjing"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T18:03:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tagog Anjing diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Julang Ngapak, Kujang.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          },
+          {
+            "rank": 2,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          },
+          {
+            "rank": 3,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          }
+        ],
+        "nav_target": "Tagog Anjing"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini masih ada beberapa objek budaya menarik yang bisa kita kunjungi. Mari kita mulai dengan Tagog Anjing sebagai tujuan utama. Jika Anda ingin mengeksplorasi lebih jauh, Julang Ngapak dan Kujang juga bisa dipilih.",
+        "subtitle_output": "Mari menuju Tagog Anjing.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang siap dieksplorasi. Silakan pilih tujuan Anda.",
+        "recommendation_options": [
+          "Tagog Anjing",
+          "Julang Ngapak",
+          "Kujang"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc10_context_normal_10",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:14:54.702742",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.5,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Julang Ngapak",
+          "Tagog Anjing",
+          "Tari Jaipong"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T09:10:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tari Jaipong diprioritaskan sebagai tujuan utama karena menjadi kandidat terdekat yang belum dikunjungi. Alternatif yang tersedia: Tagog Anjing, Julang Ngapak.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          },
+          {
+            "rank": 2,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          },
+          {
+            "rank": 3,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          }
+        ],
+        "nav_target": "Tari Jaipong"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, ada beberapa tujuan budaya yang menarik untuk dijelajahi. Saya sarankan kita mulai dari Tari Jaipong sebagai tujuan utama. Jika Anda ingin mencoba pilihan lain, Tagog Anjing dan Julang Ngapak juga bisa dikunjungi.",
+        "subtitle_output": "Mari menuju Tari Jaipong.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya tersedia. Pilih salah satu, saya siap memandu Anda.",
+        "recommendation_options": [
+          "Tari Jaipong",
+          "Tagog Anjing",
+          "Julang Ngapak"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc11_context_normal_11",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:15:21.275571",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.5,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Surabi",
+          "Angklung",
+          "Badak Heuay"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T10:17:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area museum dengan beberapa objek budaya yang belum dikunjungi dan tersedia untuk direkomendasikan.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Surabi diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif berikutnya: Badak Heuay, Angklung.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "-1.34956, 1.52654, 23.7432"
+          },
+          {
+            "rank": 2,
+            "id": "Badak Heuay",
+            "name": "Badak Heuay",
+            "cultural_position": "6.84231, 1.18492, 28.41675"
+          },
+          {
+            "rank": 3,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          }
+        ],
+        "nav_target": "Surabi"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, ada beberapa objek budaya menarik yang bisa kita kunjungi. Saya sarankan kita mulai dari Surabi sebagai tujuan utama. Jika ingin, Anda juga bisa memilih Badak Heuay atau Angklung sebagai alternatif.",
+        "subtitle_output": "Mari menuju Surabi sebagai tujuan utama.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang belum dikunjungi. Pilih salah satu untuk dijelajahi bersama saya.",
+        "recommendation_options": [
+          "Surabi",
+          "Badak Heuay",
+          "Angklung"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc12_context_normal_12",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:15:43.144411",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.5,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Julang Ngapak",
+          "Tari Jaipong"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T11:24:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa objek budaya yang belum dikunjungi dan tersedia beberapa rekomendasi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tari Jaipong diprioritaskan sebagai tujuan utama karena menjadi kandidat rekomendasi teratas yang belum dikunjungi. Alternatif yang tersedia: Angklung, Julang Ngapak.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          },
+          {
+            "rank": 2,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 3,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          }
+        ],
+        "nav_target": "Tari Jaipong"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini masih ada beberapa objek budaya menarik yang bisa kita kunjungi. Untuk langkah berikutnya, mari jelajahi Tari Jaipong sebagai tujuan utama. Jika Anda ingin melihat yang lain, Angklung dan Julang Ngapak juga tersedia sebagai alternatif.",
+        "subtitle_output": "Mari menuju Tari Jaipong.",
+        "recommendation_dialogue": "Ada tiga objek budaya belum dikunjungi di sini. Pilih salah satu untuk mulai eksplorasi.",
+        "recommendation_options": [
+          "Tari Jaipong",
+          "Angklung",
+          "Julang Ngapak"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc13_context_normal_13",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:16:10.499833",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.5,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Julang Ngapak",
+          "Kujang"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T12:31:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Angklung diprioritaskan sebagai tujuan utama karena menjadi kandidat utama yang belum dikunjungi. Alternatif yang tersedia: Julang Ngapak, Kujang.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 2,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          },
+          {
+            "rank": 3,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          }
+        ],
+        "nav_target": "Angklung"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini masih ada beberapa objek budaya menarik yang bisa Anda jelajahi. Mari kita mulai dengan Angklung sebagai tujuan utama. Jika ingin mencoba yang lain, Julang Ngapak dan Kujang juga dapat dipilih. Silakan tentukan mana yang ingin Anda kunjungi lebih dulu.",
+        "subtitle_output": "Mari menuju Angklung sebagai tujuan utama.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya yang siap dieksplorasi. Pilih salah satu, saya akan memandu Anda.",
+        "recommendation_options": [
+          "Angklung",
+          "Julang Ngapak",
+          "Kujang"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc14_context_normal_14",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:16:41.525142",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.6,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Julang Ngapak",
+          "Tagog Anjing",
+          "Tari Jaipong"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T13:38:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tagog Anjing diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Julang Ngapak, Tari Jaipong.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          },
+          {
+            "rank": 2,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          },
+          {
+            "rank": 3,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          }
+        ],
+        "nav_target": "Tagog Anjing"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, masih ada beberapa objek budaya menarik yang bisa kita kunjungi. Mari mulai dari Tagog Anjing sebagai tujuan utama. Jika Anda ingin menjelajahi yang lain, Julang Ngapak dan Tari Jaipong juga siap untuk dieksplorasi.",
+        "subtitle_output": "Mari menuju Tagog Anjing.",
+        "recommendation_dialogue": "Tersedia tiga tujuan budaya yang belum dikunjungi. Silakan pilih, dan saya akan memandu Anda.",
+        "recommendation_options": [
+          "Tagog Anjing",
+          "Julang Ngapak",
+          "Tari Jaipong"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc15_context_normal_15",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:17:09.982636",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.6,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Kujang",
+          "Suling Sunda"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T14:45:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain sedang berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Suling Sunda diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Angklung.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Suling Sunda",
+            "name": "Suling Sunda",
+            "cultural_position": "27.95618, 1.23804, 24.37192"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          },
+          {
+            "rank": 3,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          }
+        ],
+        "nav_target": "Suling Sunda"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, masih ada beberapa objek budaya menarik yang bisa Anda kunjungi. Saya sarankan kita mulai dari Suling Sunda sebagai tujuan utama. Jika ingin memilih jalur lain, Kujang dan Angklung juga dapat Anda eksplorasi.",
+        "subtitle_output": "Mari menuju Suling Sunda.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang belum dikunjungi. Pilih salah satu, dan saya akan memandu Anda.",
+        "recommendation_options": [
+          "Suling Sunda",
+          "Kujang",
+          "Angklung"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc16_context_edge_01",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:17:36.733272",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 0.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Suling Sunda"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T15:52:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain telah mengunjungi hampir semua objek budaya, tersisa satu tujuan yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan satu objek budaya belum dikunjungi yang siap diarahkan, yaitu Suling Sunda.",
+        "situation_type": "single_recommendation",
+        "recommendation_reason": "Suling Sunda menjadi satu-satunya tujuan yang belum dikunjungi dan direkomendasikan sebagai destinasi berikutnya.",
+        "dialogue_intent": "guide_to_single_primary",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Suling Sunda",
+            "name": "Suling Sunda",
+            "cultural_position": "27.95618, 1.23804, 24.37192"
+          }
+        ],
+        "nav_target": "Suling Sunda"
+      },
+      "dialogue_output": {
+        "spoken_output": "Satu tujuan budaya lagi yang bisa kita kunjungi di area ini adalah Suling Sunda. Mari saya pandu ke sana agar Anda bisa melengkapi penjelajahan di ruangan ini. Setelah itu, Anda bebas mengeksplorasi lebih lanjut sesuai keinginan.",
+        "subtitle_output": "Mari menuju Suling Sunda.",
+        "recommendation_dialogue": "Ada satu tujuan budaya tersisa yang siap dikunjungi.",
+        "recommendation_options": [
+          "Suling Sunda"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc17_context_edge_02",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:17:59.519435",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 0.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Surabi"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T16:59:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan satu tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan satu objek budaya belum dikunjungi yang siap diarahkan, yaitu Surabi.",
+        "situation_type": "single_recommendation",
+        "recommendation_reason": "Surabi direkomendasikan sebagai satu-satunya tujuan utama yang belum dikunjungi.",
+        "dialogue_intent": "guide_to_single_primary",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "-1.34956, 1.52654, 23.7432"
+          }
+        ],
+        "nav_target": "Surabi"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, masih ada satu tujuan budaya yang bisa kita kunjungi, yaitu Surabi. Mari saya pandu Anda ke sana. Setelah itu, Anda bisa melanjutkan eksplorasi sesuai keinginan.",
+        "subtitle_output": "Mari menuju Surabi.",
+        "recommendation_dialogue": "Ada satu tujuan budaya yang belum dikunjungi. Silakan pilih untuk melanjutkan.",
+        "recommendation_options": [
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 3
+    },
+    {
+      "scenario_id": "sc18_context_edge_03",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:18:21.656802",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 0.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": false,
+        "mentioned_valid_sites": []
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T17:06:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain telah mengunjungi seluruh objek budaya yang tersedia di area ini.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B, tetapi semua objek budaya pada snapshot saat ini sudah dikunjungi atau tidak ada kandidat baru.",
+        "situation_type": "all_sites_visited",
+        "recommendation_reason": "Tidak ada destinasi baru yang dapat direkomendasikan karena seluruh objek telah dikunjungi.",
+        "dialogue_intent": "no_new_destination",
+        "recommendations": [],
+        "nav_target": ""
+      },
+      "dialogue_output": {
+        "spoken_output": "Semua objek budaya di area ini sudah Anda jelajahi. Silakan menikmati suasana sekitar atau mengeksplorasi lebih dalam. Jika ada tujuan baru, saya akan segera memberi tahu Anda.",
+        "subtitle_output": "Semua tujuan budaya di sini sudah dikunjungi.",
+        "recommendation_dialogue": "Tidak ada tujuan baru di area ini. Silakan menikmati area sekeliling Anda.",
+        "recommendation_options": []
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 7
+    },
+    {
+      "scenario_id": "sc19_context_edge_04",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:18:44.637091",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.75,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Badak Heuay",
+          "Tagog Anjing",
+          "Tari Jaipong"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T18:13:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tari Jaipong diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Tagog Anjing, Badak Heuay.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          },
+          {
+            "rank": 2,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          },
+          {
+            "rank": 3,
+            "id": "Badak Heuay",
+            "name": "Badak Heuay",
+            "cultural_position": "6.84231, 1.18492, 28.41675"
+          }
+        ],
+        "nav_target": "Tari Jaipong"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, kita masih punya beberapa tujuan budaya menarik untuk dijelajahi. Saya sarankan kita mulai dari Tari Jaipong, salah satu warisan seni gerak yang khas. Jika ingin melihat sisi lain budaya, Tagog Anjing dan Badak Heuay juga bisa Anda pilih.",
+        "subtitle_output": "Mari menuju Tari Jaipong.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya yang dapat Anda pilih. Silakan tentukan, saya siap memandu.",
+        "recommendation_options": [
+          "Tari Jaipong",
+          "Tagog Anjing",
+          "Badak Heuay"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc20_context_edge_05",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:19:07.880977",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.75,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Julang Ngapak",
+          "Kujang"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T09:20:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Angklung diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Julang Ngapak.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          },
+          {
+            "rank": 3,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          }
+        ],
+        "nav_target": "Angklung"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini ada beberapa objek budaya menarik yang bisa kita kunjungi. Saya sarankan kita mulai dari Angklung sebagai tujuan utama, karena alat musik ini sangat khas di Indonesia. Jika Anda ingin menjelajahi yang lain, Kujang dan Julang Ngapak juga bisa dipilih.",
+        "subtitle_output": "Mari menuju Angklung sebagai tujuan utama.",
+        "recommendation_dialogue": "Tersedia tiga tujuan budaya yang belum dikunjungi. Silakan pilih salah satu untuk mulai eksplorasi.",
+        "recommendation_options": [
+          "Angklung",
+          "Kujang",
+          "Julang Ngapak"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc21_context_edge_06",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:19:31.525987",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.75,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Julang Ngapak",
+          "Badak Heuay",
+          "Tari Jaipong"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T10:27:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Tari Jaipong, Badak Heuay.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          },
+          {
+            "rank": 2,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          },
+          {
+            "rank": 3,
+            "id": "Badak Heuay",
+            "name": "Badak Heuay",
+            "cultural_position": "6.84231, 1.18492, 28.41675"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, kita masih punya beberapa objek budaya menarik untuk dijelajahi. Mari kita mulai dengan Julang Ngapak sebagai tujuan utama. Jika Anda ingin mencoba yang lain, Tari Jaipong dan Badak Heuay juga bisa dipilih.",
+        "subtitle_output": "Kita menuju Julang Ngapak terlebih dahulu.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang bisa Anda pilih. Pilih salah satu, saya siap memandu.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Tari Jaipong",
+          "Badak Heuay"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc22_context_edge_07",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:20:05.777454",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.75,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Kujang",
+          "Tagog Anjing"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T11:34:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Angklung diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Tagog Anjing, Kujang.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 2,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          },
+          {
+            "rank": 3,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          }
+        ],
+        "nav_target": "Angklung"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini masih ada beberapa objek budaya menarik yang bisa Anda kunjungi. Saya sarankan untuk mulai dari Angklung sebagai tujuan utama. Jika ingin melihat yang lain, Tagog Anjing dan Kujang juga bisa menjadi pilihan.",
+        "subtitle_output": "Mari menuju Angklung sebagai tujuan utama.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya yang belum dikunjungi. Silakan pilih salah satu untuk dijelajahi.",
+        "recommendation_options": [
+          "Angklung",
+          "Tagog Anjing",
+          "Kujang"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc23_context_edge_08",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:20:28.066162",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Julang Ngapak",
+          "Badak Heuay",
+          "Tagog Anjing"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T12:41:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Badak Heuay diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Julang Ngapak, Tagog Anjing.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Badak Heuay",
+            "name": "Badak Heuay",
+            "cultural_position": "6.84231, 1.18492, 28.41675"
+          },
+          {
+            "rank": 2,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          },
+          {
+            "rank": 3,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          }
+        ],
+        "nav_target": "Badak Heuay"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, masih ada beberapa objek budaya menarik yang bisa kita kunjungi. Mari kita mulai dari Badak Heuay sebagai tujuan utama. Jika Anda ingin menjelajah lebih jauh, Julang Ngapak dan Tagog Anjing juga bisa dipilih.",
+        "subtitle_output": "Mari menuju Badak Heuay.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang belum dikunjungi. Silakan pilih tujuan berikutnya.",
+        "recommendation_options": [
+          "Badak Heuay",
+          "Julang Ngapak",
+          "Tagog Anjing"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc24_context_edge_09",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:20:47.679038",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Kujang",
+          "Tari Jaipong",
+          "Suling Sunda"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T13:48:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa objek budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tari Jaipong diprioritaskan sebagai tujuan utama yang belum dikunjungi. Alternatif yang tersedia: Kujang, Suling Sunda.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          },
+          {
+            "rank": 3,
+            "id": "Suling Sunda",
+            "name": "Suling Sunda",
+            "cultural_position": "27.95618, 1.23804, 24.37192"
+          }
+        ],
+        "nav_target": "Tari Jaipong"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini masih ada beberapa objek budaya menarik yang bisa kita kunjungi. Mari kita mulai dengan Tari Jaipong sebagai tujuan utama. Jika Anda ingin melihat yang lain, Kujang dan Suling Sunda juga bisa dipilih.",
+        "subtitle_output": "Mari menuju Tari Jaipong.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang belum dikunjungi. Silakan pilih tujuan yang ingin Anda jelajahi.",
+        "recommendation_options": [
+          "Tari Jaipong",
+          "Kujang",
+          "Suling Sunda"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc25_context_edge_10",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T13:21:15.479307",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 0.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Surabi"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T14:55:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan satu tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan satu objek budaya belum dikunjungi yang siap diarahkan, yaitu Surabi.",
+        "situation_type": "single_recommendation",
+        "recommendation_reason": "Surabi menjadi satu-satunya tujuan utama yang belum dikunjungi oleh pemain.",
+        "dialogue_intent": "guide_to_single_primary",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "-1.34956, 1.52654, 23.7432"
+          }
+        ],
+        "nav_target": "Surabi"
+      },
+      "dialogue_output": {
+        "spoken_output": "Sekarang, hanya ada satu tujuan budaya yang siap kita kunjungi, yaitu Surabi. Mari saya pandu Anda menuju ke sana. Setelah tiba, Anda bisa menikmati keunikan kuliner tradisional ini.",
+        "subtitle_output": "Mari menuju Surabi.",
+        "recommendation_dialogue": "Ada satu tujuan budaya yang belum dikunjungi dan siap dipilih.",
+        "recommendation_options": [
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 3
+    },
+    {
+      "scenario_id": "sc26_dialogue_normal_01",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:21:38.538310",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.375,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Surabi",
+          "Angklung",
+          "Badak Heuay"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T15:02:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Badak Heuay diprioritaskan sebagai tujuan utama karena menjadi kandidat terdekat yang belum dikunjungi. Alternatif yang tersedia: Surabi, Angklung.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Badak Heuay",
+            "name": "Badak Heuay",
+            "cultural_position": "6.84231, 1.18492, 28.41675"
+          },
+          {
+            "rank": 2,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "-1.34956, 1.52654, 23.7432"
+          },
+          {
+            "rank": 3,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          }
+        ],
+        "nav_target": "Badak Heuay"
+      },
+      "dialogue_output": {
+        "spoken_output": "Kita masih punya beberapa tujuan budaya menarik di area ini. Saya sarankan kita mulai dari Badak Heuay, karena posisinya paling dekat. Jika ingin mencoba yang lain, Surabi dan Angklung juga bisa jadi pilihan.",
+        "subtitle_output": "Mari menuju Badak Heuay.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang bisa Anda pilih. Silakan tentukan, dan saya siap memandu.",
+        "recommendation_options": [
+          "Badak Heuay",
+          "Surabi",
+          "Angklung"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc27_dialogue_normal_02",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:22:04.360057",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Tagog Anjing",
+          "Tari Jaipong"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T16:09:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tari Jaipong diprioritaskan sebagai tujuan utama karena menjadi kandidat utama yang belum dikunjungi. Alternatif yang tersedia: Angklung, Tagog Anjing.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          },
+          {
+            "rank": 2,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 3,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          }
+        ],
+        "nav_target": "Tari Jaipong"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, masih ada beberapa objek budaya yang menarik untuk dieksplorasi. Mari kita mulai dengan Tari Jaipong sebagai tujuan utama. Jika Anda ingin melihat yang lain, Angklung atau Tagog Anjing juga bisa menjadi pilihan.",
+        "subtitle_output": "Mari menuju Tari Jaipong.",
+        "recommendation_dialogue": "Ada tiga objek budaya belum dikunjungi. Pilih salah satu, dan saya akan memandu Anda.",
+        "recommendation_options": [
+          "Tari Jaipong",
+          "Angklung",
+          "Tagog Anjing"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc28_dialogue_normal_03",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:22:29.274061",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true,
+        "selected_option_mentioned": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Julang Ngapak",
+          "Kujang",
+          "Badak Heuay"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T17:16:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Kujang diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Julang Ngapak, Badak Heuay.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          },
+          {
+            "rank": 2,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          },
+          {
+            "rank": 3,
+            "id": "Badak Heuay",
+            "name": "Badak Heuay",
+            "cultural_position": "6.84231, 1.18492, 28.41675"
+          }
+        ],
+        "nav_target": "Kujang"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, masih ada beberapa objek budaya menarik yang bisa Anda kunjungi. Kujang menjadi tujuan utama yang saya sarankan untuk langkah berikutnya. Jika ingin melihat pilihan lain, Julang Ngapak dan Badak Heuay juga bisa Anda kunjungi.",
+        "subtitle_output": "Mari menuju Kujang sebagai tujuan utama.",
+        "recommendation_dialogue": "Tiga objek budaya belum dikunjungi tersedia. Silakan pilih, saya siap memandu.",
+        "recommendation_options": [
+          "Kujang",
+          "Julang Ngapak",
+          "Badak Heuay"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc29_dialogue_normal_04",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:22:55.004304",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Kujang",
+          "Tagog Anjing",
+          "Suling Sunda"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T18:23:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain sedang berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tagog Anjing diprioritaskan sebagai tujuan utama karena menjadi kandidat yang paling direkomendasikan. Alternatif yang tersedia: Suling Sunda, Kujang.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          },
+          {
+            "rank": 2,
+            "id": "Suling Sunda",
+            "name": "Suling Sunda",
+            "cultural_position": "27.95618, 1.23804, 24.37192"
+          },
+          {
+            "rank": 3,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          }
+        ],
+        "nav_target": "Tagog Anjing"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini masih ada beberapa objek budaya yang menarik untuk dikunjungi. Mari kita mulai dengan Tagog Anjing sebagai tujuan utama. Jika ingin, Anda juga bisa memilih Suling Sunda atau Kujang sebagai alternatif. Silakan pilih tujuan yang ingin Anda eksplorasi lebih dulu.",
+        "subtitle_output": "Mari menuju Tagog Anjing.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang belum dikunjungi. Pilih salah satu, dan saya akan memandu Anda.",
+        "recommendation_options": [
+          "Tagog Anjing",
+          "Suling Sunda",
+          "Kujang"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc30_dialogue_normal_05",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:23:23.124341",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Surabi",
+          "Angklung",
+          "Tari Jaipong"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T09:30:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tari Jaipong diprioritaskan sebagai tujuan utama karena menjadi kandidat utama yang belum dikunjungi. Alternatif yang tersedia: Angklung, Surabi.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          },
+          {
+            "rank": 2,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 3,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "-1.34956, 1.52654, 23.7432"
+          }
+        ],
+        "nav_target": "Tari Jaipong"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, kita masih punya beberapa objek budaya menarik untuk dijelajahi. Mari kita mulai dengan Tari Jaipong sebagai tujuan utama. Jika Anda ingin melihat yang lain, Angklung dan Surabi juga bisa menjadi pilihan berikutnya.",
+        "subtitle_output": "Mari menuju Tari Jaipong.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya yang bisa Anda pilih. Silakan tentukan, saya siap memandu.",
+        "recommendation_options": [
+          "Tari Jaipong",
+          "Angklung",
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc31_dialogue_normal_06",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:23:46.334077",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Surabi",
+          "Angklung",
+          "Tari Jaipong"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T10:37:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Surabi diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Angklung, Tari Jaipong.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "-1.34956, 1.52654, 23.7432"
+          },
+          {
+            "rank": 2,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 3,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          }
+        ],
+        "nav_target": "Surabi"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, kita masih memiliki beberapa tujuan budaya menarik. Saya sarankan mulai dari Surabi sebagai tujuan utama. Jika Anda ingin, Angklung dan Tari Jaipong juga bisa menjadi pilihan untuk dieksplorasi setelahnya.",
+        "subtitle_output": "Mari menuju Surabi sebagai tujuan utama.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya yang bisa dipilih. Silakan tentukan, dan saya siap memandu.",
+        "recommendation_options": [
+          "Surabi",
+          "Angklung",
+          "Tari Jaipong"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc32_dialogue_normal_07",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:24:05.097885",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Julang Ngapak",
+          "Tari Jaipong"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T11:44:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tari Jaipong diprioritaskan sebagai tujuan utama karena menjadi kandidat terdekat yang belum dikunjungi. Alternatif yang tersedia: Angklung, Julang Ngapak.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          },
+          {
+            "rank": 2,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 3,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          }
+        ],
+        "nav_target": "Tari Jaipong"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, masih ada beberapa objek budaya menarik yang bisa kita kunjungi. Mari kita mulai dari Tari Jaipong sebagai tujuan utama. Jika Anda tertarik, Angklung dan Julang Ngapak juga bisa dijadikan pilihan lain.",
+        "subtitle_output": "Ayo menuju Tari Jaipong.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya di sini. Pilih salah satu, dan saya akan memandu Anda.",
+        "recommendation_options": [
+          "Tari Jaipong",
+          "Angklung",
+          "Julang Ngapak"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc33_dialogue_normal_08",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:24:28.235612",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Julang Ngapak",
+          "Kujang"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T12:51:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Angklung diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Julang Ngapak, Kujang.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 2,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          },
+          {
+            "rank": 3,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          }
+        ],
+        "nav_target": "Angklung"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, ada beberapa objek budaya menarik yang bisa Anda kunjungi. Saya sarankan kita mulai dengan Angklung sebagai tujuan utama. Jika ingin mengeksplorasi lebih jauh, Julang Ngapak dan Kujang juga bisa dipilih.",
+        "subtitle_output": "Mari menuju Angklung sebagai tujuan utama.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang siap dijelajahi. Pilih salah satu, saya akan memandu Anda.",
+        "recommendation_options": [
+          "Angklung",
+          "Julang Ngapak",
+          "Kujang"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc34_dialogue_normal_09",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:24:53.908725",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true,
+        "selected_option_mentioned": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Julang Ngapak",
+          "Kujang",
+          "Tagog Anjing"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T13:58:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area museum dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tagog Anjing diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Julang Ngapak, Kujang.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          },
+          {
+            "rank": 2,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          },
+          {
+            "rank": 3,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          }
+        ],
+        "nav_target": "Tagog Anjing"
+      },
+      "dialogue_output": {
+        "spoken_output": "Kita masih punya beberapa pilihan menarik di sini. Saya sarankan kita mulai dari Tagog Anjing sebagai tujuan utama. Jika Anda ingin melihat yang lain, Julang Ngapak dan Kujang juga bisa dipilih untuk dieksplorasi.",
+        "subtitle_output": "Mari menuju Tagog Anjing.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang siap dikunjungi. Silakan pilih, dan saya akan memandu Anda.",
+        "recommendation_options": [
+          "Tagog Anjing",
+          "Julang Ngapak",
+          "Kujang"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc35_dialogue_normal_10",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:25:29.905092",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.5,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Julang Ngapak",
+          "Kujang",
+          "Suling Sunda"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T14:05:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Suling Sunda diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Julang Ngapak.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Suling Sunda",
+            "name": "Suling Sunda",
+            "cultural_position": "27.95618, 1.23804, 24.37192"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          },
+          {
+            "rank": 3,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          }
+        ],
+        "nav_target": "Suling Sunda"
+      },
+      "dialogue_output": {
+        "spoken_output": "Masih ada beberapa objek budaya menarik yang bisa kita jelajahi di sini. Suling Sunda adalah tujuan utama yang saya sarankan untuk Anda kunjungi berikutnya. Jika ingin memilih jalur lain, Kujang dan Julang Ngapak juga bisa menjadi pilihan.",
+        "subtitle_output": "Mari menuju Suling Sunda.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang bisa Anda pilih. Silakan tentukan tujuan, saya siap memandu.",
+        "recommendation_options": [
+          "Suling Sunda",
+          "Kujang",
+          "Julang Ngapak"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc36_dialogue_normal_11",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:25:52.521104",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.5,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Surabi",
+          "Kujang",
+          "Badak Heuay"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T15:12:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Badak Heuay diprioritaskan sebagai tujuan utama karena menjadi kandidat terdekat yang belum dikunjungi. Alternatif yang tersedia: Surabi, Kujang.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Badak Heuay",
+            "name": "Badak Heuay",
+            "cultural_position": "6.84231, 1.18492, 28.41675"
+          },
+          {
+            "rank": 2,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "-1.34956, 1.52654, 23.7432"
+          },
+          {
+            "rank": 3,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          }
+        ],
+        "nav_target": "Badak Heuay"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, kita masih punya beberapa tujuan budaya menarik yang bisa dijelajahi. Mari kita mulai dari Badak Heuay sebagai tujuan utama. Jika Anda ingin mencoba jalur lain, Surabi dan Kujang juga bisa menjadi pilihan.",
+        "subtitle_output": "Ayo menuju Badak Heuay.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang bisa Anda pilih. Silakan tentukan, saya siap memandu.",
+        "recommendation_options": [
+          "Badak Heuay",
+          "Surabi",
+          "Kujang"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc37_dialogue_normal_12",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:26:12.446338",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.5,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Kujang",
+          "Tari Jaipong"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T16:19:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tari Jaipong diprioritaskan sebagai tujuan utama karena menjadi kandidat terdekat yang belum dikunjungi. Alternatif yang tersedia: Angklung, Kujang.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          },
+          {
+            "rank": 2,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 3,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          }
+        ],
+        "nav_target": "Tari Jaipong"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, masih ada beberapa objek budaya yang bisa Anda kunjungi. Mari kita mulai dengan Tari Jaipong sebagai tujuan utama. Jika Anda ingin melihat yang lain, Angklung dan Kujang juga dapat menjadi pilihan selanjutnya.",
+        "subtitle_output": "Mari menuju Tari Jaipong.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya menarik di sini. Pilih yang Anda inginkan, saya siap memandu.",
+        "recommendation_options": [
+          "Tari Jaipong",
+          "Angklung",
+          "Kujang"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc38_dialogue_normal_13",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:26:33.878700",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true,
+        "selected_option_mentioned": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.5,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Julang Ngapak",
+          "Badak Heuay"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T17:26:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Angklung diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Julang Ngapak, Badak Heuay.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 2,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          },
+          {
+            "rank": 3,
+            "id": "Badak Heuay",
+            "name": "Badak Heuay",
+            "cultural_position": "6.84231, 1.18492, 28.41675"
+          }
+        ],
+        "nav_target": "Angklung"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, kita masih punya beberapa tujuan budaya yang menarik untuk dijelajahi. Mari kita mulai dari Angklung sebagai tujuan utama. Jika ingin pengalaman berbeda, Julang Ngapak dan Badak Heuay juga bisa Anda kunjungi.",
+        "subtitle_output": "Mari menuju Angklung sebagai tujuan utama.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang bisa Anda pilih. Silakan tentukan tujuan, saya siap memandu.",
+        "recommendation_options": [
+          "Angklung",
+          "Julang Ngapak",
+          "Badak Heuay"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc39_dialogue_normal_14",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:27:04.867054",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.6,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Kujang",
+          "Tagog Anjing",
+          "Suling Sunda"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T18:33:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tagog Anjing diprioritaskan sebagai tujuan utama karena menjadi kandidat utama yang belum dikunjungi. Alternatif yang tersedia: Suling Sunda, Kujang.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          },
+          {
+            "rank": 2,
+            "id": "Suling Sunda",
+            "name": "Suling Sunda",
+            "cultural_position": "27.95618, 1.23804, 24.37192"
+          },
+          {
+            "rank": 3,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          }
+        ],
+        "nav_target": "Tagog Anjing"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, masih ada beberapa objek budaya menarik yang belum kita kunjungi. Mari kita mulai petualangan dengan Tagog Anjing sebagai tujuan utama. Jika Anda ingin mencoba jalur berbeda, Suling Sunda dan Kujang juga bisa menjadi pilihan.",
+        "subtitle_output": "Mari menuju Tagog Anjing.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya yang bisa dipilih. Silakan tentukan, saya siap memandu Anda.",
+        "recommendation_options": [
+          "Tagog Anjing",
+          "Suling Sunda",
+          "Kujang"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc40_dialogue_normal_15",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:27:30.181458",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": false,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.6,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Surabi",
+          "Angklung",
+          "Julang Ngapak"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T09:40:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Angklung diprioritaskan sebagai tujuan utama sesuai urutan rekomendasi backend. Alternatif yang tersedia: Surabi, Julang Ngapak.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 2,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "-1.34956, 1.52654, 23.7432"
+          },
+          {
+            "rank": 3,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          }
+        ],
+        "nav_target": "Angklung"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini masih banyak kekayaan budaya yang bisa kita temui. Saya sarankan kita mulai dari Angklung sebagai tujuan utama. Jika ingin mencoba jalur lain, Surabi dan Julang Ngapak juga bisa Anda pilih.",
+        "subtitle_output": "Mari menuju Angklung sebagai tujuan utama.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya menarik di area ini. Pilih salah satu, dan saya siap memandu Anda.",
+        "recommendation_options": [
+          "Angklung",
+          "Surabi",
+          "Julang Ngapak"
+        ]
+      },
+      "errors": [],
+      "passed": false,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc41_dialogue_risk_01",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:27:58.891800",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Tagog Anjing",
+          "Tari Jaipong",
+          "Suling Sunda"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T10:47:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tari Jaipong diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Tagog Anjing, Suling Sunda.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          },
+          {
+            "rank": 2,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          },
+          {
+            "rank": 3,
+            "id": "Suling Sunda",
+            "name": "Suling Sunda",
+            "cultural_position": "27.95618, 1.23804, 24.37192"
+          }
+        ],
+        "nav_target": "Tari Jaipong"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini masih ada beberapa objek budaya yang bisa kita jelajahi bersama. Mari kita mulai dari Tari Jaipong sebagai tujuan utama. Jika Anda ingin melihat yang lain, Tagog Anjing dan Suling Sunda juga bisa dipilih.",
+        "subtitle_output": "Mari menuju Tari Jaipong.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya yang bisa Anda pilih untuk dikunjungi.",
+        "recommendation_options": [
+          "Tari Jaipong",
+          "Tagog Anjing",
+          "Suling Sunda"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc42_dialogue_risk_02",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:28:23.093399",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.75,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Julang Ngapak",
+          "Kujang",
+          "Tagog Anjing"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T11:54:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak direkomendasikan sebagai tujuan utama karena menjadi prioritas teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Tagog Anjing.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          },
+          {
+            "rank": 3,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Kita masih punya beberapa pilihan menarik di area ini. Julang Ngapak menjadi tujuan utama yang saya sarankan untuk Anda kunjungi berikutnya. Jika ingin melihat objek lain, Kujang dan Tagog Anjing juga bisa dipilih.",
+        "subtitle_output": "Mari menuju Julang Ngapak.",
+        "recommendation_dialogue": "Tersedia tiga objek budaya yang belum dikunjungi. Silakan pilih tujuan Anda.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Kujang",
+          "Tagog Anjing"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc43_dialogue_risk_03",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:28:45.240137",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.75,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Julang Ngapak",
+          "Tari Jaipong"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T12:01:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Julang Ngapak diprioritaskan sebagai tujuan utama karena menjadi kandidat utama yang belum dikunjungi. Alternatif yang tersedia: Angklung, Tari Jaipong.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          },
+          {
+            "rank": 2,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 3,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          }
+        ],
+        "nav_target": "Julang Ngapak"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, ada beberapa tujuan budaya menarik yang bisa Anda pilih. Saya sarankan kita mulai dari Julang Ngapak sebagai tujuan utama. Jika ingin mencoba yang lain, Angklung dan Tari Jaipong juga tersedia untuk dieksplorasi.",
+        "subtitle_output": "Mari menuju Julang Ngapak.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya yang bisa Anda pilih. Silakan tentukan, saya siap memandu.",
+        "recommendation_options": [
+          "Julang Ngapak",
+          "Angklung",
+          "Tari Jaipong"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc44_dialogue_risk_04",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:29:09.670133",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true,
+        "selected_option_mentioned": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.75,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Kujang",
+          "Tagog Anjing",
+          "Suling Sunda"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T13:08:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Suling Sunda diprioritaskan sebagai tujuan utama yang belum dikunjungi. Alternatif yang tersedia: Kujang, Tagog Anjing.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Suling Sunda",
+            "name": "Suling Sunda",
+            "cultural_position": "27.95618, 1.23804, 24.37192"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          },
+          {
+            "rank": 3,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          }
+        ],
+        "nav_target": "Suling Sunda"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, masih ada beberapa objek budaya menarik yang bisa kita kunjungi. Suling Sunda menjadi tujuan utama berikutnya yang saya rekomendasikan. Jika Anda ingin, Kujang dan Tagog Anjing juga dapat dijadikan pilihan alternatif untuk dijelajahi.",
+        "subtitle_output": "Ayo, kita menuju Suling Sunda terlebih dahulu.",
+        "recommendation_dialogue": "Ada tiga objek budaya belum dikunjungi di sini. Pilih yang Anda ingin jelajahi selanjutnya.",
+        "recommendation_options": [
+          "Suling Sunda",
+          "Kujang",
+          "Tagog Anjing"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 7
+    },
+    {
+      "scenario_id": "sc45_dialogue_risk_05",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:29:42.763774",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.75,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Julang Ngapak",
+          "Badak Heuay"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T14:15:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Badak Heuay diprioritaskan sebagai tujuan utama karena merupakan kandidat yang belum dikunjungi. Alternatif yang tersedia: Angklung, Julang Ngapak.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Badak Heuay",
+            "name": "Badak Heuay",
+            "cultural_position": "6.84231, 1.18492, 28.41675"
+          },
+          {
+            "rank": 2,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 3,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          }
+        ],
+        "nav_target": "Badak Heuay"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, masih ada beberapa objek budaya menarik yang bisa kita kunjungi. Saya sarankan kita mulai dari Badak Heuay sebagai tujuan utama. Jika ingin melihat hal lain, Angklung dan Julang Ngapak juga bisa menjadi pilihan Anda.",
+        "subtitle_output": "Mari menuju Badak Heuay.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya belum dikunjungi. Silakan pilih, dan saya siap memandu.",
+        "recommendation_options": [
+          "Badak Heuay",
+          "Angklung",
+          "Julang Ngapak"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc46_dialogue_risk_06",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:30:03.130773",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Julang Ngapak",
+          "Tagog Anjing",
+          "Suling Sunda"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T15:22:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tagog Anjing diprioritaskan sebagai tujuan utama karena menjadi kandidat utama yang belum dikunjungi. Alternatif yang tersedia: Julang Ngapak, Suling Sunda.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          },
+          {
+            "rank": 2,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          },
+          {
+            "rank": 3,
+            "id": "Suling Sunda",
+            "name": "Suling Sunda",
+            "cultural_position": "27.95618, 1.23804, 24.37192"
+          }
+        ],
+        "nav_target": "Tagog Anjing"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, ada beberapa objek budaya menarik yang bisa Anda pilih. Mari kita mulai dengan Tagog Anjing sebagai tujuan utama. Jika ingin melihat yang lain, Julang Ngapak dan Suling Sunda juga bisa menjadi alternatif.",
+        "subtitle_output": "Kita menuju Tagog Anjing sebagai tujuan utama.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang bisa dipilih. Silakan tentukan tujuan Anda, saya siap memandu.",
+        "recommendation_options": [
+          "Tagog Anjing",
+          "Julang Ngapak",
+          "Suling Sunda"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 7
+    },
+    {
+      "scenario_id": "sc47_dialogue_risk_07",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:30:27.775422",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.75,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Surabi",
+          "Angklung",
+          "Kujang"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T16:29:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Angklung diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Kujang, Surabi.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          },
+          {
+            "rank": 3,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "-1.34956, 1.52654, 23.7432"
+          }
+        ],
+        "nav_target": "Angklung"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, kita punya beberapa tujuan budaya menarik untuk dijelajahi. Saya sarankan mulai dari Angklung sebagai tujuan utama. Namun, jika Anda ingin, Kujang dan Surabi juga bisa menjadi pilihan selanjutnya. Silakan pilih sesuai keinginan Anda.",
+        "subtitle_output": "Mari menuju Angklung sebagai tujuan utama.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya belum dikunjungi. Pilih salah satu, dan saya akan memandu Anda.",
+        "recommendation_options": [
+          "Angklung",
+          "Kujang",
+          "Surabi"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc48_dialogue_risk_08",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:31:07.279802",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.75,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Julang Ngapak",
+          "Tagog Anjing",
+          "Suling Sunda"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T17:36:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tagog Anjing diprioritaskan sebagai tujuan utama karena menjadi kandidat teratas yang belum dikunjungi. Alternatif yang tersedia: Suling Sunda, Julang Ngapak.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          },
+          {
+            "rank": 2,
+            "id": "Suling Sunda",
+            "name": "Suling Sunda",
+            "cultural_position": "27.95618, 1.23804, 24.37192"
+          },
+          {
+            "rank": 3,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          }
+        ],
+        "nav_target": "Tagog Anjing"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini masih ada beberapa objek budaya menarik yang bisa kita kunjungi. Saya sarankan kita mulai dari Tagog Anjing sebagai tujuan utama. Jika Anda ingin mencoba jalur lain, Suling Sunda dan Julang Ngapak juga bisa dipilih.",
+        "subtitle_output": "Mari menuju Tagog Anjing.",
+        "recommendation_dialogue": "Ada tiga objek budaya yang siap dieksplorasi. Silakan pilih tujuan Anda berikutnya.",
+        "recommendation_options": [
+          "Tagog Anjing",
+          "Suling Sunda",
+          "Julang Ngapak"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc49_dialogue_risk_09",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:31:32.499690",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true,
+        "selected_option_mentioned": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.75,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Surabi",
+          "Angklung",
+          "Badak Heuay"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T18:43:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Angklung diprioritaskan sebagai tujuan utama karena menjadi kandidat utama yang belum dikunjungi. Alternatif yang tersedia: Surabi, Badak Heuay.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 2,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "-1.34956, 1.52654, 23.7432"
+          },
+          {
+            "rank": 3,
+            "id": "Badak Heuay",
+            "name": "Badak Heuay",
+            "cultural_position": "6.84231, 1.18492, 28.41675"
+          }
+        ],
+        "nav_target": "Angklung"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini, kita masih punya beberapa tujuan budaya menarik untuk dijelajahi. Saya sarankan kita mulai dari Angklung, yang menjadi pilihan utama saat ini. Jika Anda ingin mencoba rute lain, Surabi dan Badak Heuay juga bisa menjadi alternatif yang menarik.",
+        "subtitle_output": "Mari menuju Angklung sebagai tujuan utama.",
+        "recommendation_dialogue": "Ada tiga tujuan budaya belum dikunjungi. Silakan pilih, dan saya siap memandu.",
+        "recommendation_options": [
+          "Angklung",
+          "Surabi",
+          "Badak Heuay"
+        ]
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc50_dialogue_risk_10",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T13:32:10.909537",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 0.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": false,
+        "mentioned_valid_sites": []
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T09:50:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain telah mengunjungi semua tujuan budaya di area ini.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_B, tetapi semua objek budaya pada snapshot saat ini sudah dikunjungi atau tidak ada kandidat baru.",
+        "situation_type": "all_sites_visited",
+        "recommendation_reason": "Tidak ada rekomendasi baru karena seluruh situs budaya telah dikunjungi.",
+        "dialogue_intent": "no_new_destination",
+        "recommendations": [],
+        "nav_target": ""
+      },
+      "dialogue_output": {
+        "spoken_output": "Semua tujuan budaya di area ini sudah Anda kunjungi. Silakan nikmati suasana atau jelajahi sudut lain yang menarik. Jika ada tujuan baru, saya akan segera memberi tahu Anda.",
+        "subtitle_output": "Semua tujuan di sini sudah dikunjungi.",
+        "recommendation_dialogue": "Tidak ada tujuan budaya baru di area ini. Silakan menikmati sekitar.",
+        "recommendation_options": []
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    }
+  ],
+  "pass_k": null,
+  "ablation": null
+}

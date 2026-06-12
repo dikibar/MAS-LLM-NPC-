@@ -234,7 +234,7 @@ class ContextOutput(BaseModel):
 class DialogueOutput(BaseModel):
     """
     Validated JSON output from the Dialogue Agent.
-    spoken_output     → sent to TTS / avatar lip-sync
+    spoken_output     → retained for backward API compatibility; current VR has no audio/TTS
     subtitle_output   → sent to Unity HUD via show_subtitle tool
     recommendation_dialogue → short descriptive recommendation for the UI
     recommendation_options  → 0-3 cultural-object buttons for player selection

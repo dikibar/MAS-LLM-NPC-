@@ -1,0 +1,1120 @@
+{
+  "summary": {
+    "total_scenarios": 50,
+    "passed": 0,
+    "overall_pass_rate": 0.0,
+    "check_pass_rate": 0.0,
+    "judge_summary": {},
+    "ir_summary": {},
+    "faithfulness_avg": null,
+    "timestamp": "2026-06-02T14:46:04.986867",
+    "judge_model": "openai/gpt-4.1",
+    "judge_temperature": 0,
+    "cohen_kappa_note": "Use exported per-dimension scores for human/judge agreement analysis.",
+    "cohen_kappa_function_available": true
+  },
+  "scenario_results": [
+    {
+      "scenario_id": "sc01_context_normal_01",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:44:58.263887",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc02_context_normal_02",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:44:59.668784",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc03_context_normal_03",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:01.021968",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc04_context_normal_04",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:02.297892",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc05_context_normal_05",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:03.682146",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc06_context_normal_06",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:04.985851",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc07_context_normal_07",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:06.267684",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc08_context_normal_08",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:07.560192",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc09_context_normal_09",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:08.915843",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc10_context_normal_10",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:10.361771",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc11_context_normal_11",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:11.659496",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc12_context_normal_12",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:13.075931",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc13_context_normal_13",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:14.510039",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc14_context_normal_14",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:15.810435",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc15_context_normal_15",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:17.189463",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc16_context_edge_01",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:18.403418",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc17_context_edge_02",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:19.704683",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc18_context_edge_03",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:21.158907",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc19_context_edge_04",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:22.369522",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc20_context_edge_05",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:23.801422",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc21_context_edge_06",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:25.177379",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc22_context_edge_07",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:26.461888",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc23_context_edge_08",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:27.676144",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc24_context_edge_09",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:28.969257",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc25_context_edge_10",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:30.151998",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc26_dialogue_normal_01",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:31.509148",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc27_dialogue_normal_02",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:32.912957",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc28_dialogue_normal_03",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:34.141479",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc29_dialogue_normal_04",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:35.605329",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc30_dialogue_normal_05",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:36.868791",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc31_dialogue_normal_06",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:38.250201",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc32_dialogue_normal_07",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:39.685655",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc33_dialogue_normal_08",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:41.098676",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc34_dialogue_normal_09",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:42.380929",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc35_dialogue_normal_10",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:43.601252",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc36_dialogue_normal_11",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:45.043831",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc37_dialogue_normal_12",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:46.427515",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc38_dialogue_normal_13",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:47.644260",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc39_dialogue_normal_14",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:49.095175",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc40_dialogue_normal_15",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:50.344992",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc41_dialogue_risk_01",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:51.760451",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc42_dialogue_risk_02",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:52.977682",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc43_dialogue_risk_03",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:54.343150",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc44_dialogue_risk_04",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:55.795081",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc45_dialogue_risk_05",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:57.131616",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc46_dialogue_risk_06",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:58.365216",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc47_dialogue_risk_07",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:45:59.641017",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc48_dialogue_risk_08",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:46:00.993016",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc49_dialogue_risk_09",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:46:02.392313",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    },
+    {
+      "scenario_id": "sc50_dialogue_risk_10",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-02T14:46:03.647912",
+      "deterministic_checks": {},
+      "ir_metrics": {},
+      "faithfulness": {},
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": null,
+      "dialogue_output": null,
+      "context_uq": {},
+      "dialogue_uq": {},
+      "selection_dialogue_uq": {},
+      "errors": [
+        "Connection error."
+      ],
+      "passed": false
+    }
+  ],
+  "pass_k": null,
+  "ablation": null
+}
