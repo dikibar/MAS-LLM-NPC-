@@ -1,0 +1,16 @@
+{
+  "annotations": [
+    {
+      "scenario_id": "sc01_context_normal_01",
+      "dimension": "grounded_response_correctness",
+      "score": 5,
+      "annotator_id": "human_01"
+    },
+    {
+      "scenario_id": "sc01_context_normal_01",
+      "dimension": "faithfulness",
+      "score": 5,
+      "annotator_id": "human_01"
+    }
+  ]
+}

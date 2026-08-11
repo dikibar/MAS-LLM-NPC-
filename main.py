@@ -93,6 +93,11 @@ def run_context():
 
     Unity adalah source of truth untuk timestamp, scene, playerPosition,
     dan status visited pada tiap request live.
+
+    playerPosition boleh null, kosong, atau NaN ketika Unity tidak dapat membaca
+    posisi pemain (pemain di luar NavMesh surface). Backend akan memakai posisi
+    valid terakhir pada scene tersebut dan melaporkannya lewat
+    data.player_position_source (live | last_known | last_known_other_scene).
     """
     try:
         body, error_response, status_code = _parse_json_body()
@@ -112,7 +117,13 @@ def run_context():
         return jsonify({
             "status": "error",
             "message": "Invalid request body",
-            "details": e.errors()
+            "details": e.errors(include_context=False)
+        }), 422
+
+    except ValueError as e:
+        return jsonify({
+            "status": "error",
+            "message": str(e)
         }), 422
 
     except Exception as e:
@@ -150,7 +161,7 @@ def run_dialogue():
         return jsonify({
             "status": "error",
             "message": "Invalid request body",
-            "details": e.errors()
+            "details": e.errors(include_context=False)
         }), 422
 
     except ValueError as e:
@@ -193,7 +204,13 @@ def trigger_simulation():
         return jsonify({
             "status": "error",
             "message": "Invalid request body",
-            "details": e.errors()
+            "details": e.errors(include_context=False)
+        }), 422
+
+    except ValueError as e:
+        return jsonify({
+            "status": "error",
+            "message": str(e)
         }), 422
 
     except Exception as e:
@@ -240,7 +257,7 @@ def select_recommendation():
         return jsonify({
             "status": "error",
             "message": "Invalid request body",
-            "details": e.errors()
+            "details": e.errors(include_context=False)
         }), 422
 
     except ValueError as e:

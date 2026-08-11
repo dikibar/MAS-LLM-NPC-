@@ -1,7 +1,60 @@
+import math
 from enum import Enum
 from typing import List, Optional, Any, Dict
 from pydantic import BaseModel, Field, field_validator, model_validator
 from datetime import datetime
+
+
+# ---------------------------------------------------------------------------
+# Coordinate parsing helpers
+# ---------------------------------------------------------------------------
+# Unity tidak selalu bisa membaca posisi pemain: saat pemain berada di luar
+# NavMesh surface (misalnya naik ke atas pintu), hasil sampling posisi gagal dan
+# Unity mengirim nilai kosong / null / NaN pada playerPosition. Token di bawah
+# ini diperlakukan sebagai sinyal "posisi tidak tersedia", bukan payload rusak,
+# sehingga siklus MAS bisa memakai posisi valid terakhir dan tetap berjalan.
+PLAYER_POSITION_UNAVAILABLE_TOKENS = {
+    "",
+    "-",
+    "n/a",
+    "na",
+    "nan",
+    "none",
+    "null",
+    "offnavmesh",
+    "off_navmesh",
+    "unknown",
+}
+
+# Asal posisi pemain yang dipakai pada satu tick runtime.
+PLAYER_POSITION_SOURCE_LIVE = "live"
+PLAYER_POSITION_SOURCE_LAST_KNOWN = "last_known"
+PLAYER_POSITION_SOURCE_LAST_KNOWN_OTHER_SCENE = "last_known_other_scene"
+
+
+def parse_position_string(value: Any) -> Optional[tuple[float, float, float]]:
+    """
+    Parse a Unity 'x, y, z' coordinate string into finite floats.
+
+    Returns None instead of raising when the value is missing, malformed, or
+    non-finite (NaN / Infinity), so callers can decide how to recover.
+    """
+    if not isinstance(value, str):
+        return None
+
+    parts = [part.strip() for part in value.split(",")]
+    if len(parts) != 3:
+        return None
+
+    try:
+        coordinates = tuple(float(part) for part in parts)
+    except ValueError:
+        return None
+
+    if not all(math.isfinite(component) for component in coordinates):
+        return None
+
+    return coordinates
 
 
 # ---------------------------------------------------------------------------
@@ -19,7 +72,10 @@ class SimulationRequest(BaseModel):
     """Request body for POST /run-simulation."""
     timestamp: str
     scene: str
-    playerPosition: str  # Player world-space position e.g. "12.0, 0.0, 35.0"
+    # Player world-space position e.g. "12.0, 0.0, 35.0".
+    # None ketika Unity tidak dapat membaca posisi pemain (pemain di luar
+    # NavMesh surface); coordinator akan memakai posisi valid terakhir.
+    playerPosition: Optional[str] = None
     culturalSites: List["CulturalSite"]
 
     @model_validator(mode="before")
@@ -69,17 +125,38 @@ class SimulationRequest(BaseModel):
             raise ValueError("Field must not be empty.")
         return cleaned
 
-    @field_validator("playerPosition")
+    @field_validator("playerPosition", mode="before")
     @classmethod
-    def validate_player_position(cls, value: str) -> str:
+    def validate_player_position(cls, value: Any) -> Optional[str]:
+        """
+        Normalise playerPosition, atau kembalikan None saat posisi tidak tersedia.
+
+        Payload benar-benar rusak (misalnya "invalid-coordinate" atau hanya dua
+        komponen) tetap ditolak sebagai pelanggaran kontrak. Nilai kosong, null,
+        dan NaN diperlakukan sebagai kondisi pemain di luar NavMesh surface, dan
+        diteruskan sebagai None agar coordinator dapat memakai posisi terakhir.
+        """
+        if value is None:
+            return None
+
+        if not isinstance(value, str):
+            raise ValueError("playerPosition must be a string in the format 'x, y, z'.")
+
+        if value.strip().lower() in PLAYER_POSITION_UNAVAILABLE_TOKENS:
+            return None
+
         parts = [part.strip() for part in value.split(",")]
         if len(parts) != 3:
             raise ValueError("playerPosition must use the format 'x, y, z'.")
 
         try:
-            [float(part) for part in parts]
+            components = [float(part) for part in parts]
         except ValueError as exc:
             raise ValueError("playerPosition must contain numeric x, y, z values.") from exc
+
+        # NaN / Infinity muncul saat Unity gagal melakukan sampling posisi.
+        if not all(math.isfinite(component) for component in components):
+            return None
 
         return ", ".join(parts)
 
@@ -259,6 +336,8 @@ class SimulationCycleResponse(BaseModel):
     simulation_id: str
     context: ContextOutput
     navmesh_ack: bool
+    player_position: str = ""
+    player_position_source: str = PLAYER_POSITION_SOURCE_LIVE
     dialogue: DialogueOutput
 
 
@@ -267,6 +346,10 @@ class ContextCycleResponse(BaseModel):
     simulation_id: str
     context: ContextOutput
     navmesh_ack: bool
+    # Posisi pemain yang benar-benar dipakai untuk ranking, beserta asalnya:
+    # live | last_known | last_known_other_scene
+    player_position: str = ""
+    player_position_source: str = PLAYER_POSITION_SOURCE_LIVE
 
 
 class DialogueCycleResponse(BaseModel):

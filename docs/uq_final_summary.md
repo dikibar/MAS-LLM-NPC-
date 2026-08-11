@@ -115,6 +115,18 @@ Field yang tidak dihitung:
 
 Alasannya: `recommendations` dan `nav_target` sudah dijaga oleh deterministic backend logic.
 
+### Bobot Field Context Agent
+
+Pada implementasi saat ini, semua field interpretatif pada Context Agent diberi bobot sama besar. Artinya, tidak ada satu field pun yang didominasi secara khusus; sistem memperlakukan masing-masing field sebagai bagian penting dari interpretasi konteks.
+
+| Field | Bobot | Alasan |
+|---|---:|---|
+| `user_action` | 0.20 | Menjelaskan tindakan atau keadaan pemain yang sedang berlangsung. |
+| `context_summary` | 0.20 | Ringkasan utama yang dibaca agent untuk menyimpulkan situasi. |
+| `recommendation_reason` | 0.20 | Alasan rekomendasi yang harus tetap konsisten antar-sample. |
+| `situation_type` | 0.20 | Penentu pola konteks, misalnya `multiple_recommendations` atau `single_recommendation`. |
+| `dialogue_intent` | 0.20 | Penentu arah dialog yang harus stabil di setiap sample. |
+
 ### 5.1 Rumus Context UQ
 
 Agent menghasilkan beberapa kandidat output:
@@ -146,6 +158,17 @@ Untuk field kategori seperti `situation_type` dan `dialogue_intent`:
 ```text
 similarity = 1 jika sama
 similarity = 0 jika berbeda
+```
+
+Rumus pairwise similarity Context Agent:
+
+```text
+a_ij =
+0.20 * sim(user_action_i, user_action_j)
++ 0.20 * sim(context_summary_i, context_summary_j)
++ 0.20 * sim(recommendation_reason_i, recommendation_reason_j)
++ 0.20 * sim(situation_type_i, situation_type_j)
++ 0.20 * sim(dialogue_intent_i, dialogue_intent_j)
 ```
 
 Skor konsistensi kandidat ke-i:
@@ -202,19 +225,20 @@ Kemiripan dua kandidat dialog:
 
 ```text
 a_ij =
-0.50 * sim(recommendation_dialogue_i, recommendation_dialogue_j)
-+ 0.30 * sim(subtitle_output_i, subtitle_output_j)
-+ 0.20 * sim(recommendation_options_i, recommendation_options_j)
+0.05 * sim(spoken_output_i, spoken_output_j)
++ 0.55 * sim(recommendation_dialogue_i, recommendation_dialogue_j)
++ 0.25 * sim(subtitle_output_i, subtitle_output_j)
++ 0.15 * sim(recommendation_options_i, recommendation_options_j)
 ```
 
 Alasan bobot:
 
 | Komponen | Bobot | Alasan |
 |---|---:|---|
-| `recommendation_dialogue` | 0.50 | Teks utama panel rekomendasi pada HUD. |
-| `subtitle_output` | 0.30 | Konfirmasi singkat yang tampil pada HUD. |
-| `recommendation_options` | 0.20 | Tombol pilihan harus mengikuti urutan Context Agent. |
-| `spoken_output` | 0.00 | Dipertahankan untuk kompatibilitas API, tetapi tidak digunakan VR/UQ. |
+| `spoken_output` | 0.05 | Dipertahankan untuk kompatibilitas API, tetapi bobotnya kecil karena Unity live belum memakai audio/TTS. |
+| `recommendation_dialogue` | 0.55 | Teks utama panel rekomendasi pada HUD, sehingga menjadi komponen paling dominan. |
+| `subtitle_output` | 0.25 | Konfirmasi singkat yang tampil pada HUD. |
+| `recommendation_options` | 0.15 | Tombol pilihan harus mengikuti urutan Context Agent. |
 
 ### 6.2 Rumus CDeg Dialogue
 
@@ -230,16 +254,18 @@ Kandidat dengan `CDeg` tinggi berarti responsnya dekat dengan mayoritas respons 
 
 ```text
 grounding_score =
-0.50 * option_score
-+ 0.35 * primary_score
-+ 0.15 * subtitle_score
+0.05 * spoken_score
++ 0.55 * recommendation_score
++ 0.20 * subtitle_score
++ 0.20 * option_score
 ```
 
 Keterangan:
 
+- `spoken_score`: apakah `spoken_output` tetap menyebut target utama, dengan bobot kecil karena belum dipakai Unity live.
+- `recommendation_score`: apakah `recommendation_dialogue` menyebut target utama.
+- `subtitle_score`: apakah subtitle menyebut target utama, valid, dan tidak terlalu panjang.
 - `option_score`: apakah `recommendation_options` sesuai urutan Context Agent.
-- `primary_score`: apakah objek rank 1 disebut di dialog.
-- `subtitle_score`: apakah subtitle valid dan tidak terlalu panjang.
 
 ### 6.4 Rumus Final Selection Score
 
@@ -647,6 +673,16 @@ situation_type
 dialogue_intent
 ```
 
+Bobot field Context Agent pada implementasi saat ini:
+
+```text
+user_action            = 0.20
+context_summary        = 0.20
+recommendation_reason   = 0.20
+situation_type         = 0.20
+dialogue_intent        = 0.20
+```
+
 Field yang tidak dihitung UQ:
 
 ```text
@@ -693,6 +729,17 @@ Untuk field teks seperti `context_summary` dan `recommendation_reason`, similari
 
 ```text
 Jaccard(A, B) = |A ∩ B| / |A ∪ B|
+```
+
+Rumus pairwise similarity Context Agent:
+
+```text
+a_ij =
+0.20 * sim(user_action_i, user_action_j)
++ 0.20 * sim(context_summary_i, context_summary_j)
++ 0.20 * sim(recommendation_reason_i, recommendation_reason_j)
++ 0.20 * sim(situation_type_i, situation_type_j)
++ 0.20 * sim(dialogue_intent_i, dialogue_intent_j)
 ```
 
 Keterangan:
@@ -814,19 +861,20 @@ Rumus similarity Dialogue Agent:
 
 ```text
 a_ij =
-0.50 * sim(recommendation_dialogue_i, recommendation_dialogue_j)
-+ 0.30 * sim(subtitle_output_i, subtitle_output_j)
-+ 0.20 * sim(recommendation_options_i, recommendation_options_j)
+0.05 * sim(spoken_output_i, spoken_output_j)
++ 0.55 * sim(recommendation_dialogue_i, recommendation_dialogue_j)
++ 0.25 * sim(subtitle_output_i, subtitle_output_j)
++ 0.15 * sim(recommendation_options_i, recommendation_options_j)
 ```
 
 Alasan bobot:
 
 | Komponen | Bobot | Alasan |
 |---|---:|---|
-| `recommendation_dialogue` | 0.50 | Teks utama yang tampil pada panel HUD. |
-| `subtitle_output` | 0.30 | Teks konfirmasi singkat yang tampil pada HUD. |
-| `recommendation_options` | 0.20 | Tombol pilihan harus mengikuti Context Agent. |
-| `spoken_output` | 0.00 | Hanya kompatibilitas API; tidak dipakai Unity atau UQ. |
+| `spoken_output` | 0.05 | Hanya kompatibilitas API dan belum dipakai Unity live, sehingga bobotnya kecil. |
+| `recommendation_dialogue` | 0.55 | Teks utama yang tampil pada panel HUD, sehingga paling menentukan. |
+| `subtitle_output` | 0.25 | Teks konfirmasi singkat yang tampil pada HUD. |
+| `recommendation_options` | 0.15 | Tombol pilihan harus mengikuti Context Agent. |
 
 Lalu dihitung `CDeg`:
 
@@ -838,18 +886,20 @@ grounding score:
 
 ```text
 grounding_score =
-0.50 * option_score
-+ 0.35 * primary_score
-+ 0.15 * subtitle_score
+0.05 * spoken_score
++ 0.55 * recommendation_score
++ 0.20 * subtitle_score
++ 0.20 * option_score
 ```
 
 Keterangan:
 
 | Komponen | Makna |
 |---|---|
+| `spoken_score` | Mengukur apakah `spoken_output` tetap menyebut target utama, dengan bobot kecil karena belum dipakai Unity live. |
+| `recommendation_score` | Mengukur apakah `recommendation_dialogue` menyebut objek rank 1 atau `nav_target`. |
+| `subtitle_score` | Mengukur apakah subtitle valid, singkat, cocok untuk UI, dan menyebut target utama. |
 | `option_score` | Mengukur apakah `recommendation_options` sesuai dengan Context Agent. |
-| `primary_score` | Mengukur apakah objek rank 1 atau `nav_target` disebut di dialog. |
-| `subtitle_score` | Mengukur apakah subtitle valid, singkat, dan cocok untuk UI. |
 
 Skor akhir pemilihan:
 

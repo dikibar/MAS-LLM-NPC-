@@ -46,6 +46,24 @@ class SettingsTests(unittest.TestCase):
             },
         )
 
+    def test_model_params_can_be_resolved_for_separate_judge_model(self):
+        settings = Settings(
+            _env_file=None,
+            OPENROUTER_MODEL="gpt-5-mini",
+        )
+
+        self.assertEqual(
+            settings.model_params_for(
+                "openai/gpt-4.1",
+                500,
+                temperature=0,
+            ),
+            {
+                "max_tokens": 500,
+                "temperature": 0,
+            },
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

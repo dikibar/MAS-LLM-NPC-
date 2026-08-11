@@ -1,0 +1,658 @@
+{
+  "summary": {
+    "total_scenarios": 2,
+    "passed": 1,
+    "overall_pass_rate": 0.5,
+    "check_pass_rate": 1.0,
+    "judge_summary": {
+      "grounded_response_correctness": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 2,
+        "pass_rate": 1.0,
+        "thresholds": [
+          4.0
+        ]
+      },
+      "context_relevance": {
+        "mean": 4.5,
+        "std": 0.7071,
+        "n": 2,
+        "pass_rate": 1.0,
+        "thresholds": [
+          4.0
+        ]
+      },
+      "faithfulness": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 2,
+        "pass_rate": 1.0,
+        "thresholds": [
+          4.0
+        ]
+      },
+      "navigation_clarity": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 2,
+        "pass_rate": 1.0,
+        "thresholds": [
+          4.0
+        ]
+      },
+      "persona_alignment": {
+        "mean": 4,
+        "std": 0.0,
+        "n": 2,
+        "pass_rate": 1.0,
+        "thresholds": [
+          4.0
+        ]
+      },
+      "language_quality": {
+        "mean": 4,
+        "std": 0.0,
+        "n": 2,
+        "pass_rate": 1.0,
+        "thresholds": [
+          4.0
+        ]
+      },
+      "ui_usefulness": {
+        "mean": 4.5,
+        "std": 0.7071,
+        "n": 2,
+        "pass_rate": 1.0,
+        "thresholds": [
+          4.0
+        ]
+      },
+      "technical_leak_safety": {
+        "mean": 4,
+        "std": 1.4142,
+        "n": 2,
+        "pass_rate": 0.5,
+        "thresholds": [
+          5.0
+        ]
+      }
+    },
+    "judge_execution": {
+      "required_scenarios": 2,
+      "successful_scenarios": 2,
+      "scenario_coverage": 1.0,
+      "required_dimension_assessments": 16,
+      "successful_dimension_assessments": 16,
+      "dimension_coverage": 1.0,
+      "status_counts": {
+        "ok": 2,
+        "skipped": 0,
+        "error": 0
+      },
+      "assessment_pass_rate": 0.5,
+      "overall_score_mean": 4.5
+    },
+    "ir_summary": {
+      "precision_at_3": 1.0,
+      "recall_at_3": 0.4018,
+      "mrr": 1.0,
+      "ndcg_at_3": 1.0
+    },
+    "faithfulness_avg": 1.0,
+    "uncertainty_validation": {
+      "context_agent": {
+        "sample_count": 2,
+        "correct_count": 2,
+        "error_count": 0,
+        "accuracy_at_zero_rejection": 1.0,
+        "auarc": 1.0,
+        "error_detection_auroc": null,
+        "mean_udeg_correct": 0.2819,
+        "mean_udeg_incorrect": null,
+        "median_udeg_correct": 0.2819,
+        "median_udeg_incorrect": null,
+        "mean_udeg_gap": null,
+        "mann_whitney_greater_p": null,
+        "higher_uncertainty_on_errors": null,
+        "benchmark_threshold": null,
+        "status": "no_error_variation",
+        "note": "All outputs have the same correctness label; AUARC describes selective accuracy, but error-discrimination ability cannot be established from this run.",
+        "accuracy_rejection_curve": [
+          {
+            "rejection_rate": 0.0,
+            "coverage": 1.0,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 0.5,
+            "coverage": 0.5,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 1.0,
+            "coverage": 0.0,
+            "accuracy": 1.0
+          }
+        ]
+      },
+      "dialogue_agent": {
+        "sample_count": 2,
+        "correct_count": 2,
+        "error_count": 0,
+        "accuracy_at_zero_rejection": 1.0,
+        "auarc": 1.0,
+        "error_detection_auroc": null,
+        "mean_udeg_correct": 0.5659,
+        "mean_udeg_incorrect": null,
+        "median_udeg_correct": 0.5659,
+        "median_udeg_incorrect": null,
+        "mean_udeg_gap": null,
+        "mann_whitney_greater_p": null,
+        "higher_uncertainty_on_errors": null,
+        "benchmark_threshold": null,
+        "status": "no_error_variation",
+        "note": "All outputs have the same correctness label; AUARC describes selective accuracy, but error-discrimination ability cannot be established from this run.",
+        "accuracy_rejection_curve": [
+          {
+            "rejection_rate": 0.0,
+            "coverage": 1.0,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 0.5,
+            "coverage": 0.5,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 1.0,
+            "coverage": 0.0,
+            "accuracy": 1.0
+          }
+        ]
+      }
+    },
+    "uq_group_summary": {
+      "context_normal": {
+        "scenario_count": 2,
+        "pass_rate": 0.5,
+        "context_udeg_mean": 0.2819,
+        "dialogue_udeg_mean": 0.5659,
+        "dialogue_grounding_mean": 1.0
+      }
+    },
+    "timestamp": "2026-07-25T08:51:56.466584",
+    "agent_model": "gpt-5.4-nano",
+    "judge_model": "gpt-5.6-luna",
+    "judge_temperature": 0,
+    "judge_independent_model": true,
+    "judge_model_warning": null,
+    "human_judge_agreement": {
+      "status": "not_provided",
+      "sample_count": 0,
+      "note": "Provide --human-annotations to calculate judge-human agreement."
+    }
+  },
+  "scenario_results": [
+    {
+      "scenario_id": "sc01_context_normal_01",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-07-25T08:50:58.469340",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.375,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Surabi",
+          "Angklung",
+          "Badak Heuay"
+        ]
+      },
+      "llm_judge_scores": {
+        "grounded_response_correctness": {
+          "score": 5,
+          "reasoning": "Output menyebut Surabi sebagai tujuan utama dan mencantumkan opsi dalam urutan tepat: Surabi, Badak Heuay, Angklung. Tidak ada objek tambahan.",
+          "dimension": "grounded_response_correctness",
+          "status": "ok"
+        },
+        "context_relevance": {
+          "score": 5,
+          "reasoning": "Dialog secara langsung membahas beberapa tujuan yang tersedia dan mengarahkan pemain pada rekomendasi utama dalam konteks museum.",
+          "dimension": "context_relevance",
+          "status": "ok"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Klaim tentang Surabi sebagai tujuan belum dikunjungi terdekat sesuai grounding_reference, dan tidak ada detail budaya, lokasi, atau kemampuan sistem yang dibuat-buat.",
+          "dimension": "faithfulness",
+          "status": "ok"
+        },
+        "navigation_clarity": {
+          "score": 5,
+          "reasoning": "Pemain dapat memahami bahwa harus menuju Surabi terlebih dahulu, dengan Badak Heuay dan Angklung sebagai pilihan berikutnya.",
+          "dimension": "navigation_clarity",
+          "status": "ok"
+        },
+        "persona_alignment": {
+          "score": 4,
+          "reasoning": "Nada cukup hangat dan membantu melalui frasa “Kalau kita mulai dari yang paling siap”, tetapi sebagian spoken_output terdengar agak formal dan repetitif.",
+          "dimension": "persona_alignment",
+          "status": "ok"
+        },
+        "language_quality": {
+          "score": 4,
+          "reasoning": "Bahasa Indonesia jelas dan natural secara umum, meski frasa “bisa jadi arah berikutnya” sedikit kurang luwes dan spoken_output mengulang nama Surabi.",
+          "dimension": "language_quality",
+          "status": "ok"
+        },
+        "ui_usefulness": {
+          "score": 5,
+          "reasoning": "Subtitle ringkas, dialog rekomendasi tidak menyebut nama objek budaya, dan recommendation_options menampilkan tiga pilihan yang benar dalam urutan yang tepat.",
+          "dimension": "ui_usefulness",
+          "status": "ok"
+        },
+        "technical_leak_safety": {
+          "score": 5,
+          "reasoning": "Seluruh teks yang dilihat pemain bebas dari koordinat, nama tool, token backend, NavMesh, prompt, schema, dan istilah implementasi internal.",
+          "dimension": "technical_leak_safety",
+          "status": "ok"
+        }
+      },
+      "llm_judge_meta": {
+        "required": true,
+        "required_dimensions": [
+          "grounded_response_correctness",
+          "context_relevance",
+          "faithfulness",
+          "navigation_clarity",
+          "persona_alignment",
+          "language_quality",
+          "ui_usefulness",
+          "technical_leak_safety"
+        ],
+        "thresholds": {
+          "grounded_response_correctness": 4.0,
+          "context_relevance": 4.0,
+          "faithfulness": 4.0,
+          "navigation_clarity": 4.0,
+          "persona_alignment": 4.0,
+          "language_quality": 4.0,
+          "ui_usefulness": 4.0,
+          "technical_leak_safety": 5.0
+        },
+        "overall_threshold": 4.0,
+        "model": "gpt-5.6-luna",
+        "agent_model": "gpt-5.4-nano",
+        "independent_model": true,
+        "attempts": 2,
+        "raw_response": "{\n  \"analisis_independen\": \"Target navigasi utama adalah Surabi. Tersedia tiga rekomendasi dengan urutan Surabi, Badak Heuay, lalu Angklung. Dialog utama harus menyebut Surabi sebagai tujuan, sementara recommendation_dialogue tetap santai dan kontekstual tanpa menyebut nama objek budaya.\",\n  \"scores\": {\n    \"grounded_response_correctness\": {\n      \"score\": 5,\n      \"reasoning\": \"Output menyebut Surabi sebagai tujuan utama dan mencantumkan opsi dalam urutan tepat: Surabi, Badak Heuay, Angklung. Tidak ada objek tambahan.\"\n    },\n    \"context_relevance\": {\n      \"score\": 5,\n      \"reasoning\": \"Dialog secara langsung membahas beberapa tujuan yang tersedia dan mengarahkan pemain pada rekomendasi utama dalam konteks museum.\"\n    },\n    \"faithfulness\": {\n      \"score\": 5,\n      \"reasoning\": \"Klaim tentang Surabi sebagai tujuan belum dikunjungi terdekat sesuai grounding_reference, dan tidak ada detail budaya, lokasi, atau kemampuan sistem yang dibuat-buat.\"\n    },\n    \"navigation_clarity\": {\n      \"score\": 5,\n      \"reasoning\": \"Pemain dapat memahami bahwa harus menuju Surabi terlebih dahulu, dengan Badak Heuay dan Angklung sebagai pilihan berikutnya.\"\n    },\n    \"persona_alignment\": {\n      \"score\": 4,\n      \"reasoning\": \"Nada cukup hangat dan membantu melalui frasa “Kalau kita mulai dari yang paling siap”, tetapi sebagian spoken_output terdengar agak formal dan repetitif.\"\n    },\n    \"language_quality\": {\n      \"score\": 4,\n      \"reasoning\": \"Bahasa Indonesia jelas dan natural secara umum, meski frasa “bisa jadi arah berikutnya” sedikit kurang luwes dan spoken_output mengulang nama Surabi.\"\n    },\n    \"ui_usefulness\": {\n      \"score\": 5,\n      \"reasoning\": \"Subtitle ringkas, dialog rekomendasi tidak menyebut nama objek budaya, dan recommendation_options menampilkan tiga pilihan yang benar dalam urutan yang tepat.\"\n    },\n    \"technical_leak_safety\": {\n      \"score\": 5,\n      \"reasoning\": \"Seluruh teks yang dilihat pemain bebas dari koordinat, nama tool, token backend, NavMesh, prompt, schema, dan istilah implementasi internal.\"\n    }\n  }\n}",
+        "status": "ok",
+        "error": ""
+      },
+      "llm_judge_assessment": {
+        "passed": true,
+        "overall_score": 4.75,
+        "overall_threshold": 4.0,
+        "failed_dimensions": [],
+        "reason": "ok"
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T10:07:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di Heritage_Museum_Wing_A dengan beberapa rekomendasi tujuan.",
+        "context_summary": "Tersedia 3 rekomendasi teratas dari objek budaya yang belum dikunjungi di Heritage_Museum_Wing_A.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Surabi diprioritaskan sebagai tujuan belum dikunjungi terdekat. Alternatif yang tersedia: Badak Heuay, lalu Angklung.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "-1.34956, 1.52654, 23.7432"
+          },
+          {
+            "rank": 2,
+            "id": "Badak Heuay",
+            "name": "Badak Heuay",
+            "cultural_position": "6.84231, 1.18492, 28.41675"
+          },
+          {
+            "rank": 3,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          }
+        ],
+        "nav_target": "Surabi"
+      },
+      "dialogue_output": {
+        "spoken_output": "Kalau kita mulai dari yang paling siap, Surabi adalah titik terbaik di Heritage_Museum_Wing_A. Surabi diprioritaskan sebagai tujuan belum dikunjungi terdekat. Setelah itu, Badak Heuay dan Angklung bisa jadi arah berikutnya.",
+        "subtitle_output": "Surabi dulu, lalu Badak Heuay dan Angklung.",
+        "recommendation_dialogue": "Beberapa tujuan masih terbuka, dan kita bisa bergerak dari yang paling relevan.",
+        "recommendation_options": [
+          "Surabi",
+          "Badak Heuay",
+          "Angklung"
+        ]
+      },
+      "context_uq": {
+        "method": "consistency_based_interpretive_fields",
+        "sample_count": 3,
+        "degree_scores": [
+          0.7141003199698852,
+          0.7216977225672878,
+          0.7124025974025974
+        ],
+        "udeg": 0.2839331200200764,
+        "selected_cdeg": 0.7216977225672878,
+        "situation_agreement": 1.0,
+        "intent_agreement": 1.0,
+        "selected_index": 1,
+        "sanitized_interpretive_fields": []
+      },
+      "dialogue_uq": {
+        "method": "hud_black_box_response_similarity_cdeg",
+        "sample_count": 3,
+        "field_weights": {
+          "spoken_output": 0.05,
+          "recommendation_dialogue": 0.55,
+          "subtitle_output": 0.25,
+          "recommendation_options": 0.15
+        },
+        "degree_scores": [
+          0.45007617985878856,
+          0.4798630015642149,
+          0.44256459948320415
+        ],
+        "udeg": 0.5424987396979308,
+        "selected_cdeg": 0.4798630015642149,
+        "selected_index": 1,
+        "max_cdeg": 0.4798630015642149,
+        "grounding_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "selection_scores": [
+          0.7525342809364549,
+          0.7659383507038968,
+          0.7491540697674419
+        ],
+        "selected_grounding": 1.0,
+        "selected_score": 0.7659383507038968
+      },
+      "selection_dialogue_uq": {},
+      "uq_failure_benchmark": {
+        "expected_correct": null,
+        "injection": {}
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 7
+    },
+    {
+      "scenario_id": "sc02_context_normal_02",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-07-25T08:51:27.077499",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Julang Ngapak",
+          "Tagog Anjing",
+          "Tari Jaipong"
+        ]
+      },
+      "llm_judge_scores": {
+        "grounded_response_correctness": {
+          "score": 5,
+          "reasoning": "Output menyebut Tari Jaipong sebagai pilihan utama dan mencantumkan alternatif Julang Ngapak serta Tagog Anjing dalam urutan yang benar; opsi juga tepat.",
+          "dimension": "grounded_response_correctness",
+          "status": "ok"
+        },
+        "context_relevance": {
+          "score": 4,
+          "reasoning": "Dialog relevan dengan situasi beberapa rekomendasi dan tujuan yang tersedia, tetapi penyebutan nama scene 'Heritage_Museum_Wing_B' tidak diperlukan bagi pemain.",
+          "dimension": "context_relevance",
+          "status": "ok"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Klaim bahwa Tari Jaipong diprioritaskan sebagai tujuan belum dikunjungi terdekat, serta alternatif yang disebut, sesuai grounding_reference dan tidak menambahkan fakta budaya yang tidak tersedia.",
+          "dimension": "faithfulness",
+          "status": "ok"
+        },
+        "navigation_clarity": {
+          "score": 5,
+          "reasoning": "Pemain dapat memahami bahwa tujuan berikutnya adalah Tari Jaipong, dengan Julang Ngapak dan Tagog Anjing sebagai alternatif.",
+          "dimension": "navigation_clarity",
+          "status": "ok"
+        },
+        "persona_alignment": {
+          "score": 4,
+          "reasoning": "Nada cukup membantu dan langsung, tetapi frasa 'opsi teratas' serta penyebutan nama scene membuatnya sedikit terasa seperti keluaran sistem, bukan sepenuhnya dialog pemandu budaya.",
+          "dimension": "persona_alignment",
+          "status": "ok"
+        },
+        "language_quality": {
+          "score": 4,
+          "reasoning": "Bahasa Indonesia jelas dan gramatikal, tetapi spoken_output agak repetitif karena alasan prioritas diulang lagi dalam subtitle dan beberapa pilihan kata seperti 'opsi teratas' terasa kurang natural.",
+          "dimension": "language_quality",
+          "status": "ok"
+        },
+        "ui_usefulness": {
+          "score": 4,
+          "reasoning": "Recommendation_options tepat dan subtitle ringkas serta sinkron dengan urutan tujuan. Namun recommendation_dialogue terlalu umum dan spoken_output cukup panjang untuk informasi yang sederhana.",
+          "dimension": "ui_usefulness",
+          "status": "ok"
+        },
+        "technical_leak_safety": {
+          "score": 3,
+          "reasoning": "Sebagian besar teks aman, tetapi spoken_output secara eksplisit menampilkan 'Heritage_Museum_Wing_B', yang merupakan nama scene atau identifier internal dan tidak perlu terlihat oleh pemain.",
+          "dimension": "technical_leak_safety",
+          "status": "ok"
+        }
+      },
+      "llm_judge_meta": {
+        "required": true,
+        "required_dimensions": [
+          "grounded_response_correctness",
+          "context_relevance",
+          "faithfulness",
+          "navigation_clarity",
+          "persona_alignment",
+          "language_quality",
+          "ui_usefulness",
+          "technical_leak_safety"
+        ],
+        "thresholds": {
+          "grounded_response_correctness": 4.0,
+          "context_relevance": 4.0,
+          "faithfulness": 4.0,
+          "navigation_clarity": 4.0,
+          "persona_alignment": 4.0,
+          "language_quality": 4.0,
+          "ui_usefulness": 4.0,
+          "technical_leak_safety": 5.0
+        },
+        "overall_threshold": 4.0,
+        "model": "gpt-5.6-luna",
+        "agent_model": "gpt-5.4-nano",
+        "independent_model": true,
+        "attempts": 2,
+        "raw_response": "{\n  \"analisis_independen\": \"Situasinya adalah multiple_recommendations dengan tiga tujuan belum dikunjungi. Rute utama adalah Tari Jaipong, disusul alternatif Julang Ngapak dan Tagog Anjing; target navigasi utama Tari Jaipong. Dialog sebaiknya menyampaikan pilihan utama dan alternatif secara ringkas tanpa istilah teknis.\",\n  \"scores\": {\n    \"grounded_response_correctness\": {\n      \"score\": 5,\n      \"reasoning\": \"Output menyebut Tari Jaipong sebagai pilihan utama dan mencantumkan alternatif Julang Ngapak serta Tagog Anjing dalam urutan yang benar; opsi juga tepat.\"\n    },\n    \"context_relevance\": {\n      \"score\": 4,\n      \"reasoning\": \"Dialog relevan dengan situasi beberapa rekomendasi dan tujuan yang tersedia, tetapi penyebutan nama scene 'Heritage_Museum_Wing_B' tidak diperlukan bagi pemain.\"\n    },\n    \"faithfulness\": {\n      \"score\": 5,\n      \"reasoning\": \"Klaim bahwa Tari Jaipong diprioritaskan sebagai tujuan belum dikunjungi terdekat, serta alternatif yang disebut, sesuai grounding_reference dan tidak menambahkan fakta budaya yang tidak tersedia.\"\n    },\n    \"navigation_clarity\": {\n      \"score\": 5,\n      \"reasoning\": \"Pemain dapat memahami bahwa tujuan berikutnya adalah Tari Jaipong, dengan Julang Ngapak dan Tagog Anjing sebagai alternatif.\"\n    },\n    \"persona_alignment\": {\n      \"score\": 4,\n      \"reasoning\": \"Nada cukup membantu dan langsung, tetapi frasa 'opsi teratas' serta penyebutan nama scene membuatnya sedikit terasa seperti keluaran sistem, bukan sepenuhnya dialog pemandu budaya.\"\n    },\n    \"language_quality\": {\n      \"score\": 4,\n      \"reasoning\": \"Bahasa Indonesia jelas dan gramatikal, tetapi spoken_output agak repetitif karena alasan prioritas diulang lagi dalam subtitle dan beberapa pilihan kata seperti 'opsi teratas' terasa kurang natural.\"\n    },\n    \"ui_usefulness\": {\n      \"score\": 4,\n      \"reasoning\": \"Recommendation_options tepat dan subtitle ringkas serta sinkron dengan urutan tujuan. Namun recommendation_dialogue terlalu umum dan spoken_output cukup panjang untuk informasi yang sederhana.\"\n    },\n    \"technical_leak_safety\": {\n      \"score\": 3,\n      \"reasoning\": \"Sebagian besar teks aman, tetapi spoken_output secara eksplisit menampilkan 'Heritage_Museum_Wing_B', yang merupakan nama scene atau identifier internal dan tidak perlu terlihat oleh pemain.\"\n    }\n  }\n}",
+        "status": "ok",
+        "error": ""
+      },
+      "llm_judge_assessment": {
+        "passed": false,
+        "overall_score": 4.25,
+        "overall_threshold": 4.0,
+        "failed_dimensions": [
+          "technical_leak_safety"
+        ],
+        "reason": "ok"
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T11:14:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di Heritage_Museum_Wing_B dengan beberapa rekomendasi tujuan.",
+        "context_summary": "Tersedia 3 rekomendasi teratas dari objek budaya yang belum dikunjungi di Heritage_Museum_Wing_B.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tari Jaipong diprioritaskan sebagai tujuan belum dikunjungi terdekat di antara pilihan yang tersedia. Alternatif terdekat lainnya: Julang Ngapak dan Tagog Anjing.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          },
+          {
+            "rank": 2,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          },
+          {
+            "rank": 3,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          }
+        ],
+        "nav_target": "Tari Jaipong"
+      },
+      "dialogue_output": {
+        "spoken_output": "Ada beberapa opsi teratas di Heritage_Museum_Wing_B; Tari Jaipong paling pas untuk kita mulai. Tari Jaipong diprioritaskan sebagai tujuan belum dikunjungi terdekat di antara pilihan yang tersedia. Alternatifnya tetap Julang Ngapak dan Tagog Anjing.",
+        "subtitle_output": "Tari Jaipong dulu, lalu Julang Ngapak dan Tagog Anjing.",
+        "recommendation_dialogue": "Ada beberapa opsi menarik, jadi kita bisa pilih yang paling pas dulu.",
+        "recommendation_options": [
+          "Tari Jaipong",
+          "Julang Ngapak",
+          "Tagog Anjing"
+        ]
+      },
+      "context_uq": {
+        "method": "consistency_based_interpretive_fields",
+        "sample_count": 3,
+        "degree_scores": [
+          0.6977998933433717,
+          0.7315800865800867,
+          0.7307436162870946
+        ],
+        "udeg": 0.279958801263149,
+        "selected_cdeg": 0.7315800865800867,
+        "situation_agreement": 1.0,
+        "intent_agreement": 1.0,
+        "selected_index": 1,
+        "sanitized_interpretive_fields": []
+      },
+      "dialogue_uq": {
+        "method": "hud_black_box_response_similarity_cdeg",
+        "sample_count": 3,
+        "field_weights": {
+          "spoken_output": 0.05,
+          "recommendation_dialogue": 0.55,
+          "subtitle_output": 0.25,
+          "recommendation_options": 0.15
+        },
+        "degree_scores": [
+          0.4549741924741925,
+          0.4045860453890653,
+          0.372747051050071
+        ],
+        "udeg": 0.589230903695557,
+        "selected_cdeg": 0.4549741924741925,
+        "selected_index": 0,
+        "max_cdeg": 0.4549741924741925,
+        "grounding_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "selection_scores": [
+          0.7547383866133867,
+          0.7320637204250794,
+          0.717736172972532
+        ],
+        "selected_grounding": 1.0,
+        "selected_score": 0.7547383866133867
+      },
+      "selection_dialogue_uq": {},
+      "uq_failure_benchmark": {
+        "expected_correct": null,
+        "injection": {}
+      },
+      "errors": [],
+      "passed": false,
+      "subtitle_word_count": 9
+    }
+  ],
+  "pass_k": null,
+  "ablation": null
+}

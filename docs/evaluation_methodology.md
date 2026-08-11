@@ -191,3 +191,83 @@ Untuk laporan, pisahkan hasil per agent:
 - System: laporkan end-to-end success rate, selection success/rejection, dan observasi user study.
 
 Dengan struktur ini, evaluasi menjadi lebih kuat karena setiap agent dinilai sesuai tugasnya: Context Agent dinilai secara objektif, Dialogue Agent dinilai berdasarkan kualitas komunikasi, dan sistem VR dinilai berdasarkan keberhasilan interaksi.
+
+## Validasi UQ Dengan Controlled Failure
+
+Run 50 skenario yang seluruhnya benar tidak memiliki variasi label error. Pada
+kondisi tersebut, AUARC masih dapat ditampilkan, tetapi error-detection AUROC
+secara matematis tidak dapat dihitung karena hanya terdapat satu kelas.
+
+Project menyediakan benchmark tambahan `evals/uq_failure_scenarios.json` dengan
+desain berpasangan:
+
+1. Jalankan suatu keadaan Unity tanpa gangguan sebagai clean control.
+2. Jalankan keadaan yang sama dengan controlled corruption pada kandidat respons.
+3. Terapkan corruption sebelum response similarity, CDeg, dan UDeg dihitung.
+4. Tentukan benar/salah menggunakan deterministic checks yang sama dengan evaluasi utama.
+5. Bandingkan distribusi UDeg output benar dan output salah.
+
+Gangguan Context Agent membuat field interpretatif antarsampel saling menyimpang
+dan membocorkan informasi teknis. Gangguan Dialogue Agent membuat respons HUD
+bervariasi, terlalu panjang, dan memuat istilah atau koordinat internal. Injeksi
+tersebut hanya aktif ketika flag `--uq-failure-validation` digunakan.
+
+Hipotesis validasi:
+
+```text
+H1: mean(UDeg | incorrect) > mean(UDeg | correct)
+```
+
+Metrik pelaporan:
+
+- error-detection AUROC;
+- accuracy-rejection curve dan AUARC;
+- mean dan median UDeg per kelas;
+- mean UDeg gap;
+- one-sided Mann-Whitney U test;
+- benchmark-derived UDeg threshold, sensitivity, specificity, dan balanced accuracy;
+- agreement antara expected benchmark label dan actual deterministic label.
+
+Validasi dianggap terkonfirmasi pada benchmark jika:
+
+```text
+AUROC >= 0.70
+mean UDeg incorrect > mean UDeg correct
+expected-label agreement >= 0.80
+```
+
+Controlled corruption adalah stress test terukur, bukan pengganti natural failure.
+Threshold yang dipilih dari benchmark ini bersifat diagnostik dan tidak digunakan
+sebagai threshold produksi karena pemilihan dan pengukurannya memakai data yang
+sama. Threshold produksi perlu dikalibrasi pada validation set dan diuji kembali
+pada test set yang terpisah.
+
+Untuk klaim akhir skripsi, hasil ini sebaiknya disandingkan dengan kesalahan yang
+muncul alami dari repeated real-model runs, model berbeda, atau input Unity yang
+belum pernah digunakan saat pengembangan.
+
+## Validitas LLM-as-a-Judge
+
+Implementasi judge menggunakan prinsip berikut:
+
+1. Seluruh skenario terpilih dinilai secara default, bukan hanya beberapa contoh.
+2. Semua dimensi relevan dinilai dalam satu panggilan batch dengan skala berjangkar 1-5.
+3. Request dan expected output diberikan sebagai reference; kandidat diperlakukan
+   sebagai data tidak tepercaya untuk mengurangi prompt injection.
+4. Skor divalidasi sebagai integer 1-5 dan setiap dimensi wajib memiliki reasoning.
+5. Respons invalid atau API error diretry dan tetap fail-closed jika seluruh retry gagal.
+6. Overall score dihitung evaluator, bukan dipercayakan kepada keputusan pass/fail model.
+7. Grounded correctness, faithfulness, dan technical leak safety memakai hard gate.
+8. Model judge dapat dikonfigurasi terpisah dari model agent dan penggunaan model
+   yang sama ditandai sebagai risiko self-preference.
+
+Kemampuan diskriminatif judge diuji terpisah melalui
+`evals/judge_validation_cases.json`, yang berisi clean controls serta corruption
+berupa target salah, hallucination, technical leak, dan prompt injection. Metrik
+yang dilaporkan adalah execution coverage, label accuracy, clean-pass sensitivity,
+corruption-rejection specificity, dan confusion matrix.
+
+Kalibrasi manusia bersifat opsional tetapi sudah didukung melalui
+`--human-annotations`. Evaluator menghitung exact agreement, within-one agreement,
+quadratic weighted Cohen's kappa, dan korelasi Spearman. Klaim kesetaraan dengan
+penilai manusia hanya boleh dibuat setelah anotasi manusia nyata tersedia.

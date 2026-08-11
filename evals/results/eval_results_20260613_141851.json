@@ -1,0 +1,1848 @@
+{
+  "summary": {
+    "total_scenarios": 7,
+    "passed": 7,
+    "overall_pass_rate": 1.0,
+    "check_pass_rate": 1.0,
+    "judge_summary": {
+      "grounded_response_correctness": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 7,
+        "pass_rate": 1.0,
+        "thresholds": [
+          4.0
+        ]
+      },
+      "context_relevance": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 7,
+        "pass_rate": 1.0,
+        "thresholds": [
+          4.0
+        ]
+      },
+      "faithfulness": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 7,
+        "pass_rate": 1.0,
+        "thresholds": [
+          4.0
+        ]
+      },
+      "user_action_quality": {
+        "mean": 4,
+        "std": 0.0,
+        "n": 2,
+        "pass_rate": 1.0,
+        "thresholds": [
+          4.0
+        ]
+      },
+      "recommendation_reason_quality": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 2,
+        "pass_rate": 1.0,
+        "thresholds": [
+          4.0
+        ]
+      },
+      "interpretation_consistency": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 2,
+        "pass_rate": 1.0,
+        "thresholds": [
+          4.0
+        ]
+      },
+      "navigation_clarity": {
+        "mean": 4.4,
+        "std": 0.5477,
+        "n": 5,
+        "pass_rate": 1.0,
+        "thresholds": [
+          4.0
+        ]
+      },
+      "persona_alignment": {
+        "mean": 4,
+        "std": 0.0,
+        "n": 5,
+        "pass_rate": 1.0,
+        "thresholds": [
+          4.0
+        ]
+      },
+      "language_quality": {
+        "mean": 4.8,
+        "std": 0.4472,
+        "n": 5,
+        "pass_rate": 1.0,
+        "thresholds": [
+          4.0
+        ]
+      },
+      "ui_usefulness": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 5,
+        "pass_rate": 1.0,
+        "thresholds": [
+          4.0
+        ]
+      },
+      "technical_leak_safety": {
+        "mean": 5,
+        "std": 0.0,
+        "n": 5,
+        "pass_rate": 1.0,
+        "thresholds": [
+          5.0
+        ]
+      }
+    },
+    "judge_execution": {
+      "required_scenarios": 7,
+      "successful_scenarios": 7,
+      "scenario_coverage": 1.0,
+      "required_dimension_assessments": 52,
+      "successful_dimension_assessments": 52,
+      "dimension_coverage": 1.0,
+      "status_counts": {
+        "ok": 7,
+        "skipped": 0,
+        "error": 0
+      },
+      "assessment_pass_rate": 1.0,
+      "overall_score_mean": 4.7917
+    },
+    "ir_summary": {
+      "precision_at_3": 1.0,
+      "recall_at_3": 0.5694,
+      "mrr": 1.0,
+      "ndcg_at_3": 1.0
+    },
+    "faithfulness_avg": 1.0,
+    "uncertainty_validation": {
+      "context_agent": {
+        "sample_count": 7,
+        "correct_count": 7,
+        "error_count": 0,
+        "accuracy_at_zero_rejection": 1.0,
+        "auarc": 1.0,
+        "error_detection_auroc": null,
+        "mean_udeg_correct": 0.0703,
+        "mean_udeg_incorrect": null,
+        "median_udeg_correct": 0.0665,
+        "median_udeg_incorrect": null,
+        "mean_udeg_gap": null,
+        "mann_whitney_greater_p": null,
+        "higher_uncertainty_on_errors": null,
+        "benchmark_threshold": null,
+        "status": "no_error_variation",
+        "note": "All outputs have the same correctness label; AUARC describes selective accuracy, but error-discrimination ability cannot be established from this run.",
+        "accuracy_rejection_curve": [
+          {
+            "rejection_rate": 0.0,
+            "coverage": 1.0,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 0.1429,
+            "coverage": 0.8571,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 0.2857,
+            "coverage": 0.7143,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 0.4286,
+            "coverage": 0.5714,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 0.5714,
+            "coverage": 0.4286,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 0.7143,
+            "coverage": 0.2857,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 0.8571,
+            "coverage": 0.1429,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 1.0,
+            "coverage": 0.0,
+            "accuracy": 1.0
+          }
+        ]
+      },
+      "dialogue_agent": {
+        "sample_count": 7,
+        "correct_count": 7,
+        "error_count": 0,
+        "accuracy_at_zero_rejection": 1.0,
+        "auarc": 1.0,
+        "error_detection_auroc": null,
+        "mean_udeg_correct": 0.2282,
+        "mean_udeg_incorrect": null,
+        "median_udeg_correct": 0.2619,
+        "median_udeg_incorrect": null,
+        "mean_udeg_gap": null,
+        "mann_whitney_greater_p": null,
+        "higher_uncertainty_on_errors": null,
+        "benchmark_threshold": null,
+        "status": "no_error_variation",
+        "note": "All outputs have the same correctness label; AUARC describes selective accuracy, but error-discrimination ability cannot be established from this run.",
+        "accuracy_rejection_curve": [
+          {
+            "rejection_rate": 0.0,
+            "coverage": 1.0,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 0.1429,
+            "coverage": 0.8571,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 0.2857,
+            "coverage": 0.7143,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 0.4286,
+            "coverage": 0.5714,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 0.5714,
+            "coverage": 0.4286,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 0.7143,
+            "coverage": 0.2857,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 0.8571,
+            "coverage": 0.1429,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 1.0,
+            "coverage": 0.0,
+            "accuracy": 1.0
+          }
+        ]
+      }
+    },
+    "uq_group_summary": {
+      "context_normal": {
+        "scenario_count": 2,
+        "pass_rate": 1.0,
+        "context_udeg_mean": 0.0839,
+        "dialogue_udeg_mean": 0.1948,
+        "dialogue_grounding_mean": 1.0
+      },
+      "dialogue_normal": {
+        "scenario_count": 4,
+        "pass_rate": 1.0,
+        "context_udeg_mean": 0.0754,
+        "dialogue_udeg_mean": 0.2285,
+        "dialogue_grounding_mean": 1.0
+      },
+      "dialogue_risk": {
+        "scenario_count": 1,
+        "pass_rate": 1.0,
+        "context_udeg_mean": 0.0227,
+        "dialogue_udeg_mean": 0.2937,
+        "dialogue_grounding_mean": 1.0
+      }
+    },
+    "timestamp": "2026-06-13T14:18:50.690270",
+    "agent_model": "gpt-5-mini",
+    "judge_model": "gpt-5.4",
+    "judge_temperature": 0,
+    "judge_independent_model": true,
+    "judge_model_warning": null,
+    "human_judge_agreement": {
+      "status": "not_provided",
+      "sample_count": 0,
+      "note": "Provide --human-annotations to calculate judge-human agreement."
+    }
+  },
+  "scenario_results": [
+    {
+      "scenario_id": "sc03_context_normal_03",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-13T14:15:20.743828",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Julang Ngapak",
+          "Kujang"
+        ]
+      },
+      "llm_judge_scores": {
+        "grounded_response_correctness": {
+          "score": 5,
+          "reasoning": "Sesuai reference: situation_type = \"multiple_recommendations\", nav_target = \"Angklung\", jumlah rekomendasi 3, dan urutannya tepat \"Angklung\", \"Julang Ngapak\", \"Kujang\" pada field recommendations.",
+          "dimension": "grounded_response_correctness",
+          "status": "ok"
+        },
+        "context_relevance": {
+          "score": 5,
+          "reasoning": "Output sangat relevan dengan keadaan pemain: menyebut scene yang benar, fokus pada objek yang belum dikunjungi, dan memberi 3 rekomendasi teratas yang memang cocok dengan tujuan aktif, bukan teks generik.",
+          "dimension": "context_relevance",
+          "status": "ok"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Semua fakta pada candidate didukung input/reference: nama lokasi, status adanya beberapa rekomendasi, target \"Angklung\", alternatif \"Julang Ngapak\" dan \"Kujang\", serta posisi budaya yang tercantum. Tidak ada detail budaya atau status kunjungan yang diarang.",
+          "dimension": "faithfulness",
+          "status": "ok"
+        },
+        "user_action_quality": {
+          "score": 4,
+          "reasoning": "user_action = \"Pemain berada di Heritage_Museum_Wing_A dengan beberapa rekomendasi tujuan.\" merupakan interpretasi yang hati-hati dan didukung data. Namun masih agak generik dan kurang spesifik tentang kondisi penting seperti belum mengunjungi target terdekat.",
+          "dimension": "user_action_quality",
+          "status": "ok"
+        },
+        "recommendation_reason_quality": {
+          "score": 5,
+          "reasoning": "recommendation_reason secara spesifik menyebut target rank-1 \"Angklung\" dan alasan yang didukung data: \"tujuan belum dikunjungi terdekat\", lalu menyebut alternatif \"Julang Ngapak\" dan \"Kujang\" tanpa menambah fakta eksternal.",
+          "dimension": "recommendation_reason_quality",
+          "status": "ok"
+        },
+        "interpretation_consistency": {
+          "score": 5,
+          "reasoning": "Semua field konsisten satu sama lain: context_summary menyebut 3 rekomendasi, situation_type = \"multiple_recommendations\", dialogue_intent = \"guide_to_primary_with_alternatives\", recommendation_reason menempatkan Angklung sebagai prioritas, daftar recommendations berurutan sama, dan nav_target juga \"Angklung\".",
+          "dimension": "interpretation_consistency",
+          "status": "ok"
+        }
+      },
+      "llm_judge_meta": {
+        "required": true,
+        "required_dimensions": [
+          "grounded_response_correctness",
+          "context_relevance",
+          "faithfulness",
+          "user_action_quality",
+          "recommendation_reason_quality",
+          "interpretation_consistency"
+        ],
+        "thresholds": {
+          "grounded_response_correctness": 4.0,
+          "context_relevance": 4.0,
+          "faithfulness": 4.0,
+          "user_action_quality": 4.0,
+          "recommendation_reason_quality": 4.0,
+          "interpretation_consistency": 4.0
+        },
+        "overall_threshold": 4.0,
+        "model": "gpt-5.4",
+        "agent_model": "gpt-5-mini",
+        "independent_model": true,
+        "attempts": 1,
+        "raw_response": "{\n  \"scores\": {\n    \"grounded_response_correctness\": {\n      \"score\": 5,\n      \"reasoning\": \"Sesuai reference: situation_type = \\\"multiple_recommendations\\\", nav_target = \\\"Angklung\\\", jumlah rekomendasi 3, dan urutannya tepat \\\"Angklung\\\", \\\"Julang Ngapak\\\", \\\"Kujang\\\" pada field recommendations.\"\n    },\n    \"context_relevance\": {\n      \"score\": 5,\n      \"reasoning\": \"Output sangat relevan dengan keadaan pemain: menyebut scene yang benar, fokus pada objek yang belum dikunjungi, dan memberi 3 rekomendasi teratas yang memang cocok dengan tujuan aktif, bukan teks generik.\"\n    },\n    \"faithfulness\": {\n      \"score\": 5,\n      \"reasoning\": \"Semua fakta pada candidate didukung input/reference: nama lokasi, status adanya beberapa rekomendasi, target \\\"Angklung\\\", alternatif \\\"Julang Ngapak\\\" dan \\\"Kujang\\\", serta posisi budaya yang tercantum. Tidak ada detail budaya atau status kunjungan yang diarang.\"\n    },\n    \"user_action_quality\": {\n      \"score\": 4,\n      \"reasoning\": \"user_action = \\\"Pemain berada di Heritage_Museum_Wing_A dengan beberapa rekomendasi tujuan.\\\" merupakan interpretasi yang hati-hati dan didukung data. Namun masih agak generik dan kurang spesifik tentang kondisi penting seperti belum mengunjungi target terdekat.\"\n    },\n    \"recommendation_reason_quality\": {\n      \"score\": 5,\n      \"reasoning\": \"recommendation_reason secara spesifik menyebut target rank-1 \\\"Angklung\\\" dan alasan yang didukung data: \\\"tujuan belum dikunjungi terdekat\\\", lalu menyebut alternatif \\\"Julang Ngapak\\\" dan \\\"Kujang\\\" tanpa menambah fakta eksternal.\"\n    },\n    \"interpretation_consistency\": {\n      \"score\": 5,\n      \"reasoning\": \"Semua field konsisten satu sama lain: context_summary menyebut 3 rekomendasi, situation_type = \\\"multiple_recommendations\\\", dialogue_intent = \\\"guide_to_primary_with_alternatives\\\", recommendation_reason menempatkan Angklung sebagai prioritas, daftar recommendations berurutan sama, dan nav_target juga \\\"Angklung\\\".\"\n    }\n  }\n}",
+        "status": "ok",
+        "error": ""
+      },
+      "llm_judge_assessment": {
+        "passed": true,
+        "overall_score": 4.8333,
+        "overall_threshold": 4.0,
+        "failed_dimensions": [],
+        "reason": "ok"
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T12:21:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di Heritage_Museum_Wing_A dengan beberapa rekomendasi tujuan.",
+        "context_summary": "Tersedia 3 rekomendasi teratas dari objek budaya yang belum dikunjungi di Heritage_Museum_Wing_A.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Angklung diprioritaskan sebagai tujuan belum dikunjungi terdekat. Alternatif yang tersedia: Julang Ngapak, Kujang.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 2,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          },
+          {
+            "rank": 3,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          }
+        ],
+        "nav_target": "Angklung"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini ada beberapa tujuan budaya yang menarik. Mari kita mulai menuju Angklung sebagai tujuan utama berikutnya; jika Anda ingin jalur lain, Julang Ngapak atau Kujang juga tersedia sebagai alternatif.",
+        "subtitle_output": "Mari menuju Angklung.",
+        "recommendation_dialogue": "Tersedia tiga rekomendasi teratas. Pilih Angklung atau alternatif lain, dan saya akan memandu Anda.",
+        "recommendation_options": [
+          "Angklung",
+          "Julang Ngapak",
+          "Kujang"
+        ]
+      },
+      "context_uq": {
+        "method": "consistency_based_interpretive_fields",
+        "sample_count": 3,
+        "degree_scores": [
+          0.95625,
+          0.95625,
+          0.9125
+        ],
+        "udeg": 0.05833333333333324,
+        "selected_cdeg": 0.95625,
+        "situation_agreement": 1.0,
+        "intent_agreement": 1.0,
+        "selected_index": 0,
+        "sanitized_interpretive_fields": []
+      },
+      "dialogue_uq": {
+        "method": "hud_black_box_response_similarity_cdeg",
+        "sample_count": 3,
+        "field_weights": {
+          "recommendation_dialogue": 0.5,
+          "subtitle_output": 0.3,
+          "recommendation_options": 0.2
+        },
+        "degree_scores": [
+          0.6443181818181818,
+          0.7263888888888889,
+          0.6957070707070707
+        ],
+        "udeg": 0.31119528619528614,
+        "selected_cdeg": 0.7263888888888889,
+        "selected_index": 1,
+        "max_cdeg": 0.7263888888888889,
+        "grounding_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "selection_scores": [
+          0.8399431818181818,
+          0.8768750000000001,
+          0.8630681818181819
+        ],
+        "selected_grounding": 1.0,
+        "selected_score": 0.8768750000000001
+      },
+      "selection_dialogue_uq": {},
+      "uq_failure_benchmark": {
+        "expected_correct": null,
+        "injection": {}
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 3
+    },
+    {
+      "scenario_id": "sc15_context_normal_15",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "context_agent"
+      ],
+      "timestamp": "2026-06-13T14:15:47.944668",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.6,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Kujang",
+          "Suling Sunda"
+        ]
+      },
+      "llm_judge_scores": {
+        "grounded_response_correctness": {
+          "score": 5,
+          "reasoning": "Sesuai reference: situation_type = \"multiple_recommendations\", nav_target = \"Suling Sunda\", jumlah rekomendasi 3, dan urutan rekomendasi tepat \"Suling Sunda\", \"Kujang\", \"Angklung\".",
+          "dimension": "grounded_response_correctness",
+          "status": "ok"
+        },
+        "context_relevance": {
+          "score": 5,
+          "reasoning": "Seluruh isi spesifik pada keadaan pemain di Heritage_Museum_Wing_A dan tujuan aktif: menyebut 3 rekomendasi objek belum dikunjungi, target utama \"Suling Sunda\", serta alternatif \"Kujang\" dan \"Angklung\".",
+          "dimension": "context_relevance",
+          "status": "ok"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Tidak menambah fakta di luar input. Kandidat hanya memakai data yang tersedia: scene, status belum dikunjungi, nama objek, urutan rekomendasi, dan nav_target. Tidak ada halusinasi objek, lokasi, atau detail budaya.",
+          "dimension": "faithfulness",
+          "status": "ok"
+        },
+        "user_action_quality": {
+          "score": 4,
+          "reasoning": "user_action berbunyi \"Pemain berada di Heritage_Museum_Wing_A dengan beberapa rekomendasi tujuan.\" Ini hati-hati dan sesuai data, tetapi cukup umum dan kurang menginterpretasikan kondisi pemain secara lebih spesifik selain lokasi dan adanya rekomendasi.",
+          "dimension": "user_action_quality",
+          "status": "ok"
+        },
+        "recommendation_reason_quality": {
+          "score": 5,
+          "reasoning": "Alasan menyebut target rank-1 secara eksplisit: \"Suling Sunda diprioritaskan\" dan memberi alasan yang didukung data, yaitu \"tujuan belum dikunjungi terdekat\", serta menyebut alternatif \"Kujang, Angklung\" tanpa mengarang detail tambahan.",
+          "dimension": "recommendation_reason_quality",
+          "status": "ok"
+        },
+        "interpretation_consistency": {
+          "score": 5,
+          "reasoning": "Semua field konsisten: context_summary menyatakan 3 rekomendasi, situation_type = \"multiple_recommendations\", dialogue_intent = \"guide_to_primary_with_alternatives\", recommendation_reason memprioritaskan \"Suling Sunda\", daftar recommendations menempatkannya rank 1, dan nav_target juga \"Suling Sunda\".",
+          "dimension": "interpretation_consistency",
+          "status": "ok"
+        }
+      },
+      "llm_judge_meta": {
+        "required": true,
+        "required_dimensions": [
+          "grounded_response_correctness",
+          "context_relevance",
+          "faithfulness",
+          "user_action_quality",
+          "recommendation_reason_quality",
+          "interpretation_consistency"
+        ],
+        "thresholds": {
+          "grounded_response_correctness": 4.0,
+          "context_relevance": 4.0,
+          "faithfulness": 4.0,
+          "user_action_quality": 4.0,
+          "recommendation_reason_quality": 4.0,
+          "interpretation_consistency": 4.0
+        },
+        "overall_threshold": 4.0,
+        "model": "gpt-5.4",
+        "agent_model": "gpt-5-mini",
+        "independent_model": true,
+        "attempts": 1,
+        "raw_response": "{\n  \"scores\": {\n    \"grounded_response_correctness\": {\n      \"score\": 5,\n      \"reasoning\": \"Sesuai reference: situation_type = \\\"multiple_recommendations\\\", nav_target = \\\"Suling Sunda\\\", jumlah rekomendasi 3, dan urutan rekomendasi tepat \\\"Suling Sunda\\\", \\\"Kujang\\\", \\\"Angklung\\\".\"\n    },\n    \"context_relevance\": {\n      \"score\": 5,\n      \"reasoning\": \"Seluruh isi spesifik pada keadaan pemain di Heritage_Museum_Wing_A dan tujuan aktif: menyebut 3 rekomendasi objek belum dikunjungi, target utama \\\"Suling Sunda\\\", serta alternatif \\\"Kujang\\\" dan \\\"Angklung\\\".\"\n    },\n    \"faithfulness\": {\n      \"score\": 5,\n      \"reasoning\": \"Tidak menambah fakta di luar input. Kandidat hanya memakai data yang tersedia: scene, status belum dikunjungi, nama objek, urutan rekomendasi, dan nav_target. Tidak ada halusinasi objek, lokasi, atau detail budaya.\"\n    },\n    \"user_action_quality\": {\n      \"score\": 4,\n      \"reasoning\": \"user_action berbunyi \\\"Pemain berada di Heritage_Museum_Wing_A dengan beberapa rekomendasi tujuan.\\\" Ini hati-hati dan sesuai data, tetapi cukup umum dan kurang menginterpretasikan kondisi pemain secara lebih spesifik selain lokasi dan adanya rekomendasi.\"\n    },\n    \"recommendation_reason_quality\": {\n      \"score\": 5,\n      \"reasoning\": \"Alasan menyebut target rank-1 secara eksplisit: \\\"Suling Sunda diprioritaskan\\\" dan memberi alasan yang didukung data, yaitu \\\"tujuan belum dikunjungi terdekat\\\", serta menyebut alternatif \\\"Kujang, Angklung\\\" tanpa mengarang detail tambahan.\"\n    },\n    \"interpretation_consistency\": {\n      \"score\": 5,\n      \"reasoning\": \"Semua field konsisten: context_summary menyatakan 3 rekomendasi, situation_type = \\\"multiple_recommendations\\\", dialogue_intent = \\\"guide_to_primary_with_alternatives\\\", recommendation_reason memprioritaskan \\\"Suling Sunda\\\", daftar recommendations menempatkannya rank 1, dan nav_target juga \\\"Suling Sunda\\\".\"\n    }\n  }\n}",
+        "status": "ok",
+        "error": ""
+      },
+      "llm_judge_assessment": {
+        "passed": true,
+        "overall_score": 4.8333,
+        "overall_threshold": 4.0,
+        "failed_dimensions": [],
+        "reason": "ok"
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T14:45:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di Heritage_Museum_Wing_A dengan beberapa rekomendasi tujuan.",
+        "context_summary": "Tersedia 3 rekomendasi teratas dari objek budaya yang belum dikunjungi di Heritage_Museum_Wing_A.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Suling Sunda diprioritaskan karena merupakan tujuan belum dikunjungi terdekat. Alternatif yang tersedia: Kujang, Angklung.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Suling Sunda",
+            "name": "Suling Sunda",
+            "cultural_position": "27.95618, 1.23804, 24.37192"
+          },
+          {
+            "rank": 2,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          },
+          {
+            "rank": 3,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          }
+        ],
+        "nav_target": "Suling Sunda"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini ada beberapa tujuan budaya yang menarik. Mari kita mulai menuju Suling Sunda sebagai tujuan utama—satu objek musik tradisional yang belum Anda kunjungi. Jika ingin jalur lain, Kujang dan Angklung tersedia sebagai alternatif.",
+        "subtitle_output": "Mari menuju Suling Sunda.",
+        "recommendation_dialogue": "Tersedia tiga rekomendasi teratas. Pilih salah satu, dan saya akan memandu Anda ke sana.",
+        "recommendation_options": [
+          "Suling Sunda",
+          "Kujang",
+          "Angklung"
+        ]
+      },
+      "context_uq": {
+        "method": "consistency_based_interpretive_fields",
+        "sample_count": 3,
+        "degree_scores": [
+          0.8635439560439562,
+          0.9035439560439562,
+          0.9042307692307693
+        ],
+        "udeg": 0.10956043956043937,
+        "selected_cdeg": 0.9042307692307693,
+        "situation_agreement": 1.0,
+        "intent_agreement": 1.0,
+        "selected_index": 2,
+        "sanitized_interpretive_fields": []
+      },
+      "dialogue_uq": {
+        "method": "hud_black_box_response_similarity_cdeg",
+        "sample_count": 3,
+        "field_weights": {
+          "recommendation_dialogue": 0.5,
+          "subtitle_output": 0.3,
+          "recommendation_options": 0.2
+        },
+        "degree_scores": [
+          0.9411764705882353,
+          0.9411764705882353,
+          0.8823529411764706
+        ],
+        "udeg": 0.07843137254901966,
+        "selected_cdeg": 0.9411764705882353,
+        "selected_index": 0,
+        "max_cdeg": 0.9411764705882353,
+        "grounding_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "selection_scores": [
+          0.973529411764706,
+          0.973529411764706,
+          0.9470588235294117
+        ],
+        "selected_grounding": 1.0,
+        "selected_score": 0.973529411764706
+      },
+      "selection_dialogue_uq": {},
+      "uq_failure_benchmark": {
+        "expected_correct": null,
+        "injection": {}
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc27_dialogue_normal_02",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-13T14:16:15.964141",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Angklung",
+          "Tagog Anjing",
+          "Tari Jaipong"
+        ]
+      },
+      "llm_judge_scores": {
+        "grounded_response_correctness": {
+          "score": 5,
+          "reasoning": "Output sesuai reference: tujuan utama disebut 'Tari Jaipong', alternatif 'Angklung' dan 'Tagog Anjing', serta recommendation_options berurutan tepat ['Tari Jaipong', 'Angklung', 'Tagog Anjing']. Spoken_output juga menunjukkan situasi beberapa rekomendasi dan memandu ke tujuan utama.",
+          "dimension": "grounded_response_correctness",
+          "status": "ok"
+        },
+        "context_relevance": {
+          "score": 5,
+          "reasoning": "Semua teks relevan dengan keadaan pemain yang memiliki beberapa tujuan belum dikunjungi. Spoken_output menyebut 'beberapa tujuan budaya' di area ini dan langsung mengarahkan ke 'Tari Jaipong' dengan alternatif yang benar, bukan teks generik acak.",
+          "dimension": "context_relevance",
+          "status": "ok"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Candidate hanya memakai fakta yang ada di reference/grounding_reference: ada tiga rekomendasi, target utama Tari Jaipong, alternatif Angklung dan Tagog Anjing. Tidak ada tambahan detail budaya, status kunjungan palsu, lokasi baru, atau kemampuan sistem yang tidak didukung.",
+          "dimension": "faithfulness",
+          "status": "ok"
+        },
+        "navigation_clarity": {
+          "score": 5,
+          "reasoning": "Arah tindakan berikutnya sangat jelas: 'Mari mulai menuju Tari Jaipong sebagai tujuan utama berikutnya' dan subtitle menegaskan 'Mari menuju Tari Jaipong.' Opsi alternatif juga jelas bila pemain ingin memilih tujuan lain.",
+          "dimension": "navigation_clarity",
+          "status": "ok"
+        },
+        "persona_alignment": {
+          "score": 4,
+          "reasoning": "Nada hangat dan membantu, misalnya 'Mari mulai menuju' dan 'saya akan memandu Anda'. Namun recommendation_dialogue agak formal dan sedikit terasa sistemik dengan frasa 'Tersedia tiga rekomendasi teratas', jadi belum sepenuhnya natural sebagai Arif.",
+          "dimension": "persona_alignment",
+          "status": "ok"
+        },
+        "language_quality": {
+          "score": 5,
+          "reasoning": "Bahasa Indonesia natural, jelas, dan tidak kaku. Kalimat runtut, tanpa campuran bahasa Inggris, dan tidak repetitif. Pilihan kata seperti 'tujuan utama berikutnya' dan 'tersedia sebagai alternatif' mudah dipahami.",
+          "dimension": "language_quality",
+          "status": "ok"
+        },
+        "ui_usefulness": {
+          "score": 5,
+          "reasoning": "Subtitle ringkas dan sinkron dengan spoken_output. Recommendation_dialogue membantu pemain memilih, dan recommendation_options tepat tiga item yang sesuai reference. Elemen UI saling mendukung pemahaman tujuan utama dan alternatif.",
+          "dimension": "ui_usefulness",
+          "status": "ok"
+        },
+        "technical_leak_safety": {
+          "score": 5,
+          "reasoning": "Tidak ada kebocoran teknis pada spoken_output, subtitle_output, recommendation_dialogue, atau recommendation_options. Tidak muncul koordinat, nama tool, token backend, NavMesh, prompt, schema, atau istilah implementasi internal.",
+          "dimension": "technical_leak_safety",
+          "status": "ok"
+        }
+      },
+      "llm_judge_meta": {
+        "required": true,
+        "required_dimensions": [
+          "grounded_response_correctness",
+          "context_relevance",
+          "faithfulness",
+          "navigation_clarity",
+          "persona_alignment",
+          "language_quality",
+          "ui_usefulness",
+          "technical_leak_safety"
+        ],
+        "thresholds": {
+          "grounded_response_correctness": 4.0,
+          "context_relevance": 4.0,
+          "faithfulness": 4.0,
+          "navigation_clarity": 4.0,
+          "persona_alignment": 4.0,
+          "language_quality": 4.0,
+          "ui_usefulness": 4.0,
+          "technical_leak_safety": 5.0
+        },
+        "overall_threshold": 4.0,
+        "model": "gpt-5.4",
+        "agent_model": "gpt-5-mini",
+        "independent_model": true,
+        "attempts": 1,
+        "raw_response": "{\n  \"scores\": {\n    \"grounded_response_correctness\": {\n      \"score\": 5,\n      \"reasoning\": \"Output sesuai reference: tujuan utama disebut 'Tari Jaipong', alternatif 'Angklung' dan 'Tagog Anjing', serta recommendation_options berurutan tepat ['Tari Jaipong', 'Angklung', 'Tagog Anjing']. Spoken_output juga menunjukkan situasi beberapa rekomendasi dan memandu ke tujuan utama.\"\n    },\n    \"context_relevance\": {\n      \"score\": 5,\n      \"reasoning\": \"Semua teks relevan dengan keadaan pemain yang memiliki beberapa tujuan belum dikunjungi. Spoken_output menyebut 'beberapa tujuan budaya' di area ini dan langsung mengarahkan ke 'Tari Jaipong' dengan alternatif yang benar, bukan teks generik acak.\"\n    },\n    \"faithfulness\": {\n      \"score\": 5,\n      \"reasoning\": \"Candidate hanya memakai fakta yang ada di reference/grounding_reference: ada tiga rekomendasi, target utama Tari Jaipong, alternatif Angklung dan Tagog Anjing. Tidak ada tambahan detail budaya, status kunjungan palsu, lokasi baru, atau kemampuan sistem yang tidak didukung.\"\n    },\n    \"navigation_clarity\": {\n      \"score\": 5,\n      \"reasoning\": \"Arah tindakan berikutnya sangat jelas: 'Mari mulai menuju Tari Jaipong sebagai tujuan utama berikutnya' dan subtitle menegaskan 'Mari menuju Tari Jaipong.' Opsi alternatif juga jelas bila pemain ingin memilih tujuan lain.\"\n    },\n    \"persona_alignment\": {\n      \"score\": 4,\n      \"reasoning\": \"Nada hangat dan membantu, misalnya 'Mari mulai menuju' dan 'saya akan memandu Anda'. Namun recommendation_dialogue agak formal dan sedikit terasa sistemik dengan frasa 'Tersedia tiga rekomendasi teratas', jadi belum sepenuhnya natural sebagai Arif.\"\n    },\n    \"language_quality\": {\n      \"score\": 5,\n      \"reasoning\": \"Bahasa Indonesia natural, jelas, dan tidak kaku. Kalimat runtut, tanpa campuran bahasa Inggris, dan tidak repetitif. Pilihan kata seperti 'tujuan utama berikutnya' dan 'tersedia sebagai alternatif' mudah dipahami.\"\n    },\n    \"ui_usefulness\": {\n      \"score\": 5,\n      \"reasoning\": \"Subtitle ringkas dan sinkron dengan spoken_output. Recommendation_dialogue membantu pemain memilih, dan recommendation_options tepat tiga item yang sesuai reference. Elemen UI saling mendukung pemahaman tujuan utama dan alternatif.\"\n    },\n    \"technical_leak_safety\": {\n      \"score\": 5,\n      \"reasoning\": \"Tidak ada kebocoran teknis pada spoken_output, subtitle_output, recommendation_dialogue, atau recommendation_options. Tidak muncul koordinat, nama tool, token backend, NavMesh, prompt, schema, atau istilah implementasi internal.\"\n    }\n  }\n}",
+        "status": "ok",
+        "error": ""
+      },
+      "llm_judge_assessment": {
+        "passed": true,
+        "overall_score": 4.875,
+        "overall_threshold": 4.0,
+        "failed_dimensions": [],
+        "reason": "ok"
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T16:09:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di Heritage_Museum_Wing_A dengan beberapa rekomendasi tujuan.",
+        "context_summary": "Tersedia 3 rekomendasi teratas dari objek budaya yang belum dikunjungi di Heritage_Museum_Wing_A.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tari Jaipong diprioritaskan sebagai tujuan belum dikunjungi terdekat. Alternatif yang tersedia: Angklung, Tagog Anjing.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          },
+          {
+            "rank": 2,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 3,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          }
+        ],
+        "nav_target": "Tari Jaipong"
+      },
+      "dialogue_output": {
+        "spoken_output": "Ada beberapa tujuan budaya yang bisa kita jelajahi di area ini. Mari mulai menuju Tari Jaipong sebagai tujuan utama berikutnya; jika Anda mau, Angklung atau Tagog Anjing tersedia sebagai alternatif.",
+        "subtitle_output": "Mari menuju Tari Jaipong.",
+        "recommendation_dialogue": "Tersedia tiga rekomendasi teratas. Pilih salah satu, dan saya akan memandu Anda ke tujuan tersebut.",
+        "recommendation_options": [
+          "Tari Jaipong",
+          "Angklung",
+          "Tagog Anjing"
+        ]
+      },
+      "context_uq": {
+        "method": "consistency_based_interpretive_fields",
+        "sample_count": 3,
+        "degree_scores": [
+          0.9823529411764705,
+          0.9823529411764705,
+          0.9647058823529411
+        ],
+        "udeg": 0.02352941176470591,
+        "selected_cdeg": 0.9823529411764705,
+        "situation_agreement": 1.0,
+        "intent_agreement": 1.0,
+        "selected_index": 0,
+        "sanitized_interpretive_fields": []
+      },
+      "dialogue_uq": {
+        "method": "hud_black_box_response_similarity_cdeg",
+        "sample_count": 3,
+        "field_weights": {
+          "recommendation_dialogue": 0.5,
+          "subtitle_output": 0.3,
+          "recommendation_options": 0.2
+        },
+        "degree_scores": [
+          0.9058823529411764,
+          0.8933823529411764,
+          0.8875
+        ],
+        "udeg": 0.10441176470588243,
+        "selected_cdeg": 0.9058823529411764,
+        "selected_index": 0,
+        "max_cdeg": 0.9058823529411764,
+        "grounding_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "selection_scores": [
+          0.9576470588235294,
+          0.9520220588235294,
+          0.9493750000000001
+        ],
+        "selected_grounding": 1.0,
+        "selected_score": 0.9576470588235294
+      },
+      "selection_dialogue_uq": {},
+      "uq_failure_benchmark": {
+        "expected_correct": null,
+        "injection": {}
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc31_dialogue_normal_06",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-13T14:16:47.911674",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.4286,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Surabi",
+          "Angklung",
+          "Tari Jaipong"
+        ]
+      },
+      "llm_judge_scores": {
+        "grounded_response_correctness": {
+          "score": 5,
+          "reasoning": "Output menyebut tujuan utama 'Surabi' dan alternatif 'Angklung' serta 'Tari Jaipong', sesuai jumlah dan urutan rekomendasi pada reference. Frasa 'Ada beberapa tujuan budaya' juga cocok dengan situation_type multiple_recommendations.",
+          "dimension": "grounded_response_correctness",
+          "status": "ok"
+        },
+        "context_relevance": {
+          "score": 5,
+          "reasoning": "Seluruh isi terfokus pada keadaan pemain yang memiliki beberapa rekomendasi aktif di museum, dengan ajakan menuju 'Surabi' dan pilihan alternatif yang memang tersedia. Tidak ada isi generik di luar konteks ini.",
+          "dimension": "context_relevance",
+          "status": "ok"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Candidate hanya memakai fakta yang ada pada reference: tiga rekomendasi adalah 'Surabi', 'Angklung', dan 'Tari Jaipong', dengan Surabi sebagai tujuan utama. Tidak menambahkan status kunjungan, lokasi, atau detail budaya yang tidak didukung.",
+          "dimension": "faithfulness",
+          "status": "ok"
+        },
+        "navigation_clarity": {
+          "score": 4,
+          "reasoning": "Arah utama jelas melalui 'Mari mulai menuju Surabi' dan subtitle 'Mari menuju Surabi.' Alternatif juga disebutkan. Kekurangan kecil: tidak secara eksplisit menjelaskan tindakan pilihannya selain kalimat umum 'jika ingin jalur lain'.",
+          "dimension": "navigation_clarity",
+          "status": "ok"
+        },
+        "persona_alignment": {
+          "score": 4,
+          "reasoning": "Nada hangat dan membantu terlihat pada 'Mari mulai menuju Surabi' dan 'saya akan memandu Anda'. Namun 'Tersedia tiga rekomendasi teratas' terasa sedikit sistemik dibanding gaya pemandu budaya yang lebih natural.",
+          "dimension": "persona_alignment",
+          "status": "ok"
+        },
+        "language_quality": {
+          "score": 5,
+          "reasoning": "Bahasa Indonesia natural, jelas, dan ringkas. Tidak ada campuran bahasa asing yang tidak perlu, dan struktur kalimat mudah dipahami.",
+          "dimension": "language_quality",
+          "status": "ok"
+        },
+        "ui_usefulness": {
+          "score": 5,
+          "reasoning": "subtitle_output singkat dan sinkron dengan tujuan utama. recommendation_dialogue menjelaskan adanya pilihan, dan recommendation_options tepat berisi 'Surabi', 'Angklung', 'Tari Jaipong', sehingga membantu pemahaman dan pemilihan tujuan.",
+          "dimension": "ui_usefulness",
+          "status": "ok"
+        },
+        "technical_leak_safety": {
+          "score": 5,
+          "reasoning": "Teks yang terlihat pemain tidak memuat koordinat, nama tool, token backend, NavMesh, schema, prompt, atau istilah teknis internal. Semua konten aman untuk tampilan pemain.",
+          "dimension": "technical_leak_safety",
+          "status": "ok"
+        }
+      },
+      "llm_judge_meta": {
+        "required": true,
+        "required_dimensions": [
+          "grounded_response_correctness",
+          "context_relevance",
+          "faithfulness",
+          "navigation_clarity",
+          "persona_alignment",
+          "language_quality",
+          "ui_usefulness",
+          "technical_leak_safety"
+        ],
+        "thresholds": {
+          "grounded_response_correctness": 4.0,
+          "context_relevance": 4.0,
+          "faithfulness": 4.0,
+          "navigation_clarity": 4.0,
+          "persona_alignment": 4.0,
+          "language_quality": 4.0,
+          "ui_usefulness": 4.0,
+          "technical_leak_safety": 5.0
+        },
+        "overall_threshold": 4.0,
+        "model": "gpt-5.4",
+        "agent_model": "gpt-5-mini",
+        "independent_model": true,
+        "attempts": 1,
+        "raw_response": "{\n  \"scores\": {\n    \"grounded_response_correctness\": {\n      \"score\": 5,\n      \"reasoning\": \"Output menyebut tujuan utama 'Surabi' dan alternatif 'Angklung' serta 'Tari Jaipong', sesuai jumlah dan urutan rekomendasi pada reference. Frasa 'Ada beberapa tujuan budaya' juga cocok dengan situation_type multiple_recommendations.\"\n    },\n    \"context_relevance\": {\n      \"score\": 5,\n      \"reasoning\": \"Seluruh isi terfokus pada keadaan pemain yang memiliki beberapa rekomendasi aktif di museum, dengan ajakan menuju 'Surabi' dan pilihan alternatif yang memang tersedia. Tidak ada isi generik di luar konteks ini.\"\n    },\n    \"faithfulness\": {\n      \"score\": 5,\n      \"reasoning\": \"Candidate hanya memakai fakta yang ada pada reference: tiga rekomendasi adalah 'Surabi', 'Angklung', dan 'Tari Jaipong', dengan Surabi sebagai tujuan utama. Tidak menambahkan status kunjungan, lokasi, atau detail budaya yang tidak didukung.\"\n    },\n    \"navigation_clarity\": {\n      \"score\": 4,\n      \"reasoning\": \"Arah utama jelas melalui 'Mari mulai menuju Surabi' dan subtitle 'Mari menuju Surabi.' Alternatif juga disebutkan. Kekurangan kecil: tidak secara eksplisit menjelaskan tindakan pilihannya selain kalimat umum 'jika ingin jalur lain'.\"\n    },\n    \"persona_alignment\": {\n      \"score\": 4,\n      \"reasoning\": \"Nada hangat dan membantu terlihat pada 'Mari mulai menuju Surabi' dan 'saya akan memandu Anda'. Namun 'Tersedia tiga rekomendasi teratas' terasa sedikit sistemik dibanding gaya pemandu budaya yang lebih natural.\"\n    },\n    \"language_quality\": {\n      \"score\": 5,\n      \"reasoning\": \"Bahasa Indonesia natural, jelas, dan ringkas. Tidak ada campuran bahasa asing yang tidak perlu, dan struktur kalimat mudah dipahami.\"\n    },\n    \"ui_usefulness\": {\n      \"score\": 5,\n      \"reasoning\": \"subtitle_output singkat dan sinkron dengan tujuan utama. recommendation_dialogue menjelaskan adanya pilihan, dan recommendation_options tepat berisi 'Surabi', 'Angklung', 'Tari Jaipong', sehingga membantu pemahaman dan pemilihan tujuan.\"\n    },\n    \"technical_leak_safety\": {\n      \"score\": 5,\n      \"reasoning\": \"Teks yang terlihat pemain tidak memuat koordinat, nama tool, token backend, NavMesh, schema, prompt, atau istilah teknis internal. Semua konten aman untuk tampilan pemain.\"\n    }\n  }\n}",
+        "status": "ok",
+        "error": ""
+      },
+      "llm_judge_assessment": {
+        "passed": true,
+        "overall_score": 4.75,
+        "overall_threshold": 4.0,
+        "failed_dimensions": [],
+        "reason": "ok"
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T10:37:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di Heritage_Museum_Wing_A dengan beberapa rekomendasi tujuan.",
+        "context_summary": "Tersedia 3 rekomendasi teratas dari objek budaya yang belum dikunjungi di Heritage_Museum_Wing_A.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Surabi diprioritaskan sebagai tujuan utama karena merupakan tujuan belum dikunjungi terdekat. Alternatif yang tersedia: Angklung, Tari Jaipong.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "-1.34956, 1.52654, 23.7432"
+          },
+          {
+            "rank": 2,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 3,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          }
+        ],
+        "nav_target": "Surabi"
+      },
+      "dialogue_output": {
+        "spoken_output": "Ada beberapa tujuan budaya yang bisa kita jelajahi. Mari mulai menuju Surabi sebagai tujuan utama berikutnya; jika ingin jalur lain, Angklung atau Tari Jaipong juga tersedia.",
+        "subtitle_output": "Mari menuju Surabi.",
+        "recommendation_dialogue": "Tersedia tiga rekomendasi teratas. Pilih Surabi atau alternatif lain, dan saya akan memandu Anda.",
+        "recommendation_options": [
+          "Surabi",
+          "Angklung",
+          "Tari Jaipong"
+        ]
+      },
+      "context_uq": {
+        "method": "consistency_based_interpretive_fields",
+        "sample_count": 3,
+        "degree_scores": [
+          0.875309829059829,
+          0.8565598290598291,
+          0.8445833333333332
+        ],
+        "udeg": 0.14118233618233622,
+        "selected_cdeg": 0.875309829059829,
+        "situation_agreement": 1.0,
+        "intent_agreement": 1.0,
+        "selected_index": 0,
+        "sanitized_interpretive_fields": []
+      },
+      "dialogue_uq": {
+        "method": "hud_black_box_response_similarity_cdeg",
+        "sample_count": 3,
+        "field_weights": {
+          "recommendation_dialogue": 0.5,
+          "subtitle_output": 0.3,
+          "recommendation_options": 0.2
+        },
+        "degree_scores": [
+          0.763157894736842,
+          0.881578947368421,
+          0.881578947368421
+        ],
+        "udeg": 0.1578947368421053,
+        "selected_cdeg": 0.881578947368421,
+        "selected_index": 1,
+        "max_cdeg": 0.881578947368421,
+        "grounding_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "selection_scores": [
+          0.8934210526315789,
+          0.9467105263157896,
+          0.9467105263157896
+        ],
+        "selected_grounding": 1.0,
+        "selected_score": 0.9467105263157896
+      },
+      "selection_dialogue_uq": {},
+      "uq_failure_benchmark": {
+        "expected_correct": null,
+        "injection": {}
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 3
+    },
+    {
+      "scenario_id": "sc36_dialogue_normal_11",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-13T14:17:16.026128",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.5,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Surabi",
+          "Kujang",
+          "Badak Heuay"
+        ]
+      },
+      "llm_judge_scores": {
+        "grounded_response_correctness": {
+          "score": 5,
+          "reasoning": "Output menyebut tujuan utama 'Badak Heuay' dan alternatif 'Surabi' serta 'Kujang' dalam urutan yang sama dengan reference. Teks seperti 'Mari mulai ke Badak Heuay sebagai tujuan utama berikutnya' dan opsi ['Badak Heuay','Surabi','Kujang'] selaras dengan situation_type multiple_recommendations dan intent memandu ke tujuan utama dengan alternatif.",
+          "dimension": "grounded_response_correctness",
+          "status": "ok"
+        },
+        "context_relevance": {
+          "score": 5,
+          "reasoning": "Seluruh isi fokus pada keadaan pemain yang memiliki beberapa rekomendasi tujuan. Candidate menyebut 'beberapa tujuan budaya', menetapkan 'Badak Heuay' sebagai tujuan utama, dan menawarkan 'Surabi dan Kujang' sebagai alternatif; ini langsung relevan dengan konteks aktif, bukan teks generik acak.",
+          "dimension": "context_relevance",
+          "status": "ok"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Tidak ada fakta yang melampaui reference. Candidate hanya memakai nama objek yang memang direkomendasikan: Badak Heuay, Surabi, Kujang. Tidak mengarang status kunjungan, detail budaya, lokasi, atau kemampuan sistem lain di luar konteks yang diberikan.",
+          "dimension": "faithfulness",
+          "status": "ok"
+        },
+        "navigation_clarity": {
+          "score": 4,
+          "reasoning": "Arah utama jelas: 'Mari mulai ke Badak Heuay' dan subtitle 'Mari menuju Badak Heuay.' Pemain juga diberi alternatif. Sedikit kekurangan: tidak ada ajakan tindakan pilihan yang sangat eksplisit seperti 'pilih salah satu sekarang', meski recommendation_dialogue sudah cukup membantu.",
+          "dimension": "navigation_clarity",
+          "status": "ok"
+        },
+        "persona_alignment": {
+          "score": 4,
+          "reasoning": "Nada hangat dan membantu terlihat pada 'Mari mulai' dan 'untuk saya pandu'. Namun frasa 'Tersedia tiga rekomendasi teratas' terdengar sedikit sistemik dibanding gaya pemandu budaya yang lebih natural. Secara umum tetap cukup terasa seperti pemandu.",
+          "dimension": "persona_alignment",
+          "status": "ok"
+        },
+        "language_quality": {
+          "score": 5,
+          "reasoning": "Bahasa Indonesia natural, jelas, dan rapi. Kalimat seperti 'Mari mulai ke Badak Heuay sebagai tujuan utama berikutnya' mudah dipahami, tanpa campuran bahasa asing yang tidak perlu, dan tidak repetitif berlebihan.",
+          "dimension": "language_quality",
+          "status": "ok"
+        },
+        "ui_usefulness": {
+          "score": 5,
+          "reasoning": "subtitle_output ringkas ('Mari menuju Badak Heuay.'), recommendation_dialogue menjelaskan ada tujuan utama dan alternatif, dan recommendation_options sinkron persis dengan dialog: Badak Heuay, Surabi, Kujang. Komponen UI saling mendukung pemahaman dan pilihan pemain.",
+          "dimension": "ui_usefulness",
+          "status": "ok"
+        },
+        "technical_leak_safety": {
+          "score": 5,
+          "reasoning": "Teks yang terlihat pemain tidak memuat koordinat, nama tool, token backend, NavMesh, prompt, schema, atau istilah implementasi internal. Semua isi aman dan berfokus pada panduan tujuan.",
+          "dimension": "technical_leak_safety",
+          "status": "ok"
+        }
+      },
+      "llm_judge_meta": {
+        "required": true,
+        "required_dimensions": [
+          "grounded_response_correctness",
+          "context_relevance",
+          "faithfulness",
+          "navigation_clarity",
+          "persona_alignment",
+          "language_quality",
+          "ui_usefulness",
+          "technical_leak_safety"
+        ],
+        "thresholds": {
+          "grounded_response_correctness": 4.0,
+          "context_relevance": 4.0,
+          "faithfulness": 4.0,
+          "navigation_clarity": 4.0,
+          "persona_alignment": 4.0,
+          "language_quality": 4.0,
+          "ui_usefulness": 4.0,
+          "technical_leak_safety": 5.0
+        },
+        "overall_threshold": 4.0,
+        "model": "gpt-5.4",
+        "agent_model": "gpt-5-mini",
+        "independent_model": true,
+        "attempts": 1,
+        "raw_response": "{\n  \"scores\": {\n    \"grounded_response_correctness\": {\n      \"score\": 5,\n      \"reasoning\": \"Output menyebut tujuan utama 'Badak Heuay' dan alternatif 'Surabi' serta 'Kujang' dalam urutan yang sama dengan reference. Teks seperti 'Mari mulai ke Badak Heuay sebagai tujuan utama berikutnya' dan opsi ['Badak Heuay','Surabi','Kujang'] selaras dengan situation_type multiple_recommendations dan intent memandu ke tujuan utama dengan alternatif.\"\n    },\n    \"context_relevance\": {\n      \"score\": 5,\n      \"reasoning\": \"Seluruh isi fokus pada keadaan pemain yang memiliki beberapa rekomendasi tujuan. Candidate menyebut 'beberapa tujuan budaya', menetapkan 'Badak Heuay' sebagai tujuan utama, dan menawarkan 'Surabi dan Kujang' sebagai alternatif; ini langsung relevan dengan konteks aktif, bukan teks generik acak.\"\n    },\n    \"faithfulness\": {\n      \"score\": 5,\n      \"reasoning\": \"Tidak ada fakta yang melampaui reference. Candidate hanya memakai nama objek yang memang direkomendasikan: Badak Heuay, Surabi, Kujang. Tidak mengarang status kunjungan, detail budaya, lokasi, atau kemampuan sistem lain di luar konteks yang diberikan.\"\n    },\n    \"navigation_clarity\": {\n      \"score\": 4,\n      \"reasoning\": \"Arah utama jelas: 'Mari mulai ke Badak Heuay' dan subtitle 'Mari menuju Badak Heuay.' Pemain juga diberi alternatif. Sedikit kekurangan: tidak ada ajakan tindakan pilihan yang sangat eksplisit seperti 'pilih salah satu sekarang', meski recommendation_dialogue sudah cukup membantu.\"\n    },\n    \"persona_alignment\": {\n      \"score\": 4,\n      \"reasoning\": \"Nada hangat dan membantu terlihat pada 'Mari mulai' dan 'untuk saya pandu'. Namun frasa 'Tersedia tiga rekomendasi teratas' terdengar sedikit sistemik dibanding gaya pemandu budaya yang lebih natural. Secara umum tetap cukup terasa seperti pemandu.\"\n    },\n    \"language_quality\": {\n      \"score\": 5,\n      \"reasoning\": \"Bahasa Indonesia natural, jelas, dan rapi. Kalimat seperti 'Mari mulai ke Badak Heuay sebagai tujuan utama berikutnya' mudah dipahami, tanpa campuran bahasa asing yang tidak perlu, dan tidak repetitif berlebihan.\"\n    },\n    \"ui_usefulness\": {\n      \"score\": 5,\n      \"reasoning\": \"subtitle_output ringkas ('Mari menuju Badak Heuay.'), recommendation_dialogue menjelaskan ada tujuan utama dan alternatif, dan recommendation_options sinkron persis dengan dialog: Badak Heuay, Surabi, Kujang. Komponen UI saling mendukung pemahaman dan pilihan pemain.\"\n    },\n    \"technical_leak_safety\": {\n      \"score\": 5,\n      \"reasoning\": \"Teks yang terlihat pemain tidak memuat koordinat, nama tool, token backend, NavMesh, prompt, schema, atau istilah implementasi internal. Semua isi aman dan berfokus pada panduan tujuan.\"\n    }\n  }\n}",
+        "status": "ok",
+        "error": ""
+      },
+      "llm_judge_assessment": {
+        "passed": true,
+        "overall_score": 4.75,
+        "overall_threshold": 4.0,
+        "failed_dimensions": [],
+        "reason": "ok"
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T15:12:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di Heritage_Museum_Wing_B dengan beberapa rekomendasi tujuan.",
+        "context_summary": "Tersedia 3 rekomendasi teratas dari objek budaya yang belum dikunjungi di Heritage_Museum_Wing_B.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Badak Heuay diprioritaskan sebagai tujuan utama karena merupakan tujuan belum dikunjungi terdekat. Alternatif yang tersedia: Surabi, Kujang.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Badak Heuay",
+            "name": "Badak Heuay",
+            "cultural_position": "6.84231, 1.18492, 28.41675"
+          },
+          {
+            "rank": 2,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "-1.34956, 1.52654, 23.7432"
+          },
+          {
+            "rank": 3,
+            "id": "Kujang",
+            "name": "Kujang",
+            "cultural_position": "19.72784, 0.30118, 21.86564"
+          }
+        ],
+        "nav_target": "Badak Heuay"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini ada beberapa tujuan budaya yang bisa kita jelajahi. Mari mulai ke Badak Heuay sebagai tujuan utama berikutnya; jika Anda ingin jalur lain, Surabi dan Kujang juga tersedia sebagai alternatif.",
+        "subtitle_output": "Mari menuju Badak Heuay.",
+        "recommendation_dialogue": "Tersedia tiga rekomendasi teratas. Pilih Badak Heuay atau alternatif lainnya untuk saya pandu.",
+        "recommendation_options": [
+          "Badak Heuay",
+          "Surabi",
+          "Kujang"
+        ]
+      },
+      "context_uq": {
+        "method": "consistency_based_interpretive_fields",
+        "sample_count": 3,
+        "degree_scores": [
+          0.9222222222222223,
+          0.9472222222222222,
+          0.9194444444444445
+        ],
+        "udeg": 0.07037037037037042,
+        "selected_cdeg": 0.9472222222222222,
+        "situation_agreement": 1.0,
+        "intent_agreement": 1.0,
+        "selected_index": 1,
+        "sanitized_interpretive_fields": []
+      },
+      "dialogue_uq": {
+        "method": "hud_black_box_response_similarity_cdeg",
+        "sample_count": 3,
+        "field_weights": {
+          "recommendation_dialogue": 0.5,
+          "subtitle_output": 0.3,
+          "recommendation_options": 0.2
+        },
+        "degree_scores": [
+          0.7857142857142857,
+          0.7857142857142857,
+          0.6428571428571428
+        ],
+        "udeg": 0.26190476190476186,
+        "selected_cdeg": 0.7857142857142857,
+        "selected_index": 0,
+        "max_cdeg": 0.7857142857142857,
+        "grounding_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "selection_scores": [
+          0.9035714285714287,
+          0.9035714285714287,
+          0.8392857142857143
+        ],
+        "selected_grounding": 1.0,
+        "selected_score": 0.9035714285714287
+      },
+      "selection_dialogue_uq": {},
+      "uq_failure_benchmark": {
+        "expected_correct": null,
+        "injection": {}
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    },
+    {
+      "scenario_id": "sc40_dialogue_normal_15",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-13T14:17:48.930279",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 0.6,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Surabi",
+          "Angklung",
+          "Julang Ngapak"
+        ]
+      },
+      "llm_judge_scores": {
+        "grounded_response_correctness": {
+          "score": 5,
+          "reasoning": "Output menyebut tujuan utama 'Angklung' dan alternatif 'Surabi' serta 'Julang Ngapak', sesuai jumlah dan urutan rekomendasi pada reference. Isi juga cocok dengan situasi multiple recommendations dan intent memandu ke tujuan utama dengan alternatif.",
+          "dimension": "grounded_response_correctness",
+          "status": "ok"
+        },
+        "context_relevance": {
+          "score": 5,
+          "reasoning": "Teks sangat relevan dengan kondisi pemain di sayap museum yang memiliki beberapa tujuan belum dikunjungi. Candidate secara spesifik menyebut tiga rekomendasi aktual dan mengarahkan pemain ke Angklung sebagai tujuan utama berikutnya.",
+          "dimension": "context_relevance",
+          "status": "ok"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Candidate hanya memakai fakta yang ada pada reference/grounding_reference: ada beberapa tujuan, Angklung sebagai prioritas, serta Surabi dan Julang Ngapak sebagai alternatif. Tidak ada penambahan nama objek, status kunjungan, detail budaya, atau kemampuan sistem yang tidak didukung.",
+          "dimension": "faithfulness",
+          "status": "ok"
+        },
+        "navigation_clarity": {
+          "score": 5,
+          "reasoning": "Arahan tujuan sangat jelas: 'Mari mulai menuju Angklung sebagai tujuan utama berikutnya' dan opsi alternatif juga disebutkan. Pemain dapat langsung memahami tujuan utama dan pilihan berikutnya tanpa melihat data internal.",
+          "dimension": "navigation_clarity",
+          "status": "ok"
+        },
+        "persona_alignment": {
+          "score": 4,
+          "reasoning": "Nada hangat dan membantu terlihat pada 'Mari mulai' dan 'Saya siap memandu Anda kapan saja.' Namun frasa seperti 'tersedia sebagai alternatif' dan 'Tersedia tiga rekomendasi teratas' terasa sedikit formal/sistemik dibanding persona pemandu budaya yang lebih natural.",
+          "dimension": "persona_alignment",
+          "status": "ok"
+        },
+        "language_quality": {
+          "score": 5,
+          "reasoning": "Bahasa Indonesia natural, jelas, dan rapi. Tidak ada campuran bahasa asing yang tidak perlu, serta kalimat mudah dipahami tanpa repetisi berlebihan.",
+          "dimension": "language_quality",
+          "status": "ok"
+        },
+        "ui_usefulness": {
+          "score": 5,
+          "reasoning": "subtitle_output singkat dan sinkron dengan tujuan utama. recommendation_dialogue menjelaskan bahwa ada tiga pilihan dan recommendation_options berisi tepat tiga nama yang sesuai: Angklung, Surabi, Julang Ngapak.",
+          "dimension": "ui_usefulness",
+          "status": "ok"
+        },
+        "technical_leak_safety": {
+          "score": 5,
+          "reasoning": "Tidak ada kebocoran istilah teknis atau internal pada spoken_output, subtitle_output, recommendation_dialogue, maupun recommendation_options. Teks bebas dari koordinat, nama tool, schema, token backend, atau istilah implementasi.",
+          "dimension": "technical_leak_safety",
+          "status": "ok"
+        }
+      },
+      "llm_judge_meta": {
+        "required": true,
+        "required_dimensions": [
+          "grounded_response_correctness",
+          "context_relevance",
+          "faithfulness",
+          "navigation_clarity",
+          "persona_alignment",
+          "language_quality",
+          "ui_usefulness",
+          "technical_leak_safety"
+        ],
+        "thresholds": {
+          "grounded_response_correctness": 4.0,
+          "context_relevance": 4.0,
+          "faithfulness": 4.0,
+          "navigation_clarity": 4.0,
+          "persona_alignment": 4.0,
+          "language_quality": 4.0,
+          "ui_usefulness": 4.0,
+          "technical_leak_safety": 5.0
+        },
+        "overall_threshold": 4.0,
+        "model": "gpt-5.4",
+        "agent_model": "gpt-5-mini",
+        "independent_model": true,
+        "attempts": 1,
+        "raw_response": "{\n  \"scores\": {\n    \"grounded_response_correctness\": {\n      \"score\": 5,\n      \"reasoning\": \"Output menyebut tujuan utama 'Angklung' dan alternatif 'Surabi' serta 'Julang Ngapak', sesuai jumlah dan urutan rekomendasi pada reference. Isi juga cocok dengan situasi multiple recommendations dan intent memandu ke tujuan utama dengan alternatif.\"\n    },\n    \"context_relevance\": {\n      \"score\": 5,\n      \"reasoning\": \"Teks sangat relevan dengan kondisi pemain di sayap museum yang memiliki beberapa tujuan belum dikunjungi. Candidate secara spesifik menyebut tiga rekomendasi aktual dan mengarahkan pemain ke Angklung sebagai tujuan utama berikutnya.\"\n    },\n    \"faithfulness\": {\n      \"score\": 5,\n      \"reasoning\": \"Candidate hanya memakai fakta yang ada pada reference/grounding_reference: ada beberapa tujuan, Angklung sebagai prioritas, serta Surabi dan Julang Ngapak sebagai alternatif. Tidak ada penambahan nama objek, status kunjungan, detail budaya, atau kemampuan sistem yang tidak didukung.\"\n    },\n    \"navigation_clarity\": {\n      \"score\": 5,\n      \"reasoning\": \"Arahan tujuan sangat jelas: 'Mari mulai menuju Angklung sebagai tujuan utama berikutnya' dan opsi alternatif juga disebutkan. Pemain dapat langsung memahami tujuan utama dan pilihan berikutnya tanpa melihat data internal.\"\n    },\n    \"persona_alignment\": {\n      \"score\": 4,\n      \"reasoning\": \"Nada hangat dan membantu terlihat pada 'Mari mulai' dan 'Saya siap memandu Anda kapan saja.' Namun frasa seperti 'tersedia sebagai alternatif' dan 'Tersedia tiga rekomendasi teratas' terasa sedikit formal/sistemik dibanding persona pemandu budaya yang lebih natural.\"\n    },\n    \"language_quality\": {\n      \"score\": 5,\n      \"reasoning\": \"Bahasa Indonesia natural, jelas, dan rapi. Tidak ada campuran bahasa asing yang tidak perlu, serta kalimat mudah dipahami tanpa repetisi berlebihan.\"\n    },\n    \"ui_usefulness\": {\n      \"score\": 5,\n      \"reasoning\": \"subtitle_output singkat dan sinkron dengan tujuan utama. recommendation_dialogue menjelaskan bahwa ada tiga pilihan dan recommendation_options berisi tepat tiga nama yang sesuai: Angklung, Surabi, Julang Ngapak.\"\n    },\n    \"technical_leak_safety\": {\n      \"score\": 5,\n      \"reasoning\": \"Tidak ada kebocoran istilah teknis atau internal pada spoken_output, subtitle_output, recommendation_dialogue, maupun recommendation_options. Teks bebas dari koordinat, nama tool, schema, token backend, atau istilah implementasi.\"\n    }\n  }\n}",
+        "status": "ok",
+        "error": ""
+      },
+      "llm_judge_assessment": {
+        "passed": true,
+        "overall_score": 4.875,
+        "overall_threshold": 4.0,
+        "failed_dimensions": [],
+        "reason": "ok"
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T09:40:00Z",
+        "scene": "Heritage_Museum_Wing_B",
+        "user_action": "Pemain berada di Heritage_Museum_Wing_B dengan beberapa rekomendasi tujuan.",
+        "context_summary": "Tersedia 3 rekomendasi teratas dari objek budaya yang belum dikunjungi di Heritage_Museum_Wing_B.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Angklung diprioritaskan sebagai tujuan belum dikunjungi terdekat sebagai pilihan utama; Surabi dan Julang Ngapak disediakan sebagai alternatif.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Angklung",
+            "name": "Angklung",
+            "cultural_position": "14.62413, 1.37554, 18.67057"
+          },
+          {
+            "rank": 2,
+            "id": "Surabi",
+            "name": "Surabi",
+            "cultural_position": "-1.34956, 1.52654, 23.7432"
+          },
+          {
+            "rank": 3,
+            "id": "Julang Ngapak",
+            "name": "Julang Ngapak",
+            "cultural_position": "21.48713, 2.18983, 17.03246"
+          }
+        ],
+        "nav_target": "Angklung"
+      },
+      "dialogue_output": {
+        "spoken_output": "Ada beberapa tujuan budaya yang bisa kita jelajahi di sayap ini. Mari mulai menuju Angklung sebagai tujuan utama berikutnya; jika ingin jalur lain, Surabi dan Julang Ngapak tersedia sebagai alternatif. Saya siap memandu Anda kapan saja.",
+        "subtitle_output": "Mari menuju Angklung sebagai tujuan utama.",
+        "recommendation_dialogue": "Tersedia tiga rekomendasi teratas. Pilih Angklung atau alternatif lain, dan saya akan memandu Anda.",
+        "recommendation_options": [
+          "Angklung",
+          "Surabi",
+          "Julang Ngapak"
+        ]
+      },
+      "context_uq": {
+        "method": "consistency_based_interpretive_fields",
+        "sample_count": 3,
+        "degree_scores": [
+          0.9440196078431373,
+          0.9386029411764705,
+          0.9179166666666667
+        ],
+        "udeg": 0.06648692810457513,
+        "selected_cdeg": 0.9440196078431373,
+        "situation_agreement": 1.0,
+        "intent_agreement": 1.0,
+        "selected_index": 0,
+        "sanitized_interpretive_fields": []
+      },
+      "dialogue_uq": {
+        "method": "hud_black_box_response_similarity_cdeg",
+        "sample_count": 3,
+        "field_weights": {
+          "recommendation_dialogue": 0.5,
+          "subtitle_output": 0.3,
+          "recommendation_options": 0.2
+        },
+        "degree_scores": [
+          0.6016917293233083,
+          0.6691520467836257,
+          0.5603174603174603
+        ],
+        "udeg": 0.3896129211918685,
+        "selected_cdeg": 0.6691520467836257,
+        "selected_index": 1,
+        "max_cdeg": 0.6691520467836257,
+        "grounding_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "selection_scores": [
+          0.8207612781954887,
+          0.8511184210526317,
+          0.8021428571428573
+        ],
+        "selected_grounding": 1.0,
+        "selected_score": 0.8511184210526317
+      },
+      "selection_dialogue_uq": {},
+      "uq_failure_benchmark": {
+        "expected_correct": null,
+        "injection": {}
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 6
+    },
+    {
+      "scenario_id": "sc41_dialogue_risk_01",
+      "layer": "uq_controlled_benchmark",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-13T14:18:21.121682",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": true,
+        "no_internal_tokens_or_coordinates": true,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Tagog Anjing",
+          "Tari Jaipong",
+          "Suling Sunda"
+        ]
+      },
+      "llm_judge_scores": {
+        "grounded_response_correctness": {
+          "score": 5,
+          "reasoning": "Target utama konsisten ke \"Tari Jaipong\" pada subtitle_output dan spoken_output, dan recommendation_options persis berurutan \"Tari Jaipong\", \"Tagog Anjing\", \"Suling Sunda\" sesuai reference. Tidak ada penggantian target, fakta budaya rekaan, atau kebocoran teknis.",
+          "dimension": "grounded_response_correctness",
+          "status": "ok"
+        },
+        "context_relevance": {
+          "score": 5,
+          "reasoning": "Respons spesifik ke situasi multiple_recommendations: spoken_output menyebut ada beberapa tujuan dan memprioritaskan \"Tari Jaipong\" dengan \"Tagog Anjing\" dan \"Suling Sunda\" sebagai alternatif. recommendation_dialogue juga relevan dengan tindakan pemain untuk memilih salah satu tujuan.",
+          "dimension": "context_relevance",
+          "status": "ok"
+        },
+        "faithfulness": {
+          "score": 5,
+          "reasoning": "Semua isi didukung reference/grounding_reference: ada tiga rekomendasi, nav target \"Tari Jaipong\", dan dua alternatif \"Tagog Anjing\" serta \"Suling Sunda\". Candidate tidak menambah detail budaya, status kunjungan, lokasi, atau kemampuan sistem yang tidak tersedia.",
+          "dimension": "faithfulness",
+          "status": "ok"
+        },
+        "navigation_clarity": {
+          "score": 4,
+          "reasoning": "Arah utama jelas melalui subtitle_output \"Mari menuju Tari Jaipong.\" dan spoken_output yang menyebut tujuan utama berikutnya. Sedikit kurang optimal karena recommendation_dialogue hanya berkata \"Pilih salah satu\" tanpa menegaskan lagi bahwa default/utama adalah Tari Jaipong.",
+          "dimension": "navigation_clarity",
+          "status": "ok"
+        },
+        "persona_alignment": {
+          "score": 4,
+          "reasoning": "Nada ramah dan membantu terlihat pada \"Mari mulai menuju Tari Jaipong\" dan \"saya akan memandu Anda\". Namun frasa \"Tersedia tiga rekomendasi teratas\" terdengar agak sistemik dibanding gaya pemandu budaya yang lebih natural.",
+          "dimension": "persona_alignment",
+          "status": "ok"
+        },
+        "language_quality": {
+          "score": 4,
+          "reasoning": "Bahasa Indonesia jelas dan natural, tanpa campuran bahasa Inggris yang tidak perlu. Kekurangan kecil: frasa \"jalur lain\" dan \"rekomendasi teratas\" terasa agak kaku/teknis dibanding tuturan museum yang lebih luwes.",
+          "dimension": "language_quality",
+          "status": "ok"
+        },
+        "ui_usefulness": {
+          "score": 5,
+          "reasoning": "subtitle_output ringkas dan sinkron dengan target utama, recommendation_dialogue menjelaskan bahwa pemain bisa memilih, dan recommendation_options tepat tiga item dalam urutan yang benar. Elemen UI saling mendukung dan mudah dipahami.",
+          "dimension": "ui_usefulness",
+          "status": "ok"
+        },
+        "technical_leak_safety": {
+          "score": 5,
+          "reasoning": "Teks yang dilihat pemain tidak memuat koordinat, nama tool, token backend, NavMesh, schema, prompt, atau istilah implementasi internal. Semua output aman untuk antarmuka pemain.",
+          "dimension": "technical_leak_safety",
+          "status": "ok"
+        }
+      },
+      "llm_judge_meta": {
+        "required": true,
+        "required_dimensions": [
+          "grounded_response_correctness",
+          "context_relevance",
+          "faithfulness",
+          "navigation_clarity",
+          "persona_alignment",
+          "language_quality",
+          "ui_usefulness",
+          "technical_leak_safety"
+        ],
+        "thresholds": {
+          "grounded_response_correctness": 4.0,
+          "context_relevance": 4.0,
+          "faithfulness": 4.0,
+          "navigation_clarity": 4.0,
+          "persona_alignment": 4.0,
+          "language_quality": 4.0,
+          "ui_usefulness": 4.0,
+          "technical_leak_safety": 5.0
+        },
+        "overall_threshold": 4.0,
+        "model": "gpt-5.4",
+        "agent_model": "gpt-5-mini",
+        "independent_model": true,
+        "attempts": 1,
+        "raw_response": "{\n  \"scores\": {\n    \"grounded_response_correctness\": {\n      \"score\": 5,\n      \"reasoning\": \"Target utama konsisten ke \\\"Tari Jaipong\\\" pada subtitle_output dan spoken_output, dan recommendation_options persis berurutan \\\"Tari Jaipong\\\", \\\"Tagog Anjing\\\", \\\"Suling Sunda\\\" sesuai reference. Tidak ada penggantian target, fakta budaya rekaan, atau kebocoran teknis.\"\n    },\n    \"context_relevance\": {\n      \"score\": 5,\n      \"reasoning\": \"Respons spesifik ke situasi multiple_recommendations: spoken_output menyebut ada beberapa tujuan dan memprioritaskan \\\"Tari Jaipong\\\" dengan \\\"Tagog Anjing\\\" dan \\\"Suling Sunda\\\" sebagai alternatif. recommendation_dialogue juga relevan dengan tindakan pemain untuk memilih salah satu tujuan.\"\n    },\n    \"faithfulness\": {\n      \"score\": 5,\n      \"reasoning\": \"Semua isi didukung reference/grounding_reference: ada tiga rekomendasi, nav target \\\"Tari Jaipong\\\", dan dua alternatif \\\"Tagog Anjing\\\" serta \\\"Suling Sunda\\\". Candidate tidak menambah detail budaya, status kunjungan, lokasi, atau kemampuan sistem yang tidak tersedia.\"\n    },\n    \"navigation_clarity\": {\n      \"score\": 4,\n      \"reasoning\": \"Arah utama jelas melalui subtitle_output \\\"Mari menuju Tari Jaipong.\\\" dan spoken_output yang menyebut tujuan utama berikutnya. Sedikit kurang optimal karena recommendation_dialogue hanya berkata \\\"Pilih salah satu\\\" tanpa menegaskan lagi bahwa default/utama adalah Tari Jaipong.\"\n    },\n    \"persona_alignment\": {\n      \"score\": 4,\n      \"reasoning\": \"Nada ramah dan membantu terlihat pada \\\"Mari mulai menuju Tari Jaipong\\\" dan \\\"saya akan memandu Anda\\\". Namun frasa \\\"Tersedia tiga rekomendasi teratas\\\" terdengar agak sistemik dibanding gaya pemandu budaya yang lebih natural.\"\n    },\n    \"language_quality\": {\n      \"score\": 4,\n      \"reasoning\": \"Bahasa Indonesia jelas dan natural, tanpa campuran bahasa Inggris yang tidak perlu. Kekurangan kecil: frasa \\\"jalur lain\\\" dan \\\"rekomendasi teratas\\\" terasa agak kaku/teknis dibanding tuturan museum yang lebih luwes.\"\n    },\n    \"ui_usefulness\": {\n      \"score\": 5,\n      \"reasoning\": \"subtitle_output ringkas dan sinkron dengan target utama, recommendation_dialogue menjelaskan bahwa pemain bisa memilih, dan recommendation_options tepat tiga item dalam urutan yang benar. Elemen UI saling mendukung dan mudah dipahami.\"\n    },\n    \"technical_leak_safety\": {\n      \"score\": 5,\n      \"reasoning\": \"Teks yang dilihat pemain tidak memuat koordinat, nama tool, token backend, NavMesh, schema, prompt, atau istilah implementasi internal. Semua output aman untuk antarmuka pemain.\"\n    }\n  }\n}",
+        "status": "ok",
+        "error": ""
+      },
+      "llm_judge_assessment": {
+        "passed": true,
+        "overall_score": 4.625,
+        "overall_threshold": 4.0,
+        "failed_dimensions": [],
+        "reason": "ok"
+      },
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T10:47:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di Heritage_Museum_Wing_A dengan beberapa rekomendasi tujuan.",
+        "context_summary": "Tersedia 3 rekomendasi teratas dari objek budaya yang belum dikunjungi di Heritage_Museum_Wing_A.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tari Jaipong diprioritaskan karena merupakan tujuan belum dikunjungi terdekat; Tagog Anjing dan Suling Sunda disediakan sebagai alternatif.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          },
+          {
+            "rank": 2,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          },
+          {
+            "rank": 3,
+            "id": "Suling Sunda",
+            "name": "Suling Sunda",
+            "cultural_position": "27.95618, 1.23804, 24.37192"
+          }
+        ],
+        "nav_target": "Tari Jaipong"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini ada beberapa tujuan budaya yang bisa kita jelajahi. Mari mulai menuju Tari Jaipong sebagai tujuan utama berikutnya; jika Anda ingin jalur lain, Tagog Anjing dan Suling Sunda tersedia sebagai alternatif.",
+        "subtitle_output": "Mari menuju Tari Jaipong.",
+        "recommendation_dialogue": "Tersedia tiga rekomendasi teratas. Pilih salah satu, dan saya akan memandu Anda ke tujuan yang dipilih.",
+        "recommendation_options": [
+          "Tari Jaipong",
+          "Tagog Anjing",
+          "Suling Sunda"
+        ]
+      },
+      "context_uq": {
+        "method": "consistency_based_interpretive_fields",
+        "sample_count": 3,
+        "degree_scores": [
+          0.9715686274509804,
+          0.9826797385620916,
+          0.9777777777777777
+        ],
+        "udeg": 0.022657952069716658,
+        "selected_cdeg": 0.9826797385620916,
+        "situation_agreement": 1.0,
+        "intent_agreement": 1.0,
+        "selected_index": 1,
+        "sanitized_interpretive_fields": []
+      },
+      "dialogue_uq": {
+        "method": "hud_black_box_response_similarity_cdeg",
+        "sample_count": 3,
+        "field_weights": {
+          "recommendation_dialogue": 0.5,
+          "subtitle_output": 0.3,
+          "recommendation_options": 0.2
+        },
+        "degree_scores": [
+          0.6329051383399209,
+          0.733288770053476,
+          0.7525575447570333
+        ],
+        "udeg": 0.2937495156165233,
+        "selected_cdeg": 0.7525575447570333,
+        "selected_index": 2,
+        "max_cdeg": 0.7525575447570333,
+        "grounding_scores": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "selection_scores": [
+          0.8348073122529645,
+          0.8799799465240643,
+          0.8886508951406651
+        ],
+        "selected_grounding": 1.0,
+        "selected_score": 0.8886508951406651
+      },
+      "selection_dialogue_uq": {},
+      "uq_failure_benchmark": {
+        "expected_correct": null,
+        "injection": {}
+      },
+      "errors": [],
+      "passed": true,
+      "subtitle_word_count": 4
+    }
+  ],
+  "pass_k": null,
+  "ablation": null
+}

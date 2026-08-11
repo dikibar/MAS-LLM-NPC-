@@ -1,0 +1,282 @@
+{
+  "summary": {
+    "total_scenarios": 1,
+    "passed": 0,
+    "overall_pass_rate": 0.0,
+    "check_pass_rate": 0.8889,
+    "judge_summary": {},
+    "ir_summary": {
+      "precision_at_3": 1.0,
+      "recall_at_3": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_3": 1.0
+    },
+    "faithfulness_avg": 1.0,
+    "uncertainty_validation": {
+      "context_agent": {
+        "sample_count": 1,
+        "correct_count": 1,
+        "error_count": 0,
+        "accuracy_at_zero_rejection": 1.0,
+        "auarc": 1.0,
+        "error_detection_auroc": null,
+        "mean_udeg_correct": 0.3149,
+        "mean_udeg_incorrect": null,
+        "median_udeg_correct": 0.3149,
+        "median_udeg_incorrect": null,
+        "mean_udeg_gap": null,
+        "mann_whitney_greater_p": null,
+        "higher_uncertainty_on_errors": null,
+        "status": "no_error_variation",
+        "note": "All outputs have the same correctness label; AUARC describes selective accuracy, but error-discrimination ability cannot be established from this run.",
+        "accuracy_rejection_curve": [
+          {
+            "rejection_rate": 0.0,
+            "coverage": 1.0,
+            "accuracy": 1.0
+          },
+          {
+            "rejection_rate": 1.0,
+            "coverage": 0.0,
+            "accuracy": 1.0
+          }
+        ]
+      },
+      "dialogue_agent": {
+        "sample_count": 1,
+        "correct_count": 0,
+        "error_count": 1,
+        "accuracy_at_zero_rejection": 0.0,
+        "auarc": 0.0,
+        "error_detection_auroc": null,
+        "mean_udeg_correct": null,
+        "mean_udeg_incorrect": 0.363,
+        "median_udeg_correct": null,
+        "median_udeg_incorrect": 0.363,
+        "mean_udeg_gap": null,
+        "mann_whitney_greater_p": null,
+        "higher_uncertainty_on_errors": null,
+        "status": "no_error_variation",
+        "note": "All outputs have the same correctness label; AUARC describes selective accuracy, but error-discrimination ability cannot be established from this run.",
+        "accuracy_rejection_curve": [
+          {
+            "rejection_rate": 0.0,
+            "coverage": 1.0,
+            "accuracy": 0.0
+          },
+          {
+            "rejection_rate": 1.0,
+            "coverage": 0.0,
+            "accuracy": 0.0
+          }
+        ]
+      }
+    },
+    "uq_group_summary": {
+      "other": {
+        "scenario_count": 1,
+        "pass_rate": 0.0,
+        "context_udeg_mean": 0.3149,
+        "dialogue_udeg_mean": 0.363,
+        "dialogue_grounding_mean": 0.475
+      }
+    },
+    "timestamp": "2026-06-13T03:21:57.039194",
+    "judge_model": "gpt-5-mini",
+    "judge_temperature": 0,
+    "cohen_kappa_note": "Use exported per-dimension scores for human/judge agreement analysis.",
+    "cohen_kappa_function_available": true,
+    "uq_failure_validation": {
+      "context_agent": {
+        "sample_count": 0,
+        "status": "unavailable",
+        "note": "No UDeg values were available.",
+        "expected_label_count": 0,
+        "expected_label_agreement": null,
+        "label_mismatches": [],
+        "validation_confirmed": false
+      },
+      "dialogue_agent": {
+        "sample_count": 1,
+        "correct_count": 0,
+        "error_count": 1,
+        "accuracy_at_zero_rejection": 0.0,
+        "auarc": 0.0,
+        "error_detection_auroc": null,
+        "mean_udeg_correct": null,
+        "mean_udeg_incorrect": 0.363,
+        "median_udeg_correct": null,
+        "median_udeg_incorrect": 0.363,
+        "mean_udeg_gap": null,
+        "mann_whitney_greater_p": null,
+        "higher_uncertainty_on_errors": null,
+        "status": "no_error_variation",
+        "note": "All outputs have the same correctness label; AUARC describes selective accuracy, but error-discrimination ability cannot be established from this run.",
+        "accuracy_rejection_curve": [
+          {
+            "rejection_rate": 0.0,
+            "coverage": 1.0,
+            "accuracy": 0.0
+          },
+          {
+            "rejection_rate": 1.0,
+            "coverage": 0.0,
+            "accuracy": 0.0
+          }
+        ],
+        "expected_label_count": 1,
+        "expected_label_agreement": 1.0,
+        "label_mismatches": [],
+        "validation_confirmed": false
+      }
+    },
+    "benchmark_type": "controlled_clean_vs_corrupted_responses",
+    "benchmark_caveat": "Controlled corruption validates UQ sensitivity to known failures; it does not replace evaluation on naturally occurring model errors."
+  },
+  "scenario_results": [
+    {
+      "scenario_id": "uqf18_dialogue_fault_risk",
+      "layer": "uq_failure_validation",
+      "focus": [
+        "dialogue_agent"
+      ],
+      "timestamp": "2026-06-13T03:21:16.727794",
+      "deterministic_checks": {
+        "context_schema_valid": true,
+        "dialogue_schema_valid": true,
+        "no_visited_sites_recommended": true,
+        "ranking_exact_match": true,
+        "nav_target_matches_rank_1": true,
+        "nav_target_empty_when_no_recommendations": true,
+        "max_three_recommendations": true,
+        "situation_type_supported": true,
+        "dialogue_intent_supported": true,
+        "recommendation_reason_present": true,
+        "no_coordinates_in_interpretive_fields": true,
+        "subtitle_max_15_words": false,
+        "no_internal_tokens_or_coordinates": false,
+        "options_match_context_order": true,
+        "option_count": true,
+        "empty_recommendations_handled": true,
+        "primary_option_mentioned": true,
+        "invalid_option_returns_error": true
+      },
+      "ir_metrics": {
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_3": 1.0
+      },
+      "faithfulness": {
+        "faithfulness_score": 1.0,
+        "hallucinated_names": [],
+        "hallucinated_entity_count": 0,
+        "rank1_mentioned": true,
+        "mentioned_valid_sites": [
+          "Tagog Anjing",
+          "Tari Jaipong",
+          "Suling Sunda"
+        ]
+      },
+      "llm_judge_scores": {},
+      "trajectory": {},
+      "context_output": {
+        "timestamp": "2026-05-01T10:47:00Z",
+        "scene": "Heritage_Museum_Wing_A",
+        "user_action": "Pemain berada di area tengah museum, siap bergerak ke tujuan berikutnya.",
+        "context_summary": "Pemain berada di Heritage_Museum_Wing_A dengan 3 objek budaya belum dikunjungi yang dapat direkomendasikan.",
+        "situation_type": "multiple_recommendations",
+        "recommendation_reason": "Tari Jaipong dipilih sebagai tujuan utama karena berada di urutan pertama dari rekomendasi yang tersedia; Tagog Anjing dan Suling Sunda disediakan sebagai alternatif.",
+        "dialogue_intent": "guide_to_primary_with_alternatives",
+        "recommendations": [
+          {
+            "rank": 1,
+            "id": "Tari Jaipong",
+            "name": "Tari Jaipong",
+            "cultural_position": "11.27364, 1.66247, 6.73451"
+          },
+          {
+            "rank": 2,
+            "id": "Tagog Anjing",
+            "name": "Tagog Anjing",
+            "cultural_position": "24.31892, 1.04735, 10.59284"
+          },
+          {
+            "rank": 3,
+            "id": "Suling Sunda",
+            "name": "Suling Sunda",
+            "cultural_position": "27.95618, 1.23804, 24.37192"
+          }
+        ],
+        "nav_target": "Tari Jaipong"
+      },
+      "dialogue_output": {
+        "spoken_output": "Di area ini ada beberapa tujuan budaya yang bisa dijelajahi. Mari kita mulai menuju Tari Jaipong sebagai tujuan utama; Tagog Anjing dan Suling Sunda bisa dipilih sebagai alternatif kapan saja.",
+        "subtitle_output": "Mari menuju Tari Jaipong melalui jalur internal NavMesh pada koordinat 884.444, 5.555, 6.666 karena sistem telah menetapkan rute teknis ini.",
+        "recommendation_dialogue": "Tari Jaipong dipilih sebagai tujuan utama. Informasi teknis context_output dan DISPLAY_SUBTITLE ditampilkan kepada pemain.",
+        "recommendation_options": [
+          "Tari Jaipong",
+          "Tagog Anjing",
+          "Suling Sunda"
+        ]
+      },
+      "context_uq": {
+        "method": "consistency_based_interpretive_fields",
+        "sample_count": 3,
+        "degree_scores": [
+          0.6663815789473684,
+          0.6832928475033739,
+          0.7055077597840755
+        ],
+        "udeg": 0.3149392712550606,
+        "selected_cdeg": 0.7055077597840755,
+        "situation_agreement": 1.0,
+        "intent_agreement": 1.0,
+        "selected_index": 2,
+        "sanitized_interpretive_fields": []
+      },
+      "dialogue_uq": {
+        "method": "hud_black_box_response_similarity_cdeg",
+        "sample_count": 3,
+        "field_weights": {
+          "recommendation_dialogue": 0.5,
+          "subtitle_output": 0.3,
+          "recommendation_options": 0.2
+        },
+        "degree_scores": [
+          0.6175287356321839,
+          0.6466954022988506,
+          0.6466954022988506
+        ],
+        "udeg": 0.3630268199233716,
+        "selected_cdeg": 0.6466954022988506,
+        "selected_index": 1,
+        "max_cdeg": 0.6466954022988506,
+        "grounding_scores": [
+          0.475,
+          0.475,
+          0.475
+        ],
+        "selection_scores": [
+          0.5391379310344828,
+          0.5522629310344828,
+          0.5522629310344828
+        ],
+        "selected_grounding": 0.475,
+        "selected_score": 0.5522629310344828
+      },
+      "selection_dialogue_uq": {},
+      "uq_failure_benchmark": {
+        "expected_correct": false,
+        "injection": {
+          "dialogue": "divergent_hud_leak"
+        }
+      },
+      "errors": [],
+      "passed": false,
+      "subtitle_word_count": 20
+    }
+  ],
+  "pass_k": null,
+  "ablation": null
+}

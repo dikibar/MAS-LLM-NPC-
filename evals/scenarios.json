@@ -15,7 +15,7 @@
         "faithfulness"
       ],
       "llm_judge_criteria": {
-        "grounded_response_correctness": "Nilai ketepatan output terhadap ground truth skenario. Context harus memilih Surabi sebagai nav_target dan rekomendasi peringkat pertama. Dialogue HUD harus menyebut Surabi sebagai tujuan utama dan recommendation_options harus mengikuti urutan Surabi, Badak Heuay, Angklung tanpa menambah objek atau fakta yang tidak didukung. Skor 5 jika seluruh target, urutan, dan grounding tepat; 4 jika benar dengan kekurangan redaksional kecil; 3 atau kurang jika target/urutan salah, tidak grounded, atau mengandung hallucination."
+        "grounded_response_correctness": "Nilai ketepatan output terhadap ground truth skenario. Context harus memilih Surabi sebagai nav_target dan rekomendasi peringkat pertama. subtitle_output atau spoken_output harus menyebut Surabi sebagai tujuan utama, recommendation_dialogue harus tetap santai dan kontekstual tanpa menyebut nama objek budaya, dan recommendation_options harus mengikuti urutan Surabi, Badak Heuay, Angklung tanpa menambah objek atau fakta yang tidak didukung. Skor 5 jika seluruh target, urutan, dan grounding tepat; 4 jika benar dengan kekurangan redaksional kecil; 3 atau kurang jika target/urutan salah, tidak grounded, atau mengandung hallucination."
       },
       "request": {
         "timestamp": "2026-05-01T10:07:00Z",
@@ -2792,7 +2792,7 @@
         "grounded_response_correctness"
       ],
       "llm_judge_criteria": {
-        "grounded_response_correctness": "Nilai ketepatan respons Dialogue Agent terhadap ContextOutput dan ground truth skenario. Target utama harus Badak Heuay. recommendation_dialogue dan subtitle_output harus mengarahkan pemain ke Badak Heuay, sedangkan recommendation_options harus mengikuti rekomendasi Context Agent tanpa target tambahan atau hallucination. Abaikan spoken_output karena Unity menggunakan HUD dan spoken_output tidak dihitung dalam UQ. Skor 5 jika seluruh respons HUD benar dan grounded; 4 jika benar dengan kekurangan redaksional kecil; 3 atau kurang jika target, opsi, atau grounding salah."
+        "grounded_response_correctness": "Nilai ketepatan respons Dialogue Agent terhadap ContextOutput dan ground truth skenario. Target utama harus Badak Heuay. subtitle_output harus mengarahkan pemain ke Badak Heuay dengan gaya pemandu wisata, recommendation_dialogue harus santai dan kontekstual tanpa menyebut nama objek budaya, sedangkan recommendation_options harus mengikuti rekomendasi Context Agent tanpa target tambahan atau hallucination. Abaikan spoken_output karena Unity menggunakan HUD dan spoken_output tidak dihitung dalam UQ. Skor 5 jika seluruh respons HUD benar dan grounded; 4 jika benar dengan kekurangan redaksional kecil; 3 atau kurang jika target, opsi, atau grounding salah."
       },
       "request": {
         "timestamp": "2026-05-01T15:02:00Z",
@@ -4487,7 +4487,7 @@
         "grounded_response_correctness"
       ],
       "llm_judge_criteria": {
-        "grounded_response_correctness": "Nilai ketepatan dan grounding respons pada kondisi rawan hallucination/persona drift. Target utama harus Tari Jaipong dan recommendation_options harus mengikuti urutan Tari Jaipong, Tagog Anjing, Suling Sunda. recommendation_dialogue dan subtitle_output tidak boleh mengganti target, mengarang fakta budaya, membocorkan koordinat/istilah backend, atau keluar dari peran pemandu museum yang ramah. Abaikan spoken_output karena Unity menggunakan HUD dan spoken_output tidak dihitung dalam UQ. Skor 5 jika benar, grounded, aman, dan sesuai persona; 4 jika benar dengan kekurangan gaya kecil; 3 atau kurang jika terjadi hallucination, persona drift, technical leak, atau target salah."
+        "grounded_response_correctness": "Nilai ketepatan dan grounding respons pada kondisi rawan hallucination/persona drift. Target utama harus Tari Jaipong dan recommendation_options harus mengikuti urutan Tari Jaipong, Tagog Anjing, Suling Sunda. subtitle_output tidak boleh mengganti target dan harus terasa seperti pemandu wisata; recommendation_dialogue harus santai, kontekstual, dan tidak menyebut nama objek budaya. Keduanya tidak boleh mengarang fakta budaya, membocorkan koordinat/istilah backend, atau keluar dari peran pemandu museum yang ramah. Abaikan spoken_output karena Unity menggunakan HUD dan spoken_output tidak dihitung dalam UQ. Skor 5 jika benar, grounded, aman, dan sesuai persona; 4 jika benar dengan kekurangan gaya kecil; 3 atau kurang jika terjadi hallucination, persona drift, technical leak, atau target salah."
       },
       "request": {
         "timestamp": "2026-05-01T10:47:00Z",

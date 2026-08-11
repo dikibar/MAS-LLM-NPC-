@@ -1,0 +1,176 @@
+{
+  "benchmark": "controlled_uq_failure_validation",
+  "description": "Clean controls and evaluation-only controlled corruptions for measuring whether UDeg is higher on incorrect outputs.",
+  "scenarios": [
+    {
+      "id": "uqf01_context_clean_normal",
+      "base_scenario_id": "sc01_context_normal_01",
+      "focus": ["context_agent"],
+      "expected_correct": true,
+      "description": "Context clean control using a normal multi-recommendation state."
+    },
+    {
+      "id": "uqf02_context_clean_single",
+      "base_scenario_id": "sc16_context_edge_01",
+      "focus": ["context_agent"],
+      "expected_correct": true,
+      "description": "Context clean control using a single remaining destination."
+    },
+    {
+      "id": "uqf03_context_clean_all_visited",
+      "base_scenario_id": "sc18_context_edge_03",
+      "focus": ["context_agent"],
+      "expected_correct": true,
+      "description": "Context clean control where every cultural site is visited."
+    },
+    {
+      "id": "uqf04_context_clean_negative_position",
+      "base_scenario_id": "sc19_context_edge_04",
+      "focus": ["context_agent"],
+      "expected_correct": true,
+      "description": "Context clean control with an edge-case player position."
+    },
+    {
+      "id": "uqf05_context_clean_dense_visited",
+      "base_scenario_id": "sc25_context_edge_10",
+      "focus": ["context_agent"],
+      "expected_correct": true,
+      "description": "Context clean control with a complex visited-state pattern."
+    },
+    {
+      "id": "uqf06_context_fault_normal",
+      "base_scenario_id": "sc01_context_normal_01",
+      "focus": ["context_agent"],
+      "expected_correct": false,
+      "description": "Context controlled failure with divergent internal-data leakage.",
+      "uq_failure_injection": {
+        "context": "divergent_interpretive_leak"
+      }
+    },
+    {
+      "id": "uqf07_context_fault_single",
+      "base_scenario_id": "sc16_context_edge_01",
+      "focus": ["context_agent"],
+      "expected_correct": false,
+      "description": "Context controlled failure on a single-destination edge case.",
+      "uq_failure_injection": {
+        "context": "divergent_interpretive_leak"
+      }
+    },
+    {
+      "id": "uqf08_context_fault_all_visited",
+      "base_scenario_id": "sc18_context_edge_03",
+      "focus": ["context_agent"],
+      "expected_correct": false,
+      "description": "Context controlled failure when all destinations are visited.",
+      "uq_failure_injection": {
+        "context": "divergent_interpretive_leak"
+      }
+    },
+    {
+      "id": "uqf09_context_fault_negative_position",
+      "base_scenario_id": "sc19_context_edge_04",
+      "focus": ["context_agent"],
+      "expected_correct": false,
+      "description": "Context controlled failure with an edge-case player position.",
+      "uq_failure_injection": {
+        "context": "divergent_interpretive_leak"
+      }
+    },
+    {
+      "id": "uqf10_context_fault_dense_visited",
+      "base_scenario_id": "sc25_context_edge_10",
+      "focus": ["context_agent"],
+      "expected_correct": false,
+      "description": "Context controlled failure with a complex visited-state pattern.",
+      "uq_failure_injection": {
+        "context": "divergent_interpretive_leak"
+      }
+    },
+    {
+      "id": "uqf11_dialogue_clean_normal",
+      "base_scenario_id": "sc26_dialogue_normal_01",
+      "focus": ["dialogue_agent"],
+      "expected_correct": true,
+      "description": "Dialogue clean control using a normal multi-option HUD response."
+    },
+    {
+      "id": "uqf12_dialogue_clean_alternative",
+      "base_scenario_id": "sc30_dialogue_normal_05",
+      "focus": ["dialogue_agent"],
+      "expected_correct": true,
+      "description": "Dialogue clean control with a different primary recommendation."
+    },
+    {
+      "id": "uqf13_dialogue_clean_risk",
+      "base_scenario_id": "sc41_dialogue_risk_01",
+      "focus": ["dialogue_agent"],
+      "expected_correct": true,
+      "description": "Dialogue clean control on a hallucination-risk scenario."
+    },
+    {
+      "id": "uqf14_dialogue_clean_selection_risk",
+      "base_scenario_id": "sc45_dialogue_risk_05",
+      "focus": ["dialogue_agent"],
+      "expected_correct": true,
+      "description": "Dialogue clean control with a complex visited-state pattern."
+    },
+    {
+      "id": "uqf15_dialogue_clean_empty",
+      "base_scenario_id": "sc50_dialogue_risk_10",
+      "focus": ["dialogue_agent"],
+      "expected_correct": true,
+      "description": "Dialogue clean control with no remaining recommendation."
+    },
+    {
+      "id": "uqf16_dialogue_fault_normal",
+      "base_scenario_id": "sc26_dialogue_normal_01",
+      "focus": ["dialogue_agent"],
+      "expected_correct": false,
+      "description": "Dialogue controlled failure with divergent HUD leakage.",
+      "uq_failure_injection": {
+        "dialogue": "divergent_hud_leak"
+      }
+    },
+    {
+      "id": "uqf17_dialogue_fault_alternative",
+      "base_scenario_id": "sc30_dialogue_normal_05",
+      "focus": ["dialogue_agent"],
+      "expected_correct": false,
+      "description": "Dialogue controlled failure with a different primary recommendation.",
+      "uq_failure_injection": {
+        "dialogue": "divergent_hud_leak"
+      }
+    },
+    {
+      "id": "uqf18_dialogue_fault_risk",
+      "base_scenario_id": "sc41_dialogue_risk_01",
+      "focus": ["dialogue_agent"],
+      "expected_correct": false,
+      "description": "Dialogue controlled failure on a hallucination-risk scenario.",
+      "uq_failure_injection": {
+        "dialogue": "divergent_hud_leak"
+      }
+    },
+    {
+      "id": "uqf19_dialogue_fault_selection_risk",
+      "base_scenario_id": "sc45_dialogue_risk_05",
+      "focus": ["dialogue_agent"],
+      "expected_correct": false,
+      "description": "Dialogue controlled failure with a complex visited-state pattern.",
+      "uq_failure_injection": {
+        "dialogue": "divergent_hud_leak"
+      }
+    },
+    {
+      "id": "uqf20_dialogue_fault_empty",
+      "base_scenario_id": "sc50_dialogue_risk_10",
+      "focus": ["dialogue_agent"],
+      "expected_correct": false,
+      "description": "Dialogue controlled failure when no destination remains.",
+      "uq_failure_injection": {
+        "dialogue": "divergent_hud_leak"
+      }
+    }
+  ]
+}

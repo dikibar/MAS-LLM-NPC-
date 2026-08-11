@@ -1,5 +1,6 @@
 import sys
 import unittest
+import json
 from pathlib import Path
 
 
@@ -77,6 +78,101 @@ class SelectiveUQMetricTests(unittest.TestCase):
         self.assertEqual(metrics["error_detection_auroc"], 1.0)
         self.assertEqual(metrics["status"], "measurable")
         self.assertGreater(metrics["mean_udeg_incorrect"], metrics["mean_udeg_correct"])
+        self.assertTrue(metrics["higher_uncertainty_on_errors"])
+        self.assertGreater(metrics["mean_udeg_gap"], 0)
+
+
+class ControlledFailureInjectionTests(unittest.TestCase):
+    def test_context_fault_injection_adds_divergent_technical_leak(self):
+        raw = json.dumps(
+            {
+                "user_action": "Pemain sedang menjelajah.",
+                "context_summary": "Ada tiga tujuan.",
+                "situation_type": "multiple_recommendations",
+                "recommendation_reason": "Surabi menjadi tujuan utama.",
+                "dialogue_intent": "guide_to_primary_with_alternatives",
+                "recommendations": [],
+                "nav_target": "Surabi",
+                "timestamp": "2026-05-01T10:00:00Z",
+                "scene": "Museum",
+            }
+        )
+
+        first = json.loads(
+            evaluation.apply_controlled_uq_fault(
+                raw,
+                "context",
+                "divergent_interpretive_leak",
+                0,
+            )
+        )
+        second = json.loads(
+            evaluation.apply_controlled_uq_fault(
+                raw,
+                "context",
+                "divergent_interpretive_leak",
+                1,
+            )
+        )
+
+        self.assertNotEqual(first["user_action"], second["user_action"])
+        self.assertFalse(
+            evaluation.check_no_technical_leak(
+                " ".join(
+                    [
+                        first["user_action"],
+                        first["context_summary"],
+                        first["recommendation_reason"],
+                    ]
+                )
+            )
+        )
+
+    def test_dialogue_fault_keeps_primary_but_breaks_hud_safety(self):
+        raw = json.dumps(
+            {
+                "spoken_output": "Mari menuju Surabi.",
+                "subtitle_output": "Mari menuju Surabi.",
+                "recommendation_dialogue": "Surabi adalah tujuan utama.",
+                "recommendation_options": ["Surabi", "Angklung"],
+            }
+        )
+
+        mutated = json.loads(
+            evaluation.apply_controlled_uq_fault(
+                raw,
+                "dialogue",
+                "divergent_hud_leak",
+                0,
+            )
+        )
+
+        self.assertIn("Surabi", mutated["subtitle_output"])
+        self.assertFalse(
+            evaluation.check_no_technical_leak(
+                " ".join(
+                    [
+                        mutated["subtitle_output"],
+                        mutated["recommendation_dialogue"],
+                    ]
+                )
+            )
+        )
+        subtitle_ok, _ = evaluation.check_subtitle_max_15_words(mutated)
+        self.assertFalse(subtitle_ok)
+
+    def test_failure_benchmark_resolves_clean_and_corrupted_cases(self):
+        scenarios = evaluation.load_uq_failure_scenarios()
+
+        self.assertEqual(len(scenarios), 20)
+        self.assertEqual(
+            sum(1 for scenario in scenarios if scenario["uq_expected_correct"]),
+            10,
+        )
+        self.assertEqual(
+            sum(1 for scenario in scenarios if scenario["uq_failure_injection"]),
+            10,
+        )
 
 
 if __name__ == "__main__":

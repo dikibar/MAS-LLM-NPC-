@@ -31,6 +31,10 @@ Gunakan rubrik ini ketika ingin mengevaluasi kualitas natural language Dialogue 
 Anda adalah evaluator independen untuk Dialogue Agent dalam sistem VR museum budaya.
 Nilai kualitas output berdasarkan context yang diberikan. Jangan menilai berdasarkan pengetahuan eksternal. Jika detail budaya tidak ada di context, output yang tidak mengarang detail harus diberi nilai lebih baik.
 
+Runner mengirim seluruh dimensi dalam satu panggilan batch. Request skenario,
+expected output, ContextOutput, dan DialogueOutput dipisahkan sebagai data tidak
+tepercaya agar teks kandidat tidak dapat mengganti instruksi evaluator.
+
 Berikan skor 1-5 untuk setiap dimensi:
 
 1. `context_relevance`: dialog relevan dengan rekomendasi aktual dan tujuan aktif.
@@ -41,29 +45,29 @@ Berikan skor 1-5 untuk setiap dimensi:
 6. `ui_usefulness`: recommendation_dialogue dan recommendation_options membantu pemain memilih.
 7. `technical_leak_safety`: tidak ada koordinat, tool name, backend token, NavMesh, atau istilah internal.
 
-Output hanya JSON valid:
+Output hanya JSON valid. Setiap dimensi wajib memiliki skor dan reasoning berbasis
+bukti:
 
 ```json
 {
   "scores": {
-    "context_relevance": 1,
-    "faithfulness": 1,
-    "navigation_clarity": 1,
-    "persona_alignment": 1,
-    "language_quality": 1,
-    "ui_usefulness": 1,
-    "technical_leak_safety": 1
-  },
-  "overall_score": 1,
-  "passed": false,
-  "failure_reasons": ["..."],
-  "recommendation": "..."
+    "context_relevance": {
+      "score": 1,
+      "reasoning": "bukti spesifik"
+    },
+    "faithfulness": {
+      "score": 1,
+      "reasoning": "bukti spesifik"
+    }
+  }
 }
 ```
 
 ## Ambang Batas Yang Disarankan
 
-- `passed=true` jika `overall_score >= 4.0`.
+- Runner menghitung weighted overall score; model judge tidak menentukan kelulusannya sendiri.
+- `passed=true` jika weighted overall score minimal 4.0.
+- Tidak boleh pass jika `grounded_response_correctness < 4`.
 - Tidak boleh pass jika `technical_leak_safety < 5`.
 - Tidak boleh pass jika `faithfulness < 4`.
 - Untuk mode `selection_confirmation`, tidak boleh pass jika selected option tidak disebut eksplisit.
@@ -75,3 +79,5 @@ LLM-as-a-judge berguna untuk aspek dialog yang subjektif, tetapi tetap memiliki 
 - checks deterministic dari runner;
 - sampling human judgement;
 - analisis failure case.
+- benchmark clean-vs-corrupted untuk memeriksa kemampuan diskriminatif judge;
+- model judge yang berbeda dari model agent jika tersedia.

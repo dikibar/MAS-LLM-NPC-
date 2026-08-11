@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
     OPENROUTER_MODEL: str = "openai/gpt-4.1"
     USE_MOCK_MODEL: bool = True
+    LATENCY_MODE: str = "balanced"
     
     # Paths
     BASE_DIR: Path = Path(__file__).resolve().parent.parent.parent
@@ -45,16 +46,17 @@ class Settings(BaseSettings):
     def llm_model(self) -> str:
         return self.OPENROUTER_MODEL.strip()
 
-    @property
-    def llm_base_url(self) -> str:
+    @staticmethod
+    def normalize_llm_base_url(raw_url: str) -> str:
         """
         Return an OpenAI-compatible inference endpoint.
 
         Azure Foundry's project endpoint (/api/projects/<project>) is for the
         Foundry project SDK and requires api-version. The OpenAI client used by
-        Strands must instead target the resource's /openai/v1 endpoint.
+        Strands (and by the LLM-as-a-Judge runner) must instead target the
+        resource's /openai/v1 endpoint.
         """
-        raw_url = self.OPENROUTER_BASE_URL.strip()
+        raw_url = raw_url.strip()
         parsed = urlsplit(raw_url)
         hostname = (parsed.hostname or "").lower()
         path = parsed.path.rstrip("/")
@@ -67,8 +69,18 @@ class Settings(BaseSettings):
 
         return raw_url.rstrip("/")
 
-    def llm_model_params_for(self, max_output_tokens: int) -> dict[str, int | float | str]:
-        model_name = self.llm_model.lower()
+    @property
+    def llm_base_url(self) -> str:
+        return self.normalize_llm_base_url(self.OPENROUTER_BASE_URL)
+
+    @staticmethod
+    def model_params_for(
+        model_name: str,
+        max_output_tokens: int,
+        *,
+        temperature: float = 0.7,
+    ) -> dict[str, int | float | str]:
+        model_name = model_name.lower()
         if model_name.startswith("gpt-5"):
             return {
                 "max_completion_tokens": max_output_tokens,
@@ -79,11 +91,22 @@ class Settings(BaseSettings):
                 "max_completion_tokens": max_output_tokens,
                 "reasoning_effort": "low",
             }
-        return {"max_tokens": max_output_tokens, "temperature": 0.7}
+        return {"max_tokens": max_output_tokens, "temperature": temperature}
+
+    def llm_model_params_for(self, max_output_tokens: int) -> dict[str, int | float | str]:
+        return self.model_params_for(self.llm_model, max_output_tokens)
 
     @property
     def llm_model_params(self) -> dict[str, int | float | str]:
         return self.llm_model_params_for(1000)
+
+    @property
+    def runtime_latency_mode(self) -> str:
+        return self.LATENCY_MODE.strip().lower()
+
+    @property
+    def is_fast_latency_mode(self) -> bool:
+        return self.runtime_latency_mode == "fast"
 
 # Global settings instance
 settings = Settings()

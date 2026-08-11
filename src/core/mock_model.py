@@ -1,4 +1,5 @@
 import json
+import hashlib
 from typing import Any, AsyncGenerator, AsyncIterable, TypeVar
 from pydantic import BaseModel
 from strands.models.model import Model
@@ -13,10 +14,10 @@ T = TypeVar("T", bound=BaseModel)
 MOCK_CONTEXT_RESPONSE = json.dumps({
     "timestamp": "12:30:00",
     "scene": "Heritage_Museum_Wing_A",
-    "user_action": "Pemain berada di area dengan beberapa tujuan budaya yang belum dikunjungi.",
+    "user_action": "Pemain berada di Heritage_Museum_Wing_A dengan beberapa rekomendasi tujuan.",
     "context_summary": (
-        "Pemain berada di Heritage_Museum_Wing_A dengan tiga objek budaya belum dikunjungi "
-        "yang dapat direkomendasikan."
+        "Tersedia 3 rekomendasi teratas dari objek budaya yang belum dikunjungi "
+        "di Heritage_Museum_Wing_A."
     ),
     "situation_type": "multiple_recommendations",
     "recommendation_reason": (
@@ -34,16 +35,132 @@ MOCK_CONTEXT_RESPONSE = json.dumps({
 
 MOCK_DIALOGUE_RESPONSE = json.dumps({
     "spoken_output": (
-        "Saya sudah menyiapkan beberapa rekomendasi objek budaya di sekitar Anda. "
-        "Silakan pilih tujuan yang paling ingin Anda kunjungi, dan saya akan membantu memandu perjalanannya."
+        "Kita punya beberapa tujuan budaya menarik di sekitar ini. "
+        "Mari mulai dari yang paling siap dikunjungi, lalu kita lihat pilihan lainnya."
     ),
-    "subtitle_output": "Silakan pilih tujuan budaya berikutnya.",
-    "recommendation_dialogue": (
-        "Di sekitar posisi Anda ada beberapa objek budaya menarik. "
-        "Pilih salah satu, dan saya akan memandu navigasinya."
-    ),
+    "subtitle_output": "Mulai dari tujuan teratas dulu.",
+    "recommendation_dialogue": "Ada beberapa opsi menarik, jadi kita bisa pilih yang paling pas dulu.",
     "recommendation_options": ["Opsi 1", "Opsi 2", "Opsi 3"],
 })
+
+_MOCK_OPENERS_SELECTION = (
+    "Baik, pilihan itu sudah saya terima.",
+    "Siap, rute itu sudah kita tetapkan.",
+    "Oke, keputusan Anda sudah saya catat.",
+)
+
+_MOCK_OPENERS_MULTI = (
+    "Kita punya beberapa tujuan menarik di sekitar ini.",
+    "Ada beberapa opsi yang bisa kita urutkan lebih dulu.",
+    "Saat ini ada beberapa tujuan yang sama-sama layak dicoba.",
+)
+
+_MOCK_OPENERS_SINGLE = (
+    "Saat ini ada satu tujuan yang paling relevan untuk kita datangi.",
+    "Untuk langkah berikutnya, ada satu tujuan yang paling siap.",
+    "Kalau kita cari rute paling efisien, ada satu tujuan yang paling pas.",
+)
+
+_MOCK_OPENERS_EMPTY = (
+    "Untuk saat ini belum ada tujuan baru.",
+    "Belum ada target baru, jadi kita bisa santai dulu.",
+    "Saat ini tidak ada rekomendasi baru untuk dilanjutkan.",
+)
+
+
+def _stable_index(seed_text: str, size: int) -> int:
+    if size <= 0:
+        return 0
+    digest = hashlib.sha1(seed_text.encode("utf-8")).hexdigest()
+    return int(digest[:8], 16) % size
+
+
+def _join_names(names: list[str]) -> str:
+    cleaned = [name.strip() for name in names if name and name.strip()]
+    if not cleaned:
+        return ""
+    if len(cleaned) == 1:
+        return cleaned[0]
+    if len(cleaned) == 2:
+        return f"{cleaned[0]} dan {cleaned[1]}"
+    return f"{', '.join(cleaned[:-1])}, dan {cleaned[-1]}"
+
+
+def _build_dialogue_response(
+    *,
+    selected_option: str | None = None,
+    scene: str = "",
+    recommendation_reason: str = "",
+    recommendations: list[dict[str, Any]] | list[Any] | None = None,
+) -> str:
+    options = [
+        item.get("name", "")
+        for item in (recommendations or [])
+        if isinstance(item, dict) and item.get("name")
+    ][:3]
+
+    if selected_option:
+        opener = _MOCK_OPENERS_SELECTION[_stable_index(f"selection:{selected_option}:{scene}", len(_MOCK_OPENERS_SELECTION))]
+        return json.dumps({
+            "spoken_output": (
+                f"{opener} Saya akan memandu Anda menuju {selected_option} "
+                f"{'di ' + scene if scene else ''}. "
+                f"{recommendation_reason.strip().rstrip('.') or 'Kita lanjut dari sini.'}"
+            ).strip(),
+            "subtitle_output": (
+                f"Baik, kita ke {selected_option}."
+                if _stable_index(f"subtitle:{selected_option}", 2) == 0
+                else f"Siap, menuju {selected_option}."
+            ),
+            "recommendation_dialogue": (
+                "Pilihan Anda sudah saya catat. Kita lanjut dengan santai, saya pandu dari sini."
+                if _stable_index(f"dialogue:{selected_option}", 2) == 0
+                else "Keputusan itu sudah saya catat. Mari kita lanjut dengan nyaman."
+            ),
+            "recommendation_options": options,
+        }, ensure_ascii=False)
+
+    if not options:
+        opener = _MOCK_OPENERS_EMPTY[_stable_index(f"empty:{scene}", len(_MOCK_OPENERS_EMPTY))]
+        return json.dumps({
+            "spoken_output": f"{opener} Kita bisa menikmati area sekitar dulu.",
+            "subtitle_output": "Belum ada tujuan baru.",
+            "recommendation_dialogue": "Belum ada tujuan baru; nikmati dulu suasana area ini dengan tenang.",
+            "recommendation_options": [],
+        }, ensure_ascii=False)
+
+    primary_name = options[0]
+    alternatives = _join_names(options[1:])
+    opener = (
+        _MOCK_OPENERS_SINGLE[_stable_index(f"single:{primary_name}:{scene}", len(_MOCK_OPENERS_SINGLE))]
+        if len(options) == 1
+        else _MOCK_OPENERS_MULTI[_stable_index(f"multi:{primary_name}:{scene}", len(_MOCK_OPENERS_MULTI))]
+    )
+
+    if len(options) == 1:
+        spoken_output = (
+            f"{opener} {primary_name} menjadi tujuan yang paling siap kita kunjungi. "
+            f"{recommendation_reason.strip().rstrip('.') or 'Mari kita lanjut ke sana.'}"
+        ).strip()
+        subtitle_output = f"Fokus ke {primary_name} dulu."
+    else:
+        spoken_output = (
+            f"{opener} Mari mulai dari {primary_name} sebagai langkah pertama. "
+            f"Kalau mau jalur lain, {alternatives} juga tersedia. "
+            f"{recommendation_reason.strip().rstrip('.') or 'Kita lanjut dari opsi teratas.'}"
+        ).strip()
+        subtitle_output = f"Mulai dari {primary_name} dulu."
+
+    return json.dumps({
+        "spoken_output": spoken_output,
+        "subtitle_output": subtitle_output,
+        "recommendation_dialogue": (
+            "Ada beberapa opsi menarik, jadi kita bisa pilih yang paling pas dulu."
+            if len(options) > 1
+            else "Ada satu tujuan yang paling relevan untuk langkah berikutnya."
+        ),
+        "recommendation_options": options,
+    }, ensure_ascii=False)
 
 
 def _extract_text_payload(messages: Any) -> str:
@@ -80,17 +197,14 @@ def _build_selection_dialogue_response(payload_text: str) -> str | None:
     selected_option = str(parsed.get("selected_option", "")).strip() or "tujuan berikutnya"
     context = parsed.get("context", {})
     recommendations = context.get("recommendations", []) if isinstance(context, dict) else []
-    options = [item.get("name", "") for item in recommendations if isinstance(item, dict)][:3]
-
-    return json.dumps({
-        "spoken_output": (
-            f"Baik, saya akan memandu Anda menuju {selected_option}. "
-            f"Objek budaya ini menjadi tujuan berikutnya, dan saya akan menemani perjalanan Anda sampai tiba."
-        ),
-        "subtitle_output": f"Mari menuju {selected_option}.",
-        "recommendation_dialogue": "Pilihan Anda sudah saya catat. Saya akan memandu perjalanan ke tujuan berikutnya.",
-        "recommendation_options": options,
-    }, ensure_ascii=False)
+    scene = str(context.get("scene", "")).strip()
+    recommendation_reason = str(context.get("recommendation_reason", "")).strip()
+    return _build_dialogue_response(
+        selected_option=selected_option,
+        scene=scene,
+        recommendation_reason=recommendation_reason,
+        recommendations=recommendations,
+    )
 
 
 def _build_context_dialogue_response(payload_text: str) -> str | None:
@@ -104,57 +218,13 @@ def _build_context_dialogue_response(payload_text: str) -> str | None:
 
     recommendations = parsed.get("recommendations", [])
     if not isinstance(recommendations, list) or not recommendations:
-        return json.dumps({
-            "spoken_output": (
-                "Saat ini belum ada tujuan budaya baru yang perlu dipilih. "
-                "Anda bisa menikmati area di sekitar Anda terlebih dahulu, lalu lanjut saat siap."
-            ),
-            "subtitle_output": "Belum ada tujuan baru saat ini.",
-            "recommendation_dialogue": "Saat ini belum ada rekomendasi baru di sekitar Anda.",
-            "recommendation_options": [],
-        }, ensure_ascii=False)
+        return _build_dialogue_response(scene=str(parsed.get("scene", "")).strip(), recommendations=[])
 
-    options = [
-        item.get("name", "")
-        for item in recommendations
-        if isinstance(item, dict) and item.get("name")
-    ][:3]
-    if not options:
-        return None
-
-    primary_name = options[0]
-    alternatives = options[1:]
-    recommendation_reason = str(parsed.get("recommendation_reason", "")).strip()
-    context_summary = str(parsed.get("context_summary", "")).strip()
-    situation_type = str(parsed.get("situation_type", "")).strip()
-
-    if situation_type == "single_recommendation" or not alternatives:
-        spoken_output = (
-            f"Saat ini tujuan budaya yang paling siap kita kunjungi adalah {primary_name}. "
-            f"{recommendation_reason or 'Tujuan ini menjadi prioritas pada kondisi saat ini.'} "
-            "Mari saya pandu ke sana."
-        )
-        recommendation_dialogue = (
-            "Ada satu tujuan budaya yang belum dikunjungi dan siap dipilih."
-        )
-    elif alternatives:
-        alternatives_text = ", ".join(alternatives)
-        spoken_output = (
-            f"Ada beberapa tujuan budaya yang masih bisa kita jelajahi. "
-            f"Mari mulai dari {primary_name} sebagai tujuan utama berikutnya. "
-            f"Jika ingin memilih jalur lain, Anda juga dapat memilih {alternatives_text}."
-        )
-        recommendation_dialogue = (
-            context_summary
-            or "Ada beberapa tujuan budaya yang belum dikunjungi. Pilih salah satu, dan saya akan memandu Anda."
-        )
-
-    return json.dumps({
-        "spoken_output": spoken_output,
-        "subtitle_output": f"Mari menuju {primary_name}.",
-        "recommendation_dialogue": recommendation_dialogue,
-        "recommendation_options": options,
-    }, ensure_ascii=False)
+    return _build_dialogue_response(
+        scene=str(parsed.get("scene", "")).strip(),
+        recommendation_reason=str(parsed.get("recommendation_reason", "")).strip(),
+        recommendations=recommendations,
+    )
 
 
 class MockModel(Model):
