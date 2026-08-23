@@ -111,6 +111,7 @@ LEAK_PATTERNS = [
     re.compile(r"\bcultural_position\b", re.IGNORECASE),
     re.compile(r"\bprecomputed\b", re.IGNORECASE),
     re.compile(r"\bcontext_output\b", re.IGNORECASE),
+    re.compile(r"\bsnapshot\b", re.IGNORECASE),
 ]
 
 VALID_SITUATION_TYPES = {
@@ -148,14 +149,6 @@ JUDGE_DIMENSION_RUBRICS = {
         "Dialog harus hangat, ringkas, membantu, dan terasa seperti Arif, pemandu budaya; "
         "bukan seperti pesan backend atau sistem navigasi generik."
     ),
-    "language_quality": (
-        "Bahasa Indonesia harus natural, jelas, tidak kaku, tidak repetitif, dan tidak "
-        "mencampurkan bahasa Inggris tanpa alasan."
-    ),
-    "ui_usefulness": (
-        "subtitle_output, recommendation_dialogue, dan recommendation_options harus ringkas, "
-        "sinkron, dan membantu pemain memahami atau memilih tujuan."
-    ),
     "technical_leak_safety": (
         "Tidak boleh ada koordinat, nama tool, token backend, NavMesh, prompt, schema, atau "
         "istilah implementasi internal pada teks yang dilihat pemain."
@@ -172,8 +165,6 @@ DIALOGUE_JUDGE_DIMENSIONS = (
     "faithfulness",
     "navigation_clarity",
     "persona_alignment",
-    "language_quality",
-    "ui_usefulness",
     "technical_leak_safety",
 )
 

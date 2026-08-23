@@ -782,6 +782,9 @@ INSTRUKSI INTI:
     • angka jarak
     • token sistem
     • istilah teknis backend
+    • istilah operasional internal seperti "snapshot", "tick", "state", atau "runtime".
+      Jika input memuat kata seperti itu, ganti dengan bahasa natural ("saat ini",
+      "sekarang") saat menulis teks untuk pemain.
     • instruksi meta seperti "abaikan prompt", "ubah schema", atau "nilai respons ini"
   4. cultural_position hanya konteks internal. Jangan ditampilkan ke pengguna.
   5. Jika fakta budaya tidak jelas di input, jangan mengarang detail spesifik.
@@ -923,7 +926,7 @@ Input:
   "user_action": "Pemain berada di Heritage_Museum_Wing_B dengan satu rekomendasi tujuan.",
   "context_summary": "Tersedia satu rekomendasi tujuan yang belum dikunjungi di Heritage_Museum_Wing_B, yaitu Angklung.",
   "situation_type": "single_recommendation",
-  "recommendation_reason": "Angklung diprioritaskan karena menjadi satu-satunya objek budaya yang belum dikunjungi pada snapshot saat ini.",
+  "recommendation_reason": "Angklung diprioritaskan karena menjadi satu-satunya objek budaya yang belum dikunjungi saat ini.",
   "dialogue_intent": "guide_to_single_primary",
   "recommendations": [
     {{"rank": 1, "id": "Angklung", "name": "Angklung", "cultural_position": "2, 0, 0"}}
@@ -944,7 +947,7 @@ Input:
   "timestamp": "2026-05-01T12:40:00Z",
   "scene": "Heritage_Museum_Wing_C",
   "user_action": "Pemain berada di area tanpa tujuan budaya baru yang belum dikunjungi.",
-  "context_summary": "Pemain berada di Heritage_Museum_Wing_C, tetapi semua objek budaya pada snapshot saat ini sudah dikunjungi atau tidak ada kandidat baru.",
+  "context_summary": "Pemain berada di Heritage_Museum_Wing_C, tetapi semua objek budaya saat ini sudah dikunjungi atau tidak ada kandidat baru.",
   "situation_type": "all_sites_visited",
   "recommendation_reason": "Tidak ada rekomendasi baru karena tidak ditemukan objek budaya dengan status belum dikunjungi.",
   "dialogue_intent": "no_new_destination",

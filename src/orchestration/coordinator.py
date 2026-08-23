@@ -289,7 +289,7 @@ def _default_context_interpretation(
             ),
             "context_summary": (
                 f"Pemain berada di {environment_snapshot.scene}, tetapi semua objek budaya "
-                "pada snapshot saat ini sudah dikunjungi atau tidak ada kandidat baru."
+                "saat ini sudah dikunjungi atau tidak ada kandidat baru."
             ),
             "situation_type": "all_sites_visited",
             "recommendation_reason": "Tidak ada rekomendasi baru karena tidak ditemukan objek budaya dengan status belum dikunjungi.",
@@ -311,7 +311,7 @@ def _default_context_interpretation(
             "situation_type": "single_recommendation",
             "recommendation_reason": (
                 f"{primary_site.name} diprioritaskan karena menjadi satu-satunya objek budaya "
-                "yang belum dikunjungi pada snapshot saat ini."
+                "yang belum dikunjungi saat ini."
             ),
             "dialogue_intent": "guide_to_single_primary",
         }

@@ -34,8 +34,6 @@ DIMENSION_EXPLANATIONS = {
     "faithfulness": "Dialog tidak mengarang fakta budaya, koordinat, atau status yang tidak ada di context.",
     "navigation_clarity": "Pemain jelas diarahkan ke tujuan berikutnya.",
     "persona_alignment": "Gaya bicara hangat, ringkas, dan konsisten sebagai pemandu budaya (Arif).",
-    "language_quality": "Bahasa Indonesia terasa natural, tidak kaku, tidak bercampur Inggris.",
-    "ui_usefulness": "recommendation_dialogue dan recommendation_options membantu pemain memilih.",
     "technical_leak_safety": "Tidak ada koordinat, nama tool, token backend, NavMesh, atau istilah internal yang bocor ke pemain.",
 }
 
